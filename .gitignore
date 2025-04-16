@@ -1,0 +1,82 @@
+# General
+.DS_Store
+.AppleDouble
+.LSOverride
+# Icon must end with two \r
+Icon
+# Thumbnails
+._*
+.Rproj.user
+.Rhistory
+.RData
+.Ruserdata
+renv
+tmp
+bams
+BAMS
+fastqs
+logs
+*.vcf.gz
+*.vcf.gz.tbi
+*.vcf
+*.fastq.gz
+*.fq.gz
+*.bam
+*.cram
+.Rprofile
+
+# Ignore dot env
+*.venv
+resources/ascat
+resources/baitset/*
+!resources/baitset/GRCh38_WES5_canonical_pad100.merged.bed
+!resources/caveman
+resources/dbsnp/*
+!resources/dbsnp/README_common_snps.txt
+!resources/dbsnp/addheader.txt
+resources/ensembl/*
+!resources/ensembl/dermatlas_noncanonical_transcripts_ens103.tsv
+resources/germline
+resources/GIAB
+resources/gistic
+resources/music2
+resources/pindel/*
+!resources/pindel/WXS_Rules.lst
+resources/Signal
+resources/ucsc
+resources/dndscv
+resources/COSMIC/*
+!resources/COSMIC/OMM2.5_mutated_cancer_gene_census.v97.genes_names.tsv
+
+
+
+
+#Reference generation scripts
+reference/NOD_ShiLtJ_V1_PDX_ref/*
+!reference/NOD_ShiLtJ_V1_PDX_ref/PDX_from_LatAm_mouse_reference_generation_NOD_ShiLtJ_v1.Rmd
+!reference/NOD_ShiLtJ_V1_PDX_ref/PDX_from_LatAm_mouse_reference_generation_NOD_ShiLtJ_v1.html
+!reference/NOD_ShiLtJ_V1_PDX_ref/renv.lock
+!reference/NOD_ShiLtJ_V1_PDX_ref/README.md
+
+# Singularity images 
+*.sif
+
+
+#Ignore base_dir
+base_dir
+required_datasets
+test_xenofilter
+
+#Scripts
+scripts
+
+#Analysis
+#analysis
+analysis/ASCAT
+analysis/release_v1
+analysis/release_v2
+**/caveman_files
+**/pindel_files
+
+
+

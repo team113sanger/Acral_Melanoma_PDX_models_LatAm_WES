@@ -1,0 +1,120 @@
+LvdW ID	Case ID	OMERO ID name	OMERO structure (folder)	Collaborator	Country	HMDMC	Diagnosis	Phenotype	T/N linked	Tissue	Site_specific	Site_grouped	Tumour type	Sex	Age	Location of normal	Sample received	Sample extracted	No. cores	DNA (uL)	RNA (uL)	Notes from sample prep	Slide scanned?	Sample location	Sanger DNA ID	OK_to_analyse_DNA?	Sanger RNA ID	OK_to_analyse_RNA?	Clinical notes	Comments
+6590STDY10735008	AM001-X1_gDNA_tumor_skin_melanoma_PDX_Tumour - primary			Patricia Possik			PDX	T	1	skin melanoma / patient-derived xenograft			P	F		Tumour - primary							N	PDX	PD53330a_hum	Yes	PR53330a_hum	Yes		
+6590STDY10735092	AM001_gDNA_blood_buffy_coat_Peripheral_blood			Patricia Possik			Normal	N	1	buffy coat			-	F		Peripheral_blood							N	Normal	PD53330b	Yes	-	Yes		
+6590STDY10735044	AM001_gDNA_tumor_skin_melanoma_Tumour - primary			Patricia Possik			Tumour	T	1	skin melanoma 			P	F		Tumour - primary							N	Tumour	PD53330c	Yes	PR53330c	Yes		
+6590STDY10735045	AM002_gDNA_tumor_skin_melanoma_Tumour - primary			Patricia Possik			Tumour	T	2	skin melanoma 			P	M		Tumour - primary							N	Tumour	PD53331a	Yes	PR53331a	Yes		
+6590STDY10735093	AM002_gDNA_blood_buffy_coat_Peripheral_blood			Patricia Possik			Normal	N	2	buffy coat			-	M		Peripheral_blood							N	Normal	PD53331b	Yes	-	Yes		
+6590STDY10735009	AM003a-X1_gDNA_tumor_skin_melanoma_PDX_Tumour - primary			Patricia Possik			PDX	T	3	skin melanoma / patient-derived xenograft			P	F		Tumour - primary							N	PDX	PD53332a_hum	Yes	PR53332a_hum	Yes		
+6590STDY10735094	AM003_gDNA_blood_buffy_coat_Peripheral_blood			Patricia Possik			Normal	N	3	buffy coat			-	F		Peripheral_blood							N	Normal	PD53332b	Yes	-	Yes		
+6590STDY10735028	AM003a-X2_gDNA_tumor_skin_melanoma_PDX_Tumour - primary			Patricia Possik			PDX	T	3	skin melanoma / patient-derived xenograft			P	F		Tumour - primary							N	PDX	PD53332c_hum	Yes	PR53332c_hum	Yes		
+6590STDY10735046	AM003a_gDNA_tumor_skin_melanoma_Tumour - primary			Patricia Possik			Tumour	T	3	skin melanoma 			P	F		Tumour - primary							N	Tumour	PD53332d	Yes	PR53332d	Yes		
+6590STDY10735047	AM003c_gDNA_tumor_skin_melanoma_Lymph_node			Patricia Possik			Tumour	T	3	skin melanoma 			LN	F		Lymph_node							N	Tumour	PD53332e	Yes	PR53332e	Yes		
+6590STDY10735010	AM004-X1_gDNA_tumor_skin_melanoma_PDX_Tumour - primary			Patricia Possik			PDX	T	4	skin melanoma / patient-derived xenograft			P	F		Tumour - primary							N	PDX	PD53333a_hum	Yes	PR53333a_hum	Yes		
+6590STDY10735095	AM004_gDNA_blood_buffy_coat_Peripheral_blood			Patricia Possik			Normal	N	4	buffy coat			-	F		Peripheral_blood							N	Normal	PD53333b	Yes	-	Yes		
+6590STDY10735029	AM004-X2_gDNA_tumor_skin_melanoma_PDX_Tumour - primary			Patricia Possik			PDX	T	4	skin melanoma / patient-derived xenograft			P	F		Tumour - primary							N	PDX	PD53333c_hum	Yes	PR53333c_hum	Yes		
+6590STDY10735030	AM004-X3_gDNA_tumor_skin_melanoma_PDX_Tumour - primary			Patricia Possik			PDX	T	4	skin melanoma / patient-derived xenograft			P	F		Tumour - primary							N	PDX	PD53333d_hum	Yes	PR53333d_hum	Yes		
+6590STDY10735031	AM004-X4_gDNA_tumor_skin_melanoma_PDX_Tumour - primary			Patricia Possik			PDX	T	4	skin melanoma / patient-derived xenograft			P	F		Tumour - primary							N	PDX	PD53333e_hum	Yes	PR53333e_hum	Yes		
+6590STDY10735048	AM004_gDNA_tumor_skin_melanoma_Tumour - primary			Patricia Possik			Tumour	T	4	skin melanoma 			P	F		Tumour - primary							N	Tumour	PD53333f	Yes	PR53333f	Yes		
+6590STDY10735049	AM005_gDNA_tumor_skin_melanoma_Tumour - primary			Patricia Possik			Tumour	T	5	skin melanoma 			P	M		Tumour - primary							N	Tumour	PD53334a	Yes	PR53334a	Yes		
+6590STDY10735096	AM005_gDNA_blood_buffy_coat_Peripheral_blood			Patricia Possik			Normal	N	5	buffy coat			-	M		Peripheral_blood							N	Normal	PD53334b	Yes	-	Yes		
+6590STDY10735011	AM006-X1_gDNA_tumor_skin_melanoma_PDX_Lymph_node			Patricia Possik			PDX	T	6	skin melanoma / patient-derived xenograft			LN	F		Lymph_node							N	PDX	PD53335a_hum	Yes	PR53335a_hum	Yes		
+6590STDY10735097	AM006_gDNA_blood_buffy_coat_Peripheral_blood			Patricia Possik			Normal	N	6	buffy coat			-	F		Peripheral_blood							N	Normal	PD53335b	Yes	-	Yes		
+6590STDY10735032	AM006-X2_gDNA_tumor_skin_melanoma_PDX_Lymph_node			Patricia Possik			PDX	T	6	skin melanoma / patient-derived xenograft			LN	F		Lymph_node							N	PDX	PD53335c_hum	Yes	PR53335c_hum	Yes		
+6590STDY10735033	AM006-X3_gDNA_tumor_skin_melanoma_PDX_Lymph_node			Patricia Possik			PDX	T	6	skin melanoma / patient-derived xenograft			LN	F		Lymph_node							N	PDX	PD53335d_hum	Yes	PR53335d_hum	Yes		
+6590STDY10735050	AM006_gDNA_tumor_skin_melanoma_Lymph_node			Patricia Possik			Tumour	T	6	skin melanoma 			LN	F		Lymph_node							N	Tumour	PD53335e	Yes	PR53335e	Yes		
+6590STDY10735012	AM007-X1_gDNA_tumor_skin_melanoma_PDX_Lymph_node			Patricia Possik			PDX	T	7	skin melanoma / patient-derived xenograft			LN	F		Lymph_node							N	PDX	PD53336a_hum	Yes	PR53336a_hum	Yes		
+6590STDY10735034	AM007-X2_gDNA_tumor_skin_melanoma_PDX_Lymph_node			Patricia Possik			PDX	T	7	skin melanoma / patient-derived xenograft			LN	F		Lymph_node							N	PDX	PD53336c_hum	Yes	PR53336c_hum	Yes		
+6590STDY10735035	AM007-X3_gDNA_tumor_skin_melanoma_PDX_Lymph_node			Patricia Possik			PDX	T	7	skin melanoma / patient-derived xenograft			LN	F		Lymph_node							N	PDX	PD53336d_hum	Yes	PR53336d_hum	Yes		
+6590STDY10735036	AM007-X4_gDNA_tumor_skin_melanoma_PDX_Lymph_node			Patricia Possik			PDX	T	7	skin melanoma / patient-derived xenograft			LN	F		Lymph_node							N	PDX	PD53336e_hum	Yes	PR53336e_hum	Yes		
+6590STDY10735051	AM007_gDNA_tumor_skin_melanoma_Lymph_node			Patricia Possik			Tumour	T	7	skin melanoma 			LN	F		Lymph_node							N	Tumour	PD53336f	Yes	PR53336f	Yes		
+6590STDY10735052	AM008a_gDNA_tumor_skin_melanoma_Tumour - primary			Patricia Possik			Tumour	T	8	skin melanoma 			P	M		Tumour - primary							N	Tumour	PD53337a	Yes	PR53337a	Yes		
+6590STDY10735098	AM008_gDNA_blood_buffy_coat_Peripheral_blood			Patricia Possik			Normal	N	8	buffy coat			-	M		Peripheral_blood							N	Normal	PD53337b	Yes	-	Yes		
+6590STDY10735053	AM008b_gDNA_tumor_skin_melanoma_Tumour - local_recurrence			Patricia Possik			Tumour	T	8	skin melanoma 			LR	M		Tumour - local_recurrence							N	Tumour	PD53337c	Yes	PR53337c	Yes		
+6590STDY10735054	AM009_gDNA_tumor_skin_melanoma_Tumour - primary			Patricia Possik			Tumour	T	9	skin melanoma 			P	F		Tumour - primary							N	Tumour	PD53338a	Yes	PR53338a	Yes		
+6590STDY10735099	AM009_gDNA_blood_buffy_coat_Peripheral_blood			Patricia Possik			Normal	N	9	buffy coat			-	F		Peripheral_blood							N	Normal	PD53338b	Yes	-	Yes		
+6590STDY10735055	AM010_gDNA_tumor_skin_melanoma_Tumour - primary			Patricia Possik			Tumour	T	10	skin melanoma 			P	F		Tumour - primary							N	Tumour	PD53339a	Yes	PR53339a	Yes		
+6590STDY10735100	AM010_gDNA_blood_buffy_coat_Peripheral_blood			Patricia Possik			Normal	N	10	buffy coat			-	F		Peripheral_blood							N	Normal	PD53339b	Yes	-	Yes		
+6590STDY10735056	AM011_gDNA_tumor_skin_melanoma_Tumour - primary			Patricia Possik			Tumour	T	11	skin melanoma 			P	M		Tumour - primary							N	Tumour	PD53340a	Yes	PR53340a	Yes		
+6590STDY10735057	AM013_gDNA_tumor_skin_melanoma_Tumour - primary			Patricia Possik			Tumour	T	13	skin melanoma 			P	M		Tumour - primary							N	Tumour	PD53341a	Yes	PR53341a	Yes		
+6590STDY10735101	AM013_gDNA_blood_buffy_coat_Peripheral_blood			Patricia Possik			Normal	N	13	buffy coat			-	M		Peripheral_blood							N	Normal	PD53341b	Yes	-	Yes		
+6590STDY10735058	AM014_gDNA_tumor_skin_melanoma_Tumour - primary			Patricia Possik			Tumour	T	14	skin melanoma 			P	F		Tumour - primary							N	Tumour	PD53342a	Yes	PR53342a	Yes		
+6590STDY10735102	AM014_gDNA_blood_buffy_coat_Peripheral_blood			Patricia Possik			Normal	N	14	buffy coat			-	F		Peripheral_blood							N	Normal	PD53342b	Yes	-	Yes		
+6590STDY10735013	AM015a-X1_gDNA_tumor_skin_melanoma_PDX_Tumour - primary			Patricia Possik			PDX	T	15	skin melanoma / patient-derived xenograft			P	F		Tumour - primary							N	PDX	PD53343a_hum	Yes	PR53343a_hum	Yes		
+6590STDY10735127	AM015_gDNA_blood_buffy_coat_Peripheral_blood			Patricia Possik			Normal	N	15	buffy coat			-	F		Peripheral_blood							N	Normal	PD53343b	Yes	-	Yes		
+6590STDY10735014	AM015b-X1_gDNA_tumor_skin_melanoma_PDX_Lymph_node			Patricia Possik			PDX	T	15	skin melanoma / patient-derived xenograft			LN	F		Lymph_node							N	PDX	PD53343c_hum	Yes	PR53343c_hum	Yes		
+6590STDY10735037	AM015a-X2_gDNA_tumor_skin_melanoma_PDX_Tumour - primary			Patricia Possik			PDX	T	15	skin melanoma / patient-derived xenograft			P	F		Tumour - primary							N	PDX	PD53343d_hum	Yes	PR53343d_hum	Yes		
+6590STDY10735038	AM015a-X3_gDNA_tumor_skin_melanoma_PDX_Tumour - primary			Patricia Possik			PDX	T	15	skin melanoma / patient-derived xenograft			P	F		Tumour - primary							N	PDX	PD53343e_hum	Yes	PR53343e_hum	Yes		
+6590STDY10735039	AM015b-X2_gDNA_tumor_skin_melanoma_PDX_Lymph_node			Patricia Possik			PDX	T	15	skin melanoma / patient-derived xenograft			LN	F		Lymph_node							N	PDX	PD53343f_hum	Yes	PR53343f_hum	Yes		
+6590STDY10735040	AM015b-X3_gDNA_tumor_skin_melanoma_PDX_Lymph_node			Patricia Possik			PDX	T	15	skin melanoma / patient-derived xenograft			LN	F		Lymph_node							N	PDX	PD53343g_hum	Yes	PR53343g_hum	Yes		
+6590STDY10735059	AM015a_gDNA_tumor_skin_melanoma_Tumour - primary			Patricia Possik			Tumour	T	15	skin melanoma 			P	F		Tumour - primary							N	Tumour	PD53343h	Yes	PR53343h	Yes		
+6590STDY10735060	AM015b_gDNA_tumor_skin_melanoma_Lymph_node			Patricia Possik			Tumour	T	15	skin melanoma 			LN	F		Lymph_node							N	Tumour	PD53343i	Yes	PR53343i	Yes		
+6590STDY10735015	AM016-X1_gDNA_tumor_skin_melanoma_PDX_Lymph_node			Patricia Possik			PDX	T	16	skin melanoma / patient-derived xenograft			LN	M		Lymph_node							N	PDX	PD53344a_hum	Yes	PR53344a_hum	Yes		
+6590STDY10735041	AM016-X2_gDNA_tumor_skin_melanoma_PDX_Lymph_node			Patricia Possik			PDX	T	16	skin melanoma / patient-derived xenograft			LN	M		Lymph_node							N	PDX	PD53344c_hum	Yes	PR53344c_hum	Yes		
+6590STDY10735042	AM016-X3_gDNA_tumor_skin_melanoma_PDX_Lymph_node			Patricia Possik			PDX	T	16	skin melanoma / patient-derived xenograft			LN	M		Lymph_node							N	PDX	PD53344d_hum	Yes	PR53344d_hum	Yes		
+6590STDY10735043	AM016-X4_gDNA_tumor_skin_melanoma_PDX_Lymph_node			Patricia Possik			PDX	T	16	skin melanoma / patient-derived xenograft			LN	M		Lymph_node							N	PDX	PD53344e_hum	Yes	PR53344e_hum	Yes		
+6590STDY10735061	AM016_gDNA_tumor_skin_melanoma_Lymph_node			Patricia Possik			Tumour	T	16	skin melanoma 			LN	M		Lymph_node							N	Tumour	PD53344f	Yes	PR53344f	Yes		
+6590STDY10735062	AM017_gDNA_tumor_skin_melanoma_Tumour - primary			Patricia Possik			Tumour	T	17	skin melanoma 			P	M		Tumour - primary							N	Tumour	PD53345a	Yes	PR53345a	Yes		
+6590STDY10735128	AM017_gDNA_blood_buffy_coat_Peripheral_blood			Patricia Possik			Normal	N	17	buffy coat			-	M		Peripheral_blood							N	Normal	PD53345b	Yes	-	Yes		
+6590STDY10735063	AM018_gDNA_tumor_skin_melanoma_Tumour - primary			Patricia Possik			Tumour	T	18	skin melanoma 			P	F		Tumour - primary							N	Tumour	PD53346a	Yes	PR53346a	Yes		
+6590STDY10735105	AM018_gDNA_blood_buffy_coat_Peripheral_blood			Patricia Possik			Normal	N	18	buffy coat			-	F		Peripheral_blood							N	Normal	PD53346b	Yes	-	Yes		
+6590STDY10735016	AM019-X1_gDNA_tumor_skin_melanoma_PDX_Tumour - primary			Patricia Possik			PDX	T	19	skin melanoma / patient-derived xenograft			P	F		Tumour - primary							N	PDX	PD53347a_hum	Yes	PR53347a_hum	Yes		
+6590STDY10735106	AM019_gDNA_blood_buffy_coat_Peripheral_blood			Patricia Possik			Normal	N	19	buffy coat			-	F		Peripheral_blood							N	Normal	PD53347b	Yes	-	Yes		
+6590STDY10735064	AM019_gDNA_tumor_skin_melanoma_Tumour - primary			Patricia Possik			Tumour	T	19	skin melanoma 			P	F		Tumour - primary							N	Tumour	PD53347c	Yes	PR53347c	Yes		
+6590STDY10735065	AM020_gDNA_tumor_skin_melanoma_Tumour - primary			Patricia Possik			Tumour	T	20	skin melanoma 			P	M		Tumour - primary							N	Tumour	PD53348a	Yes	PR53348a	Yes		
+6590STDY10735107	AM020_gDNA_blood_buffy_coat_Peripheral_blood			Patricia Possik			Normal	N	20	buffy coat			-	M		Peripheral_blood							N	Normal	PD53348b	Yes	-	Yes		
+6590STDY10735017	AM021a-X1_gDNA_tumor_skin_melanoma_PDX_Tumour - primary			Patricia Possik			PDX	T	21	skin melanoma / patient-derived xenograft			P	M		Tumour - primary							N	PDX	PD53349a_hum	Yes	PR53349a_hum	Yes		
+6590STDY10735108	AM021_gDNA_blood_buffy_coat_Peripheral_blood			Patricia Possik			Normal	N	21	buffy coat			-	M		Peripheral_blood							N	Normal	PD53349b	Yes	-	Yes		
+6590STDY10735018	AM021b-X1_gDNA_tumor_skin_melanoma_PDX_Lymph_node			Patricia Possik			PDX	T	21	skin melanoma / patient-derived xenograft			LN	M		Lymph_node							N	PDX	PD53349c_hum	Yes	PR53349c_hum	Yes		
+6590STDY10735066	AM021a_gDNA_tumor_skin_melanoma_Tumour - primary			Patricia Possik			Tumour	T	21	skin melanoma 			P	M		Tumour - primary							N	Tumour	PD53349d	Yes	PR53349d	Yes		
+6590STDY10735067	AM021b_gDNA_tumor_skin_melanoma_Lymph_node			Patricia Possik			Tumour	T	21	skin melanoma 			LN	M		Lymph_node							N	Tumour	PD53349e	Yes	PR53349e	Yes		
+6590STDY10735019	AM022a-X1_gDNA_tumor_skin_melanoma_PDX_Tumour - primary			Patricia Possik			PDX	T	22	skin melanoma / patient-derived xenograft			P	M		Tumour - primary							N	PDX	PD53350a_hum	Yes	PR53350a_hum	Yes		
+6590STDY10735109	AM022_gDNA_blood_buffy_coat_Peripheral_blood			Patricia Possik			Normal	N	22	buffy coat			-	M		Peripheral_blood							N	Normal	PD53350b	Yes	-	Yes		
+6590STDY10735020	AM022b-X1_gDNA_tumor_skin_melanoma_PDX_Lymph_node			Patricia Possik			PDX	T	22	skin melanoma / patient-derived xenograft			LN	M		Lymph_node							N	PDX	PD53350c_hum	Yes	PR53350c_hum	Yes		
+6590STDY10735068	AM022a_gDNA_tumor_skin_melanoma_Tumour - primary			Patricia Possik			Tumour	T	22	skin melanoma 			P	M		Tumour - primary							N	Tumour	PD53350d	Yes	PR53350d	Yes		
+6590STDY10735069	AM022b_gDNA_tumor_skin_melanoma_Lymph_node			Patricia Possik			Tumour	T	22	skin melanoma 			LN	M		Lymph_node							N	Tumour	PD53350e	Yes	PR53350e	Yes		
+6590STDY10735070	AM023_gDNA_tumor_skin_melanoma_Lymph_node			Patricia Possik			Tumour	T	23	skin melanoma 			LN	F		Lymph_node							N	Tumour	PD53351a	Yes	PR53351a	Yes		
+6590STDY10735110	AM023_gDNA_blood_buffy_coat_Peripheral_blood			Patricia Possik			Normal	N	23	buffy coat			-	F		Peripheral_blood							N	Normal	PD53351b	Yes	-	Yes		
+6590STDY10735021	AM025a-X1_gDNA_tumor_skin_melanoma_PDX_Tumour - local_recurrence			Patricia Possik			PDX	T	25	skin melanoma / patient-derived xenograft			LR	F		Tumour - local_recurrence							N	PDX	PD53352a_hum	Yes	PR53352a_hum	Yes		
+6590STDY10735111	AM025_gDNA_blood_buffy_coat_Peripheral_blood			Patricia Possik			Normal	N	25	buffy coat			-	F		Peripheral_blood							N	Normal	PD53352b	Yes	-	Yes		
+6590STDY10735022	AM025b-X1_gDNA_tumor_skin_melanoma_PDX_Lymph_node			Patricia Possik			PDX	T	25	skin melanoma / patient-derived xenograft			LN	F		Lymph_node							N	PDX	PD53352c_hum	Yes	PR53352c_hum	Yes		
+6590STDY10735071	AM025a_gDNA_tumor_skin_melanoma_Tumour - local_recurrence			Patricia Possik			Tumour	T	25	skin melanoma 			LR	F		Tumour - local_recurrence							N	Tumour	PD53352d	Yes	PR53352d	Yes		
+6590STDY10735072	AM025b_gDNA_tumor_skin_melanoma_Lymph_node			Patricia Possik			Tumour	T	25	skin melanoma 			LN	F		Lymph_node							N	Tumour	PD53352e	Yes	PR53352e	Yes		
+6590STDY10735073	AM026_gDNA_tumor_skin_melanoma_Lymph_node			Patricia Possik			Tumour	T	26	skin melanoma 			LN	F		Lymph_node							N	Tumour	PD53353a	Yes	PR53353a	Yes		
+6590STDY10735112	AM026_gDNA_blood_buffy_coat_Peripheral_blood			Patricia Possik			Normal	N	26	buffy coat			-	F		Peripheral_blood							N	Normal	PD53353b	Yes	-	Yes		
+6590STDY10735074	AM027_gDNA_tumor_skin_melanoma_Tumour - primary			Patricia Possik			Tumour	T	27	skin melanoma 			P	M		Tumour - primary							N	Tumour	PD53354a	Yes	PR53354a	Yes		
+6590STDY10735113	AM027_gDNA_blood_buffy_coat_Peripheral_blood			Patricia Possik			Normal	N	27	buffy coat			-	M		Peripheral_blood							N	Normal	PD53354b	Yes	-	Yes		
+6590STDY10735023	AM029-X1_gDNA_tumor_skin_melanoma_PDX_Tumour - primary			Patricia Possik			PDX	T	29	skin melanoma / patient-derived xenograft			P	M		Tumour - primary							N	PDX	PD53355a_hum	Yes	PR53355a_hum	Yes		
+6590STDY10735114	AM029_gDNA_blood_buffy_coat_Peripheral_blood			Patricia Possik			Normal	N	29	buffy coat			-	M		Peripheral_blood							N	Normal	PD53355b	Yes	-	Yes		
+6590STDY10735075	AM029_gDNA_tumor_skin_melanoma_Tumour - primary			Patricia Possik			Tumour	T	29	skin melanoma 			P	M		Tumour - primary							N	Tumour	PD53355c	Yes	PR53355c	Yes		
+6590STDY10735024	AM031-X1 _gDNA_tumor_skin_melanoma_PDX_Lymph_node			Patricia Possik			PDX	T	31	skin melanoma / patient-derived xenograft			LN	F		Lymph_node							N	PDX	PD53356a_hum	Yes	PR53356a_hum	Yes		
+6590STDY10735076	AM031_gDNA_tumor_skin_melanoma_Lymph_node			Patricia Possik			Tumour	T	31	skin melanoma 			LN	F		Lymph_node							N	Tumour	PD53356c	Yes	PR53356c	Yes		
+6590STDY10735025	AM032b-X1_gDNA_tumor_skin_melanoma_PDX_Lymph_node			Patricia Possik			PDX	T	32	skin melanoma / patient-derived xenograft			LN	F		Lymph_node							N	PDX	PD53357a_hum	Yes	PR53357a_hum	Yes		
+6590STDY10735115	AM032_gDNA_blood_buffy_coat_Peripheral_blood			Patricia Possik			Normal	N	32	buffy coat			-	F		Peripheral_blood							N	Normal	PD53357b	Yes	-	Yes		
+6590STDY10735077	AM032a_gDNA_tumor_skin_melanoma_Tumour - primary			Patricia Possik			Tumour	T	32	skin melanoma 			P	F		Tumour - primary							N	Tumour	PD53357c	Yes	PR53357c	Yes		
+6590STDY10735078	AM032b_gDNA_tumor_skin_melanoma_Lymph_node			Patricia Possik			Tumour	T	32	skin melanoma 			LN	F		Lymph_node							N	Tumour	PD53357d	Yes	PR53357d	Yes		
+6590STDY10735079	AM032c_gDNA_tumor_skin_melanoma_Lymph_node			Patricia Possik			Tumour	T	32	skin melanoma 			LN	F		Lymph_node							N	Tumour	PD53357e	Yes	PR53357e	Yes		
+6590STDY10735080	AM033_gDNA_tumor_skin_melanoma_Tumour - local_recurrence			Patricia Possik			Tumour	T	33	skin melanoma 			LR	F		Tumour - local_recurrence							N	Tumour	PD53358a	Yes	PR53358a	Yes		
+6590STDY10735116	AM033_gDNA_blood_buffy_coat_Peripheral_blood			Patricia Possik			Normal	N	33	buffy coat			-	F		Peripheral_blood							N	Normal	PD53358b	Yes	-	Yes		
+6590STDY10735026	AM034-X1_gDNA_tumor_skin_melanoma_PDX_Lymph_node			Patricia Possik			PDX	T	34	skin melanoma / patient-derived xenograft			LN	F		Lymph_node							N	PDX	PD53359a_hum	Yes	PR53359a_hum	Yes		
+6590STDY10735117	AM034_gDNA_blood_buffy_coat_Peripheral_blood			Patricia Possik			Normal	N	34	buffy coat			-	F		Peripheral_blood							N	Normal	PD53359b	Yes	-	Yes		
+6590STDY10735081	AM034_gDNA_tumor_skin_melanoma_Lymph_node			Patricia Possik			Tumour	T	34	skin melanoma 			LN	F		Lymph_node							N	Tumour	PD53359c	Yes	PR53359c	Yes		
+6590STDY10735082	AM041_gDNA_tumor_skin_melanoma_Tumour - primary			Patricia Possik			Tumour	T	41	skin melanoma 			P	M		Tumour - primary							N	Tumour	PD53360a	Yes	PR53360a	Yes		
+6590STDY10735083	AM042_gDNA_tumor_skin_melanoma_Tumour - primary			Patricia Possik			Tumour	T	42	skin melanoma 			P	M		Tumour - primary							N	Tumour	PD53361a	Yes	PR53361a	Yes		
+6590STDY10735118	AM042_gDNA_blood_buffy_coat_Peripheral_blood			Patricia Possik			Normal	N	42	buffy coat			-	M		Peripheral_blood							N	Normal	PD53361b	Yes	-	Yes		
+6590STDY10735084	AM043_gDNA_tumor_skin_melanoma_Tumour - primary			Patricia Possik			Tumour	T	43	skin melanoma 			P	M		Tumour - primary							N	Tumour	PD53362a	Yes	PR53362a	Yes		
+6590STDY10735119	AM043_gDNA_blood_buffy_coat_Peripheral_blood			Patricia Possik			Normal	N	43	buffy coat			-	M		Peripheral_blood							N	Normal	PD53362b	Yes	-	Yes		
+6590STDY10735085	AM044_gDNA_tumor_skin_melanoma_Tumour - primary			Patricia Possik			Tumour	T	44	skin melanoma 			P	F		Tumour - primary							N	Tumour	PD53363a	Yes	PR53363a	Yes		
+6590STDY10735120	AM044_gDNA_blood_buffy_coat_Peripheral_blood			Patricia Possik			Normal	N	44	buffy coat			-	F		Peripheral_blood							N	Normal	PD53363b	Yes	-	Yes		
+6590STDY10735027	AM045-X1_gDNA_tumor_skin_melanoma_PDX_Tumour - primary			Patricia Possik			PDX	T	45	skin melanoma / patient-derived xenograft			P	F		Tumour - primary							N	PDX	PD53364a_hum	Yes	PR53364a_hum	Yes		
+6590STDY10735121	AM045_gDNA_blood_buffy_coat_Peripheral_blood			Patricia Possik			Normal	N	45	buffy coat			-	F		Peripheral_blood							N	Normal	PD53364b	Yes	-	Yes		
+6590STDY10735086	AM045_gDNA_tumor_skin_melanoma_Tumour - primary			Patricia Possik			Tumour	T	45	skin melanoma 			P	F		Tumour - primary							N	Tumour	PD53364c	Yes	PR53364c	Yes		
+6590STDY10735087	AM046_gDNA_tumor_skin_melanoma_Tumour - primary			Patricia Possik			Tumour	T	46	skin melanoma 			P	F		Tumour - primary							N	Tumour	PD53365a	Yes	PR53365a	Yes		
+6590STDY10735122	AM046_gDNA_blood_buffy_coat_Peripheral_blood			Patricia Possik			Normal	N	46	buffy coat			-	F		Peripheral_blood							N	Normal	PD53365b	Yes	-	Yes		
+6590STDY10735088	AM047_gDNA_tumor_skin_melanoma_Tumour - primary			Patricia Possik			Tumour	T	47	skin melanoma 			P	M		Tumour - primary							N	Tumour	PD53366a	Yes	PR53366a	Yes		
+6590STDY10735123	AM047_gDNA_blood_buffy_coat_Peripheral_blood			Patricia Possik			Normal	N	47	buffy coat			-	M		Peripheral_blood							N	Normal	PD53366b	Yes	-	Yes		
+6590STDY10735089	AM048_gDNA_tumor_skin_melanoma_Tumour - primary			Patricia Possik			Tumour	T	48	skin melanoma 			P	F		Tumour - primary							N	Tumour	PD53367a	Yes	PR53367a	Yes		
+6590STDY10735124	AM048_gDNA_blood_buffy_coat_Peripheral_blood			Patricia Possik			Normal	N	48	buffy coat			-	F		Peripheral_blood							N	Normal	PD53367b	Yes	-	Yes		
+6590STDY10735090	AM049_gDNA_tumor_skin_melanoma_Tumour - primary			Patricia Possik			Tumour	T	49	skin melanoma 			P	M		Tumour - primary							N	Tumour	PD53368a	Yes	PR53368a	Yes		
+6590STDY10735125	AM049_gDNA_blood_buffy_coat_Peripheral_blood			Patricia Possik			Normal	N	49	buffy coat			-	M		Peripheral_blood							N	Normal	PD53368b	Yes	-	Yes		
+6590STDY10735091	AM050_gDNA_tumor_skin_melanoma_Tumour - primary			Patricia Possik			Tumour	T	50	skin melanoma 			P	M		Tumour - primary							N	Tumour	PD53369a	Yes	PR53369a	Yes		
+6590STDY10735126	AM050_gDNA_blood_buffy_coat_Peripheral_blood			Patricia Possik			Normal	N	50	buffy coat			-	M		Peripheral_blood							N	Normal	PD53369b	Yes	-	Yes		

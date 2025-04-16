@@ -1,0 +1,9 @@
+analysis
+bams/
+BAMS/
+base_dir/
+fastqs/
+logs/
+manifest/
+metadata/
+
