@@ -71,14 +71,16 @@ test_xenofilter
 scripts
 
 #Analysis
-analysis
+analysis/Sequenza
 analysis/ASCAT
 analysis/release_v1
 analysis/release_v2
+analysis/somatic_variants
 analysis/somatic_variants/release_v3
-!analysis/somatic_variants/release_v4
+analysis/somatic_variants/release_v4
 **/caveman_files
 **/pindel_files
+analysis/6633_PDX_models_from_ASCAT_raw_results.tar.gz
 
 
 
