@@ -1,6 +1,6 @@
 # Instructions to generate the NOD_V1_PDX reference files
 
-To be able to filter mouse reads on the xenografted samples, we generated a custom FASTA file referred as **NOD_V1_PDX**. This file was created using the NOD_ShiLtJ_V1 reference and GRCm39 Y Chromosome sequence. In addition, we collated a custom GTF file containing the gene annotations for the NOD_ShiLtJ_V1 reference and GRCm39 Y Chromosome, from ENSEMBL release 107. 
+To be able to filter mouse reads on the xenografted samples, we generated a custom FASTA file referred as **NOD_ShiLtJ_V1_PDX**. This file was created using the NOD_ShiLtJ_V1 reference and GRCm39 Y Chromosome sequence. In addition, we collated a custom GTF file containing the gene annotations for the NOD_ShiLtJ_V1 reference and GRCm39 Y Chromosome, from ENSEMBL release 107. 
 
 In this folder, you will find:
 
@@ -8,7 +8,7 @@ In this folder, you will find:
 - An HTML file with the output of the RMarkdown file run as well as the information and summary statistics of the reference metrics - download the file and open with a web browser. [PDX_from_LatAm_mouse_reference_generation_NOD_ShiLtJ_v1.html](./PDX_from_LatAm_mouse_reference_generation_NOD_ShiLtJ_v1.html)
 
 
-## To generate the `NOD_V1_PDX` reference Fasta file
+## To generate the `NOD_ShiLtJ_V1_PDX` reference Fasta file
 
 To regenerate the reference fasta file execute the RMarkdown file contained within the `reference/NOD_ShiLtJ_V1_PDX_ref` folder (it requires R and the path of the project directory where the repository was cloned into as the `projectdir` variable). 
 
