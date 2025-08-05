@@ -2,9 +2,9 @@
 # Start by reading the libraries that are required
 # 0. Set the variables for the Project -------
 # 0.1 Set the working directory
-here::i_am(file.path("scripts", "Combined_maf_plots", "Combinemaf_and_oncplot_generation.R")
+here::i_am(file.path("scripts", "Combined_maf_plots", "Combinemaf_and_oncplot_generation.R"))
 # Load the libraries
-library(renv) # To retain package versions
+library(renv)
 library(here)
 library(RColorBrewer)
 library(writexl)
