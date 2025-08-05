@@ -17,7 +17,11 @@ wdir<-here()
 wdir<-file.path(wdir, "analysis","somatic_variants","release_v4","Combined_2729_3248")
 pdx_dir<-file.path(wdir, "PDX")
 tum_dir<-file.path(wdir, "Tumour")
-cosmic_genesv97<-read.csv(file =file.path(wdir, "COSMIC","cancer_gene_census.v97.genes.tsv" ), header = T, sep = "\t", stringsAsFactors = F )
+# Read the COSMIC cancer gene census file
+#cosmic_genesv97<-read.csv(file =file.path(wdir, "COSMIC","cancer_gene_census.v97.genes.tsv" ), header = T, sep = "\t", stringsAsFactors = F )
+# Write the list of genes that are in cosmic 
+cosmic_genesv97<-read.csv(file =file.path(wdir, "COSMIC","AM_cancer_gene_census.v97.genes_overlap.tsv" ), header = T, sep = "\t", stringsAsFactors = F )
+
 
 # 1 Merge and plot the data for Combined all_samples  matched & unmatched ----
 prefix<-"all_samples"
@@ -161,6 +165,9 @@ dev.off()
 # Oncoplot showing ALLS COSMIC genes from the CANCER gene census only
 topn<-40
 observed_mut_canc_genes<-cosmic_genesv97$Gene.Symbol[cosmic_genesv97$Gene.Symbol %in% comb_maf@gene.summary$Hugo_Symbol]
+
+##  PLOT the list of genes that present in cosmic and in the topN mutated genes
+
 fig_fnamepdf<-file.path(comball_dir, paste0("Combined_6633_2729_3248_mutated_gene_Keep_SNVsand_VAF_filt_INDELS_mutsort_ALL_top_", topn, "_COSMICv97cgenes_", suffix,".pdf"))
 pdf(file =fig_fnamepdf ,width = 18, height = 16)
 oncoplot(comb_maf,
