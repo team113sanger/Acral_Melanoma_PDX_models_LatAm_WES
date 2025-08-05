@@ -1,0 +1,813 @@
+---
+title: "Project `r params$study_ID`  WES study QC Report"
+date: "`r format(Sys.Date(), '%d %B %Y')`"
+author: "`r paste('Martin Del Castillo Velasco-Herrera - mdc1@sanger.ac.uk','Team 113 - David Adams lab', sep='\n')`"
+output: 
+  html_document:
+    code_folding: hide
+    toc: true
+    toc_depth: 3
+    toc_float: 
+      collapsed: false
+    number_sections: true
+    self_contained: yes
+  # pdf_document:
+  #   keep_tex: true
+fontsize: 14pt
+params:
+  study_ID: "test"
+  datafolder: ""
+  outputfolder: ""
+  fluidigm_flag: TRUE
+  substitution_flag: TRUE
+  
+---
+<!-- Template created and written by  Martin Del Castillo Velasco-Herrera - mdc1@sanger.ac.uk -->
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = params$study_ID)
+# knitr::opts_chunk$set(
+#   collapse = TRUE,
+#   comment = "#>",
+#   fig.align = 'left',
+#   fig.height = 7,
+#   fig.width = 4 )
+#PREPARE the environment 
+if(!require("BiocManager", quietly = T)){ install.packages("BiocManager") }
+bcpkgs<-c("ggplot2",
+          "ggvenn",
+          "RColorBrewer",
+          "knitr",
+          "tidyverse",
+          "tidyr",
+          "reshape2",
+          "dplyr",
+          "rmarkdown",
+          "kableExtra",
+          "gridExtra")
+#suppressMessages( BiocManager::install(setdiff(bcpkgs, rownames(installed.packages())), version = '3.16', update =FALSE) )
+pkgs<-c( "data.table",
+         "shiny",
+         "gplots",
+         "colourpicker",
+         "DT",
+         "plotly",
+         "htmlwidgets",
+         "patchwork",
+         "png",
+         "dendextend",
+         "viridis",
+         "cowplot")
+#suppressMessages( install.packages(setdiff(pkgs, rownames(installed.packages())), update =FALSE, repos ="https://cran.ma.imperial.ac.uk/") )
+
+library(ggplot2)
+library(RColorBrewer)
+library(gplots)
+library(viridis)
+library(reshape2)
+library(cowplot)
+library(tidyr)
+library(dplyr)
+library(data.table)
+library(knitr)
+library(R.utils)
+library(patchwork)
+```
+
+```{r Read_params, include=FALSE}
+# To test that the reading of parameters works well. 
+# set this option in the first code chunk in the document
+
+# Setting the up the variables -------
+# 0 Read the parameters -------
+# Check the paramters for the template   -------
+ if(params$study_ID=="test"){ 
+   stop(paste0(" Please provide a study_ID to the rmarkdown command, e.g. ", 'rmarkdown::render("DERMATLAS_study_QC_report_template_WES.Rmd", params = list(study_ID = "6707", datafolder = "/project/data", outputfolder="/project")'))
+ }
+ if(!dir.exists(params$datafolder)){ 
+   stop(paste0(" Please provide an EXISTING datafolder to the rmarkdown command, e.g. ", 'rmarkdown::render("DERMATLAS_study_QC_report_template_WES.Rmd", params = list(study_ID = "6707", datafolder = "/project/data", outputfolder="/project")'))
+ }
+ 
+# #Check the output folder
+ if(params$outputfolder==""){
+   stop(paste0(" Please provide the path to the outputfolder graphs study_ID to the rmarkdown command, e.g. ", 'rmarkdown::render("DERMATLAS_study_QC_report_template_WES.Rmd", params = list(study_ID = "6707", datafolder = "/project/data", outputfolder="/project")'))
+ } else if(!dir.exists(params$outputfolder)){ 
+   dir.create(params$outputfolder, recursive = TRUE)
+ }
+# SET the Parameters This is going to be parameter and needs to be set -------
+datadir<-params$datafolder
+study_ID<-params$study_ID
+outdir<-params$outputfolder
+fluidigm_flag<-params$fludigm_flag
+substitution_flag<- params$substitution_flag
+# #For testing 
+# study_ID <-"6684"
+# dbase<-"/Users/mdc1/Desktop/team113sc125/projects/DERMATLAS"
+# datadir<-file.path(dbase, "data", "studies", study_ID, "qc")
+# outdir<-"/Users/mdc1/Desktop/team113sc125/projects/dermatlas_sample_changes_checks"
+# datadir <-"/Users/mdc1/Documents/Projects/DERMATLAS/6560_2815_DERMATLAS_Cutaneous_squamous_CC_WES/qc_report/data"
+# outdir <- "/Users/mdc1/Documents/Projects/DERMATLAS/6560_2815_DERMATLAS_Cutaneous_squamous_CC_WES/qc_report/"
+fluidigm_flag<-TRUE
+substitution_flag<- TRUE
+
+#Set the paths to the files that we are expecting and check if the are located where they should -------
+bmetrics_fname<-paste0(study_ID, "-bmetrics.txt")  # Sample BAM samtools stats sequencing metrics
+conpair_fname<-paste0(study_ID, "-conpair.txt")   # CONPARI results for all Tumour-Normal pairs
+coverage_fname<-paste0(study_ID, "-coverage.txt") # QC Coverage depth analysis results for SAMPLE level BAM per sample
+fluidigm_fname<-paste0(study_ID, "-genotypes.txt") # Table with the sample to sample comparison obtained from the Fluidigm data reported by CASM’s (CompareGenotypes.pl )
+sub_fname<-paste0(study_ID, "-substitutions.txt") # CONPARI results for all Tumour-Normal pairs
+sampqcstatus_fname<-paste0(study_ID, "-sample_qcstatus.txt") #  The new per-sample PASS/FLAG/FAIL data for only the SAMPLE data (i.e. no  biosample testing so no conpair data)
+
+
+#Check that the files exist in the location specified 
+if(!file.exists(file.path(datadir, bmetrics_fname))){ 
+  stop(paste0("Canapps BAM file metrics ", file.path(datadir, bmetrics_fname), " doesn't exist at location provided! ", "\n", datadir ))
+}
+if(!file.exists(file.path(datadir, conpair_fname))){ 
+  stop(paste0("Conpair file ", file.path(datadir, conpair_fname), " doesn't exist at location provided! ", "\n", datadir ))
+}
+if(!file.exists(file.path(datadir, coverage_fname))){ 
+  stop(paste0("Coverage file ", file.path(datadir, coverage_fname), " doesn't exist at location provided! ", "\n", datadir ))
+}
+if(!file.exists(file.path(datadir, fluidigm_fname))){ 
+  fluidigm_flag<-FALSE
+  warning(paste0("Fluidigm data: ", file.path(datadir, fluidigm_fname), " doesn't exist at location provided.  No plots for this will be made ", "\n", datadir ))
+} else {
+  ######## Fluidigm table 
+ fluidigm<-as.data.frame(data.table::fread(file = file.path(datadir, fluidigm_fname), header = TRUE, stringsAsFactors = FALSE, sep = "\t") )
+}
+if(!file.exists(file.path(datadir, sub_fname))){ 
+  warning(paste0("Substitutions data: ", file.path(datadir, sub_fname), " doesn't exist at location provided.  No plots for this will be made ", "\n", datadir ))
+  substitution_flag<-FALSE
+} else {
+ ######## Substitutions table 
+ CtoA_subs<-as.data.frame(data.table::fread(file = file.path(datadir, sub_fname), header = TRUE, stringsAsFactors = FALSE, sep = "\t") )
+}
+if(!file.exists(file.path(datadir, sampqcstatus_fname))){ 
+  stop(paste0("Sample QC results file ", file.path(datadir, sampqcstatus_fname), " doesn't exist at location provided! ", "\n", datadir ))
+}
+
+
+######## BAM canaps table
+bmetrics<-as.data.frame(data.table::fread(file = file.path(datadir, bmetrics_fname), header = TRUE, stringsAsFactors = FALSE, sep = "\t") )
+######## Coverage depth table 
+coverage<-as.data.frame(data.table::fread(file = file.path(datadir, coverage_fname), header = TRUE, stringsAsFactors = FALSE, sep = "\t") )
+######## Conpair  table 
+conpair<-as.data.frame(data.table::fread(file = file.path(datadir, conpair_fname), header = TRUE, stringsAsFactors = FALSE, sep = "\t") )
+######## Sample QC status  table 
+sampleqc<-as.data.frame(data.table::fread(file = file.path(datadir, sampqcstatus_fname), header = TRUE, stringsAsFactors = FALSE, sep = "\t") )
+######## Filter Table
+cohortfilt<-data.frame(sample=bmetrics$sample, 
+                       status=rep(FALSE, n=length(bmetrics$sample)))
+
+```
+
+# Project information 
+
+The data files and project information provided used in the following report are the following:
+
++ **Study ID:** `r params$study_ID`
++ **BAM QC metrics file: ** `r bmetrics_fname` 
++ **Coverage depth QC file: ** `r coverage_fname` 
++ **Conpair QC file: ** `r conpair_fname` 
++ **Fluidigm file: ** `r if(fluidigm_flag){ fluidigm_fname } else { paste0("Data not available")} ` 
++ **Final sample QC status file: ** `r conpair_fname ` 
++ **Total number of samples:** `r length(bmetrics$sample)` 
++ **Total number of tumour samples:** `r sum(grepl("tumour", sampleqc$type,fixed=TRUE))  ` 
++ **Total number of normal samples:** `r sum(grepl("normal", sampleqc$type,fixed=TRUE))  ` 
++ **Total number of possible matched pairs:** `r length(conpair$biosample)  ` 
+
+# Fluidigm results
+
+These analysis looks at 92 highly variable positions in the human genome to assess sample swaps. To look at the image right click on the image below and select _open image in a new tab_ .
+
++ **Total number of samples:** `r length(bmetrics$sample)` 
++ **Total number of samples with fluidigm genotype data: ** `r if(fluidigm_flag){ length(union(unique(fluidigm$sample_a), unique(fluidigm$sample_b))) } else { paste0("Data not available")} ` 
+
+```{r fluidigm_results, echo=fluidigm_flag, eval=fluidigm_flag,   fig.retina=1,  fig.width = 1200/72, fig.height =1200/72 }
+#Get the matrix for the fluidigm data 
+slnames<-union(unique(fluidigm$sample_a), unique(fluidigm$sample_b))
+fluidigm_mat<-matrix(1,nrow = length(slnames), ncol=length(slnames) )
+rownames(fluidigm_mat)<-slnames
+colnames(fluidigm_mat)<-slnames
+
+#Get the actual values in 100 rather than fraction 
+# fluidigm$exact<- as.numeric(fluidigm$exact)*100
+# fluidigm$exact<- as.numeric(fluidigm$exact)*100
+for (i in 1:dim(fluidigm)[1]){
+  fluidigm_mat[as.character(fluidigm$sample_a[i]), as.character(fluidigm$sample_b[i])]<- fluidigm$exact[i]
+  fluidigm_mat[as.character(fluidigm$sample_b[i]), as.character(fluidigm$sample_a[i])]<- fluidigm$exact[i]
+}
+
+if(length(bmetrics$sample)>100){
+  cexparam<-0.6  
+} else {
+  cexparam<-0.55
+}
+
+hmcolors<-colorRampPalette(brewer.pal(n=11, name="RdYlGn"))(60)
+heatmap.2(fluidigm_mat, col=hmcolors, main=paste0("Proportion of exact overlapping SNPS \n form Fluidigm data for ", study_ID),
+          key=TRUE, keysize=0.8,  cexCol=cexparam, cexRow=cexparam, trace="none", margins=c(5,5))
+# heatmap.2(fluidigm_mat, col=hmcolors, , main=paste0("Percentage of overlapping SNPS \n form Fluidigm data for ", study_ID),
+#           key=TRUE, keysize=0.8,  cexCol=cexparam, cexRow=cexparam, trace="none", margins=c(5,5), Rowv =F , Colv = F)
+
+
+```
+
+
+# Sequencing QC metrics - from Canapps sample BAM files
+
+## Sample QC metric table
+The sequencing QC metrics per sample obtained by **samtools bamstats** are shown in the following table:
+```{r bmetrics_table, echo=FALSE }
+
+DT::datatable(bmetrics, 
+              class = "cell-border stripe", #Style of table to show
+              filter = 'top',
+              rownames = TRUE, 
+              editable = FALSE, 
+              extension = "Buttons", 
+              options = list(dom="Bflrtip", #Shows Buttons, filtering input, table
+                             buttons =c("copy", "csv", "excel")))
+```
+
+## Sequencing QC metrics plots
+
+<!-- **Recommended parameters and cut-offs to consider:**
+
++ Mean insert size:  **insert_mean >100**
++ Number of reads mapped: **read count ≥ 10,000,000**
++ Raw read mapping rate: **map rate ≥ 90%**
++ Insert size standard deviation: **insert_sd > 25**
+-->
+List of sequencing metrics and advisory thresholds used 
+
+| Metric Name | Level | Flag Threshold | Fail Threshold | Notes |
+|--------------|-----------|------------|------------|------------|
+| **reads_total** | SAMPLE | <25,000,000 | – | The total (non-filtered) number of reads in the output BAM file |
+| **reads_ok** | SAMPLE | <25,000,000 | – | The filtered (0xF00) number of reads in the output BAM file |
+| **duplicates** | SAMPLE | >50% | – | The number of duplicated reads that are otherwise OK divided by the total read count |
+| **mapped** | SAMPLE | <98% | – | The percentage of OK reads that are mapped |
+| **paired** | SAMPLE | <95% | – | The percentage of OK reads that are properly paired |
+| **chimeric** | SAMPLE | >3.89% | – | The percentage of OK reads that are properly paired with their mate on a different chromosome |
+| **clipped** | SAMPLE | >1.5% | – | The percentage of OK reads that show significant soft clipping |
+| **coverage** | SAMPLE | – | <21+ | The assigned coverage depth for the sample |
+
+
+```{r Canapps_insersize, echo=FALSE }
+
+# #Violin plot with value for the cohort
+# mis.col<-RColorBrewer::brewer.pal(n=12, name="Set3")[5]
+# 
+# viol_misize<- ggplot(reshape2::melt(bmetrics, id.vars="sample", measure.vars="insert_mean"), aes(x=variable, y=value))+
+#   geom_violin(aes(fill=variable))+
+#   # scale_fill_manual(values = "lightblue")+ # to fill the violing plot 
+#   scale_fill_manual(values = mis.col)+ 
+#   ggtitle(paste(study_ID, "\n lib mean isize"))+
+#   # theme_bw()+
+#   theme(
+#     axis.text.x=element_blank(),
+#     axis.text.y=element_text(colour="Black",size =13),
+#     axis.title.x=element_text(face="bold", size=14),
+#     axis.title.y=element_text(face="bold", size=14),
+#     legend.position = "none",
+#     plot.title = element_text(hjust = 0.5, size = 10))+
+#   ylab("insert mean")+
+#   xlab("Samples")+
+#   geom_boxplot(width=0.1)
+#   # geom_dotplot(binaxis='y', stackdir='center', dotsize=0.4)
+
+
+######### Violin plot for - sequenced reads
+sqr.col<-RColorBrewer::brewer.pal(n=12, name="Set3")[1]
+viol_seqr<- ggplot(reshape2::melt(bmetrics, id.vars="sample", measure.vars="reads_total"), aes(x=variable, y=value))+
+  geom_violin(aes(fill=variable))+
+  # scale_fill_manual(values = "lightblue")+ # to fill the violing plot 
+  scale_fill_manual(values = sqr.col)+ 
+  ggtitle(paste(study_ID, "\n Total Num. reads sequenced"))+
+  theme_bw()+
+  theme(
+    axis.text.x=element_blank(),
+    axis.text.y=element_text(colour="Black",size =13),
+    axis.title.x=element_text(face="bold", size=14),
+    axis.title.y=element_text(face="bold", size=14),
+    legend.position = "none",
+    plot.title = element_text(hjust = 0.5, size = 10))+
+  ylab("Reads sequenced")+
+  xlab("Samples")+
+  geom_boxplot(width=0.1)
+  # geom_dotplot(binaxis='y', stackdir='center', dotsize=0.4)
+
+######### Violin plot for - Percent reads mapped
+mapr.col<-RColorBrewer::brewer.pal(n=12, name="Set3")[2]
+viol_mapr<- ggplot(reshape2::melt(bmetrics, id.vars="sample", measure.vars="mapped_ratio"), aes(x=variable, y=value*100))+
+  geom_violin(aes(fill=variable))+
+  # scale_fill_manual(values = "lightblue")+ # to fill the violing plot 
+  scale_fill_manual(values = mapr.col)+ 
+  ggtitle(paste(study_ID, "\n %reads mapped"))+
+  # theme_bw()+
+  theme(
+    axis.text.x=element_blank(),
+    axis.text.y=element_text(colour="Black",size =13),
+    axis.title.x=element_text(face="bold", size=14),
+    axis.title.y=element_text(face="bold", size=14),
+    legend.position = "none",
+    plot.title = element_text(hjust = 0.5, size = 10))+
+  ylab("% reads mapped")+
+  xlab("Samples")+
+  geom_boxplot(width=0.1)
+  # geom_dotplot(binaxis='y', stackdir='center', dotsize=0.4)
+
+######### Violin plot for - Percent PCR dups
+pcrdup.col<-RColorBrewer::brewer.pal(n=12, name="Set3")[3]
+viol_pcrdup<- ggplot(reshape2::melt(bmetrics, id.vars="sample", measure.vars="duplicate_ratio"), aes(x=variable, y=value*100))+
+  geom_violin(aes(fill=variable))+
+  scale_fill_manual(values = pcrdup.col)+ 
+  ggtitle(paste(study_ID, "\n %PCR duplicates"))+
+  theme_bw()+
+  theme(
+    axis.text.x=element_blank(),
+    axis.text.y=element_text(colour="Black",size =13),
+    axis.title.x=element_text(face="bold", size=14),
+    axis.title.y=element_text(face="bold", size=14),
+    legend.position = "none",
+    plot.title = element_text(hjust = 0.5, size = 10))+
+  ylab("% PCR duplicate reads")+
+  xlab("Samples")+
+  geom_boxplot(width=0.1)
+  # geom_dotplot(binaxis='y', stackdir='center', dotsize=0.4)
+
+######### Violin plot for - Percent reads paired
+pairr.col<-RColorBrewer::brewer.pal(n=12, name="Set3")[4]
+viol_pairr<- ggplot(reshape2::melt(bmetrics, id.vars="sample", measure.vars="paired_ratio"), aes(x=variable, y=value*100))+
+  geom_violin(aes(fill=variable))+
+  # scale_fill_manual(values = "lightblue")+ # to fill the violing plot 
+  scale_fill_manual(values = pairr.col)+ 
+  ggtitle(paste(study_ID, "\n % reads paired"))+
+  # theme_bw()+
+  theme(
+    axis.text.x=element_blank(),
+    axis.text.y=element_text(colour="Black",size =13),
+    axis.title.x=element_text(face="bold", size=14),
+    axis.title.y=element_text(face="bold", size=14),
+    legend.position = "none",
+    plot.title = element_text(hjust = 0.5, size = 10))+
+  ylab("% reads paired")+
+  xlab("Samples")+
+  geom_boxplot(width=0.1)
+######### Violin plot for - Percent chimer reads
+chimer.col<-RColorBrewer::brewer.pal(n=12, name="Set3")[5]
+viol_chimerr<- ggplot(reshape2::melt(bmetrics, id.vars="sample", measure.vars="chimeric_ratio"), aes(x=variable, y=value*100))+
+  geom_violin(aes(fill=variable))+
+  # scale_fill_manual(values = "lightblue")+ # to fill the violing plot 
+  scale_fill_manual(values = chimer.col)+ 
+  ggtitle(paste(study_ID, "\n % chimeric reads "))+
+  theme_bw()+
+  theme(
+    axis.text.x=element_blank(),
+    axis.text.y=element_text(colour="Black",size =13),
+    axis.title.x=element_text(face="bold", size=14),
+    axis.title.y=element_text(face="bold", size=14),
+    legend.position = "none",
+    plot.title = element_text(hjust = 0.5, size = 10))+
+  ylab("% chimeric reads")+
+  xlab("Samples")+
+  geom_boxplot(width=0.1)
+######### Violin plot for - Percent clipped reads
+clipr.col<-RColorBrewer::brewer.pal(n=12, name="Set3")[6]
+viol_clipr<- ggplot(reshape2::melt(bmetrics, id.vars="sample", measure.vars="clipped_ratio"), aes(x=variable, y=value*100))+
+  geom_violin(aes(fill=variable))+
+  # scale_fill_manual(values = "lightblue")+ # to fill the violing plot 
+  scale_fill_manual(values = clipr.col)+ 
+  ggtitle(paste(study_ID, "\n % clipped reads"))+
+  # theme_bw()+
+  theme(
+    axis.text.x=element_blank(),
+    axis.text.y=element_text(colour="Black",size =13),
+    axis.title.x=element_text(face="bold", size=14),
+    axis.title.y=element_text(face="bold", size=14),
+    legend.position = "none",
+    plot.title = element_text(hjust = 0.5, size = 10))+
+  ylab("% clipped reads")+
+  xlab("Samples")+
+  geom_boxplot(width=0.1)
+
+
+# TO CONTRol the plot
+knitr::opts_chunk$set( collapse = TRUE, comment = "#>", fig.align = 'left',  fig.height = 12,
+  fig.width = 15 )
+ (viol_seqr | viol_mapr | viol_pcrdup ) / ( viol_pairr | viol_chimerr | viol_clipr)
+
+```
+
+# Coverage depth QC metrics for Whole Exome Sequencing
+
+To ensure appropriate coverage for variant calling from **whole exome sequencing** data we filter out samples that have **`r paste0("\u2265")`20X coverage across `r paste0("\u2265")`80% of the Baits**References. [1](https://www.nature.com/articles/nm.3559), [2](https://bmcbioinformatics.biomedcentral.com/articles/10.1186/1471-2105-14-195) 
+
+## Total number of Depth Passing samples 
+
++ **Total number of samples:** `r dim(coverage)[1]` 
++ **Num. Samples above threshold:** `r sum(as.logical(coverage$pass))` 
++ **Num. of Failed samples:** `r sum( !as.logical(coverage$pass))` 
++ **Approval percentage** `r  round( (sum(as.logical(coverage$pass))/(dim(coverage)[1]))*100, 2) ` %
+
+
+## Coverage depth results table 
+```{r coverage_table, echo=FALSE }
+
+DT::datatable(coverage, 
+              class = "cell-border stripe", #Style of table to show
+              filter = 'top',
+              rownames = TRUE, 
+              editable = FALSE, 
+              extension = "Buttons", 
+              options = list(dom="Bflrtip", #Shows Buttons, filtering input, table
+                             buttons =c("copy", "csv", "excel")))
+```
+
+
+## Coverage depth result plot 
+The sequencing QC per sample reported are shown in the following table:
+``` {r Coverage_depth_plots, echo=FALSE ,fig.retina=1, fig.width = 900/72, fig.height = 1900/72}
+
+#Get the melted data for the Tile plot
+data1.melt <- reshape2::melt(coverage[,c("sample","11+","21+","31+","41+","51+","61+","71+","81+","91+","101+","111+","121+","131+","141+","151+")], id.vars="sample")
+colnames(data1.melt) <- c("Sample", "Coverage", "Percent")
+#Get the labels for each sample
+labels <- data1.melt %>% group_by(Sample) %>% filter(Percent > 80)  %>% top_n(n=-1, wt=Percent)
+
+#Get the data for the Mean Coverage tile plot
+data2 <- coverage %>% select(sample, mean)
+colnames(data2)<- c("Sample", "Cov_Mean")
+order <- data2 %>% arrange(Cov_Mean) %>% select(Sample)
+data2.melt<-reshape2::melt(data2, id.vars="Sample")
+colnames(data2.melt)<-c("Sample","Variable","Coverage")
+data2.melt$Sample<-factor(data2.melt$Sample, levels=order$Sample)
+data1.melt$Sample<-factor(data1.melt$Sample, levels=order$Sample)
+
+
+#Get the melted data for Passed or Fail
+pass.melt<- coverage %>% select(sample, pass)
+colnames(pass.melt)<- c("Sample", "Pass")
+pass.melt$Pass<-as.character(pass.melt$Pass)
+pass.melt$Variable<-rep("cov_depth_res", n=dim(pass.melt)[1])
+pass.melt$Sample<-factor(pass.melt$Sample, levels=order$Sample)
+
+#Assign Coverage depth sample text size base on sample size 
+if(length(bmetrics$sample)>100){
+  cov_dep_txsize<-8
+} else {
+  cov_dep_txsize<-11
+}
+
+
+
+
+#Tile plot with the coverage ranges
+covdpeth.plot<-ggplot(data1.melt, aes(Coverage, Sample, fill = Percent))+
+  geom_tile()+
+  scale_fill_viridis(option="turbo", direction=-1, begin=0.15, end=0.85)+
+  theme(axis.text=element_text(size=cov_dep_txsize), axis.title=element_blank(), axis.ticks=element_blank())+
+  scale_x_discrete(position = "top", expand=c(0,0))+
+  geom_text(data=labels, aes(label=Percent))
+#Tile plot for the mean coverage
+mean_cov_plot<-ggplot(data2.melt, aes(Variable, Sample, fill=Coverage)) + geom_tile() + 
+  scale_fill_viridis(option="turbo", direction=-1, begin=0.15, end=0.85) + 
+  scale_x_discrete(position = "top", expand=c(0,0)) + 
+  geom_text(aes(label=Coverage)) + 
+  theme(axis.title=element_blank(), axis.text.y=element_blank(), axis.ticks=element_blank(), axis.text=element_text(size=cov_dep_txsize))
+#Pass or Fail status
+covstat.plot<-ggplot(pass.melt, aes(Variable, Sample, fill=Pass)) +
+  geom_tile(aes(fill=Pass)) + 
+  scale_fill_manual(values = c("#FDBF6F", "#1F78B4")) + 
+  scale_x_discrete(position = "top", expand=c(0,0)) + 
+  labs(fill="PASS Cov. depth\n cutoff")+
+  theme(axis.title=element_blank(), axis.text.y=element_blank(), axis.ticks=element_blank(), axis.text=element_text(size=cov_dep_txsize), 
+        legend.title = element_text(size=12))
+
+# TO CONTRol the plot
+# knitr::opts_chunk$set( collapse = TRUE, comment = "#>", fig.align = 'left',
+#                       fig.width = 15, 
+#                       fig.height= 30 )
+                      # fig.height=round(40+(dim(coverage)[1]*0.2))
+# fig.height=round(200+(dim(coverage)[1]*10)),
+# fig.width = 1000 )
+#                         
+#The plots
+cowplot::plot_grid(covdpeth.plot,mean_cov_plot,covstat.plot, align = "h", rel_widths = c(4,1,1),nrow = 1, ncol = 3)
+
+
+```
+
+
+# Conpair results
+
+### Conpair filtering criteria
+This is the analysis made with the Conpair program  to identify sample contamination 
+
+Samples will be assessed based on the following criteria:
+
++ If number of markers used >= 50%:
+    + Contamination - check tumour and normal
+      + Current FAIL criteria is >5%
+      + Tumours with **<span style="color:#CAB2D6"> FAILED Normals (FAIL_N) </span>** can be run with in silico BAM
+      + **FAILED** tumours should not be run
+    + Concordance - low concordance can indicate swaps
+      + Current FAIL criteria is <60%   
+        + Prob. removed by depth analysis / contamination
+      + Current **<span style="color:#6A3D9A"> FLAG </span>** criteria is 60-95%
+      + **<span style="color:#7fbc41"> PASS </span>:** >95%
++ If number of markers used is <50%
+    + **<span style="color:#6A3D9A"> FLAG </span>**
+      + Usually this occurs when sequence coverage is too low (in one or both samples), so will likely be excluded anyway
+      + Samples can have low markers and high concordance, however, this result may not be reliable
+
+
+| Name | Flag Threshold | Fail Threshold | Notes |
+|--------------|-----------|------------|------------|------------|------------|
+| conpair_concordance	| 95% | 60%	| The Conpair concordance value between a pair of samples|
+| conpair_markers_total | – | 7,353 | The number of markers available to Conpair for assessing T/N concordance|
+| conpair_markers_used	| 5,000 | 3,677 | The number of markers used by Conpair when assessing T/N concordance between a pair of samples |
+
+
+## Conpair plots 
+
+```{r conpair_plot, echo=TRUE , fig.retina=1, fig.width = 900/72, fig.height = 2100/72}
+#FILTERING Criteria
+# + If number of markers used >= 50%: (Step1)
+#   + Contamination - check tumour and normal
+#     + Current FAIL criteria is >5% (Step2)
+#     + Tumours with FAILed normals can be run with in silico BAM
+#     + **FAILED** tumours should not be run
+#   + Concordance - low concordance can indicate swaps (Step3)
+#     + Current FAIL criteria is <60%   
+#       + Prob. removed by depth analysis / contamination
+#     + Current FLAG criteria is 60-95%   (Step4)
+#     + **PASS:** >95%      (Step5)
+# + If number of markers used is <50%
+#   + FLAG     (Step 6)
+#     + Usually this occurs when sequence coverage is too low (in one or both samples), so will likely be excluded anyway
+#     + Samples can have low markers and high concordance, however, this result may not be reliable
+
+# First with add the names of the Normal and Tumour that are present in the conpair table  
+conpair$tumour<-vector(mode="character", length = length(conpair$biosample))
+conpair$normal<-vector(mode="character", length = length(conpair$biosample))
+
+# Step1 -check to add if samples markers_used >3500
+conpair$usable_comparison<- ifelse(conpair$markers_used>=3500 , TRUE  , FALSE )
+conpair$usable_comparisonflag<-as.factor(as.character(conpair$usable_comparison) )
+# CREATING the variables with the FLAGS for the conpair filter
+#Creating the variables that will record if the Tumour or normal contamination was failed >5%
+conpair$Tum_contf<-vector(mode="logical", length = length(conpair$biosample))
+conpair$Norm_contf<-vector(mode="logical", length = length(conpair$biosample))
+#Creating the variables that will record if Concordance fails (<60%) given the the number of markers used is >50%
+conpair$concordancef<-vector(mode="logical", length = length(conpair$biosample))
+#Create the flag that shows good concordance [60%, 95%]  given the the number of markers used is >50% - for FLAGGING
+conpair$conc60_95f<-vector(mode="logical", length = length(conpair$biosample))
+#Create the flag that shows good concordance  >95%  given the the number of markers used is >50% - PASS
+conpair$conc95f<-vector(mode="logical", length = length(conpair$biosample))
+
+
+#Step3 - Then check if the Tumoure and/or normal are contaminated and fail due to the development 
+#Creating the variables that will record if the Tumour or normal contamination was failed >5%
+conpair$Tum_contf<-vector(mode="logical", length = length(conpair$biosample)) #initialize the vector
+conpair$Norm_contf<-vector(mode="logical", length = length(conpair$biosample)) #initialize the vector
+for( i in 1:length(conpair$biosample) ){
+  if(conpair$usable_comparison[i]){ # If number of markers used >= 50%: (Step1)
+    conpair$Tum_contf[i]<- ifelse(conpair$cont_tumour[i]>5, TRUE, FALSE)  # AND Tumour contamination is >5% (Step2) -  FAIL criteria 
+    conpair$Norm_contf[i]<- ifelse(conpair$cont_norm[i]>5,TRUE, FALSE) # AND Normal contamination is Current FAIL criteria is >5% (Step2)
+    #Concordance check (Step 3)
+    conpair$concordancef[i]<- ifelse(conpair$concordance[i]<60, TRUE, FALSE) # AND Normal contamination is Current FAIL criteria is >5% (Step2)conpair
+    #Step 4 -
+    conpair$conc60_95f[i]<-ifelse( ((conpair$concordance[i]>=60) & (conpair$concordance[i]<=95)) , TRUE  , FALSE )
+    #Step 5 -
+    conpair$conc95f[i]<-ifelse( conpair$concordance[i]>95 , TRUE  , FALSE )
+  } 
+  conpair$tumour[i] <- strsplit(conpair$biosample[i],"-", fixed =T)[[1]][1]
+  conpair$normal[i] <- strsplit(conpair$biosample[i],"-", fixed =T)[[1]][2]
+}
+
+# Flag showing all the PASS Samples 
+conpair$pass<- conpair$conc95f
+# Create the variable to give the results of the conpair analysis 
+conpair$passflag<- conpair$pass  #Pass samples 
+conpair$passflag[ conpair$conc60_95f ]<- "FLAG"  #Flagged samples due to concordance 60-95%
+conpair$passflag[ !conpair$usable_comparison ]<- "FLAG"  #Flagged samples due to usable markers <50%
+conpair$passflag<- gsub("TRUE","PASS", conpair$passflag)
+conpair$passflag<- gsub("FALSE","FAIL", conpair$passflag)
+conpair$passflag[ conpair$Tum_contf ]<- "FAIL"
+conpair$passflag[ (conpair$conc95f & conpair$Norm_contf) ]<- "FAIL_N"
+
+#Set the biosample name as
+conpair$biosample<-as.factor(conpair$biosample)
+
+#Conpair concordance plot ---------
+colb<-c("PASS"= "#7fbc41", 
+        "FAIL"= "#f1b6da", 
+        "FLAG"= "#6A3D9A",
+        "FAIL_N"= "#CAB2D6"
+        )
+
+#Assign Coverage depth sample text size base on sample size 
+if(length(bmetrics$sample)>100){
+  conp_plot_txsize<-8
+} else {
+  conp_plot_txsize<-11
+}
+
+conc_plot<-ggplot(conpair, aes( concordance, biosample))+
+  scale_x_continuous(position = "top", expand=c(0,0))+
+  geom_bar(stat = "identity",aes(fill=passflag))+
+  scale_fill_manual(values= colb ) + 
+  ylab("Tumour-Normal pairs")
+  labs(fill="Status")+
+  theme(axis.text=element_text(size=conp_plot_txsize),
+        axis.title.y =element_text(size=14),
+        legend.text = element_text(size=12),
+        legend.title = element_text(size=13))
+#conc_plot
+
+#Generate the plot for the usable comparison flag summary
+usable.melt<- conpair %>% select(biosample, usable_comparisonflag)
+usable.melt$Variable<-rep("Markers used", n=dim(usable.melt)[1])
+usableplot<-ggplot(usable.melt, aes(Variable, biosample, fill=usable_comparisonflag)) +
+  geom_tile() + 
+  scale_fill_manual(values = c("FALSE"="#FDBF6F", "TRUE"="#FF7F00")) + 
+  scale_x_discrete(position = "top", expand=c(0,0)) + 
+  labs(fill=paste0("Total\n", "n ", intToUtf8(8805), "3500") )+
+  theme(axis.title=element_blank(), axis.text.y=element_blank(), axis.ticks=element_blank(), axis.text=element_text(size=conp_plot_txsize),
+        legend.text = element_text(size=12),
+        legend.title = element_text(size=13))
+# usableplot
+
+#Generate the plot with the Tumour contamination information
+tcont.melt<- conpair %>% select(biosample,Tum_contf )
+tcont.melt$Variable<-rep("Tumour sample\ncontamination", n=dim(tcont.melt)[1])
+tcont.melt$Tum_contf<- factor(tcont.melt$Tum_contf, levels = c("FALSE", "TRUE"))
+tcont_plot<-ggplot(tcont.melt, aes(Variable, biosample, fill=Tum_contf)) +
+  geom_tile(aes(fill=Tum_contf)) + 
+  scale_fill_manual(values = c("#FB9A99", "#E31A1C")) + 
+  scale_x_discrete(position = "top", expand=c(0,0)) + 
+  labs(fill="Tumour cont. \n >5%")+
+  theme(axis.title=element_blank(), axis.text.y=element_blank(), axis.ticks=element_blank(), axis.text=element_text(size=conp_plot_txsize), 
+        legend.text = element_text(size=12),
+        legend.title = element_text(size=13))
+#tcont_plot
+
+#Generate the plot with the Normal contamination information
+ncont.melt<- conpair %>% select(biosample,Norm_contf )
+ncont.melt$Variable<-rep("Normal sample\ncontamination", n=dim(ncont.melt)[1])
+ncont.melt$Norm_contf<- factor(ncont.melt$Norm_contf, levels = c("FALSE", "TRUE"))
+ncont_plot<-ggplot(ncont.melt, aes(Variable, biosample, fill=Norm_contf)) +
+  geom_tile(aes(fill=Norm_contf)) + 
+  scale_fill_manual(values = c("#A6CEE3", "#1F78B4")) + 
+  scale_x_discrete(position = "top", expand=c(0,0)) + 
+  labs(fill="Normal cont. \n >5%")+
+  theme(axis.title=element_blank(), axis.text.y=element_blank(), axis.ticks=element_blank(), axis.text=element_text(size=13), 
+        legend.text = element_text(size=12),
+        legend.title = element_text(size=13))
+#ncont_plot
+
+
+#Save the image with all the information - SVG?svg()
+rm(usable.melt)
+rm(ncont.melt)
+rm(tcont.melt)
+
+#Conpair Summary Tab
+conp_sumtab<- data.frame( 'Sutdy_ID'= study_ID,   #  Is used to escape the colnames for DT::datatable and interpret them properly 
+                          'Total_biosamples'=dim(conpair)[1],
+                          "Biosamples_with_usable_markers" = sum(conpair$usable_comparison),
+                          "Total_passed_biosamples" = sum(grepl("PASS", conpair$passflag)), 
+                          "Total_Flagged_biosamples" = sum(grepl("FLAG", conpair$passflag)),
+                          "Total_FAILED_biosamples" = sum(grepl("FAIL", conpair$passflag )),
+                          "Total_biosamples_with_Failed_Normal" = sum(grepl("FAIL", conpair$passflag )) 
+)
+
+
+#Save the image with all the information - PNG
+# TO CONTRol the plot
+# knitr::opts_chunk$set( collapse = TRUE, comment = "#>", fig.align = 'left',
+#                         fig.height=round(40+(dim(coverage)[1]*0.2)),
+#                         fig.width = 15 )
+                        # fig.height=round(200+(dim(coverage)[1]*10)),
+                        # fig.width = 1000 )
+#                         
+# knitr::opts_chunk$set( collapse = TRUE, comment = "#>", fig.align = 'left',
+#                         fig.height=round(10+(dim(coverage)[1]*0.2)),
+#                         fig.width =13 )
+#                         # fig.height=round(200+(dim(coverage)[1]*10)),
+#                         # fig.width = 1000 )
+suppressWarnings( cowplot::plot_grid(conc_plot, tcont_plot, ncont_plot, align = "h", rel_widths = c(4,1,1),nrow = 1,ncol = 3) )
+
+
+```
+
+## Conpair summary table 
+```{r conpair_summary_table, echo=FALSE }
+
+DT::datatable(conp_sumtab, 
+              class = "cell-border stripe", #Style of table to show
+              rownames = TRUE, 
+              escape = FALSE,
+              editable = FALSE, 
+              options = list(dom="Bti", #Shows Buttons, filtering input, table
+                             buttons =c("copy", "csv", "excel")))
+```
+
+## Conpair full results table 
+```{r conpair_full_table, echo=FALSE }
+
+DT::datatable(conpair, 
+              class = "cell-border stripe", #Style of table to show
+              filter = 'top',
+              rownames = TRUE, 
+              editable = FALSE, 
+              extension = "Buttons", 
+              options = list(dom="Bflrtip", #Shows Buttons, filtering input, table
+                             buttons =c("copy", "csv", "excel")))
+```
+
+# Sample QC summary status 
+
+## Sample QC summary table 
+```{r sample_qc_Status_summary, echo=FALSE }
+
+DT::datatable(sampleqc, 
+              class = "cell-border stripe", #Style of table to show
+              filter = 'top',
+              rownames = TRUE, 
+              editable = FALSE, 
+              extension = "Buttons", 
+              options = list(dom="Bflrtip", #Shows Buttons, filtering input, table
+                             buttons =c("copy", "csv", "excel")))
+```
+
+## Sample QC summary barplots 
+Bar plots showing the total number of samples that were found to be above each individual QC threshold. 
+
+**<span style="color:red"> NOTE: NA means there was no sequencing data obtained for that sample </span>**
+
+```{r qc_summ_plots, echo=TRUE, fig.retina=1, fig.width = 12, fig.height = 6}
+
+######### Bar plots showing - PASS FAIL FLAG 
+sampleqc[, colnames(sampleqc)[4:11]]
+testtab<-reshape2::melt(sampleqc[, colnames(sampleqc)[c(1,4:11)]], id.vars="sample", measure.vars=colnames(sampleqc)[4:11])
+
+nsamples<-length(unique(sampleqc$sample))
+
+qcsum_bplot<-ggplot(data=testtab, aes(x=value, fill=value))+
+    geom_bar(stat = "count",  position = "stack")+
+    theme_bw()+
+    scale_fill_brewer(type="qual",palette = "Set1"  )+
+    ggtitle(paste(study_ID, "Num. of samples above threshold\n per metric assessed "))+
+    ylab("Number of samples ")+
+    xlab(paste0( study_ID, " Total Samples N=", nsamples))+
+    theme( axis.text.x = element_blank(), 
+           axis.title.x = element_text(face="bold", size = 14),
+           axis.title.y = element_text(face="bold", size = 14),
+           plot.title = element_text(hjust = 0.6),
+           strip.text.x= element_text(size = 13),
+           title =element_text(size = 16), 
+           axis.text.y = element_text( size = 13))+
+    guides(fill = guide_legend(title = ""))+
+    geom_text(aes(label =after_stat(count)),stat = "count", vjust = -0.2, colour = "black") +
+    facet_grid(.~variable)
+
+# TO CONTRol the plot
+
+qcsum_bplot
+
+
+```
+
+# Software used 
++ **samtools v1.14**: for coverage depth and BAM file processing
++ **bedtools v2.29.0**: for bait file creation
++ **conpair v0.2**: for tumour-normal contamination assessment 
++ **R 4.2.2**: for the generation of this report see the packages used below
+```{r req_packages_R, include=TRUE}
+packages_used<-c("ggplot2",
+         "RColorBrewer",
+         "reshape2",
+         "knitr",
+         "tidyr",
+         "dplyr",
+         "rmarkdown",
+         "kableExtra",
+         "gridExtra", 
+         "data.table",
+         "gplots",
+         "DT",
+         "htmlwidgets",
+         "patchwork",
+         "cowplot",
+         "R.utils",
+         "png",
+         "viridis")
+packages_used
+
+
+```
+
+

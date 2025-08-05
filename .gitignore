@@ -68,7 +68,14 @@ required_datasets
 test_xenofilter
 
 #Scripts
-scripts
+scripts/ASCAT/
+scripts/test/
+scripts/QC_relv3/
+scripts/MAF_relv3/
+scripts/MEDICC2/
+scripts/MESKIT/
+scripts/somatic_variants_plots/
+
 
 #Analysis
 analysis/Sequenza
