@@ -1,18 +1,16 @@
-# PDX models from Latin America - WES
+# Alignment, filtering and somatic variant calling of PDX from Latin - Whole Exome Sequencing
 [![DOI]()]()
 
-# Analysis of the genetic effects of _CDS2_ targeting - Whole Exome
-
 ## Overview 
-This repository contains the code used in the identification of single, multi-nucleotide and INDEL variants found in the Whole Exome sequencing data obtained from SW837 and xenografted OMM2.5 cell-lines targeted with CRISPR-Cas9 safe (_STG1_) and _CDS2_ single guide RNAs. These analyses were used to identify on/off-target cutting in the genome of both cell-lines for _Targeting the CDS1/2 axis as a therapeutic strategy in uveal melanoma and pan-cancer_ paper.
+This repository contains the code for the alignment, filtering of mouse reads and variant calling performed in relation to the results presented in the manuscript:
+
+_Modelling Acral Melanoma in Admixed Brazilians Uncovers Genomic Drivers and Targetable Pathways_ paper.
 
 ## Experimental design
-
 
 The table containing the metadata of all the samples and the experimental group and conditions that each sample belongs to can be found in the (`Group` column) on the [metadata table here](./metadata/7688_3365_sample_exp_metadata.tsv) inside the `metadata` directory. 
 
 ## Analysis workflow overview
-
 The analyses were performed using a combination of R, bash and Perl scripts. The workflow depicted below shows the steps followed in the analysis of the sequencing data and the differences required due to the experimental designs.
 ![image](./documentation/diagrams/WES_analysis_final_workflow.drawio.png "Analysis workflow")
 
@@ -21,6 +19,8 @@ The overall analysis workflow after the sequencing data was generated was divide
 2. **Data Pre-processing**: This section includes the alignment to the required reference genome GRCh38 for Human and [NOD_ShiLtJ_V1_PDX](./reference/NOD_ShiLtJ_V1_PDX_ref/README.md) customised mouse reference, and filter of mouse reads from the Human mapped BAM files using **XenofilteR**. Alignment against the Human reference genome was performed in the same way for both datasets. Instructions on how the custom mouse reference and analyses at these stage were performed can be found in the [README here](./documentation/Alignment_and_Filtering_of_mouse_reads_wXenofilteR.md). 
 
 3. **Coverage depth QC analysis**: This section includes the scripts used for the analysis of the coverage depths across the pulled regions and the filtering of samples based on coverage depth. See [README](./documentation/Coverage_depth_check.md) file in the `documentation` folder for more details on how to reproduce the analysis.
+
+3. **Variant calling and annotation**: This section includes the SNV, MNV and INDEL variant calling, filtering, and variant effect prediction of the variants using negative control lines as normal samples. Resulting variants were collated and VCFs were transformed into a Mutation Annotation Format(MAF) file. Instructions on how the analyses at these stage were performed can be found in the [README here](./documentation/Off-pipe_calling_of_Xenofiltered_WES_data.md)
 
 4. **Variant calling and annotation**: This section includes the scripts used for variant calling from whole exome sequencing data. It includes the generation of VCF files, the filtering of variants based on various criteria and finally the generation of summary MAF files and plots. See [README](./documentation/Somatic_Variant_calling.md) file in the `documentation` folder for more details on how to reproduce the analysis.
 
@@ -34,7 +34,6 @@ All the variants that passed standard filtering criteria and had a Variant Allel
 To reproduce the results files and plots, please follow the instructions in the [README here](./documentation/Somatic_variant_plotting.md).
 
 ## Software dependencies
-
 Analyses were performed using a combination of R, Perl and shell scripts.
 
 - All R scripts were run using `R v4.2.2` and the packaged dependencies for each analysis are detailed within the `renv.lock` file of each analysis folder in the `scripts` directory.
@@ -51,8 +50,8 @@ Analyses were performed using a combination of R, Perl and shell scripts.
   - `cgpPindel` version `3.11.0` [**here**](https://github.com/cancerit/cgpPindel)
   - ENSEMBL VEP version `103`[**here**](http://feb2021.archive.ensembl.org/info/docs/tools/vep/index.html)
 - The repositories with the scripts used for variant QC and VCF to MAF conversion can be found in the following links:
-    - [**QC**](https://github.com/team113sanger/dermatlas_analysis_qc) `v0.4.3`
-    - [**MAF**](https://github.com/team113sanger/dermatlas_analysis_maf) `v0.5.4` 
+    - [**QC**](https://github.com/team113sanger/dermatlas_analysis_qc) `v0.5.2`
+    - [**MAF**](https://github.com/team113sanger/dermatlas_analysis_maf) `v0.6.4` 
 
 
 ## Contact
