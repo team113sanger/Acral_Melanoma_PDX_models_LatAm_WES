@@ -3,6 +3,26 @@
     "Version": "4.2.2",
     "Repositories": [
       {
+        "Name": "BioCsoft",
+        "URL": "https://bioconductor.org/packages/3.16/bioc"
+      },
+      {
+        "Name": "BioCann",
+        "URL": "https://bioconductor.org/packages/3.16/data/annotation"
+      },
+      {
+        "Name": "BioCexp",
+        "URL": "https://bioconductor.org/packages/3.16/data/experiment"
+      },
+      {
+        "Name": "BioCworkflows",
+        "URL": "https://bioconductor.org/packages/3.16/workflows"
+      },
+      {
+        "Name": "BioCbooks",
+        "URL": "https://bioconductor.org/packages/3.16/books"
+      },
+      {
         "Name": "CRAN",
         "URL": "https://cloud.r-project.org"
       }
@@ -34,10 +54,10 @@
     },
     "BH": {
       "Package": "BH",
-      "Version": "1.87.0-1",
+      "Version": "1.84.0-0",
       "Source": "Repository",
       "Repository": "CRAN",
-      "Hash": "468d9a03ba57f22ebde50060fd13ba9f"
+      "Hash": "a8235afbcd6316e6e91433ea47661013"
     },
     "Biobase": {
       "Package": "Biobase",
@@ -66,13 +86,13 @@
     },
     "BiocManager": {
       "Package": "BiocManager",
-      "Version": "1.30.25",
+      "Version": "1.30.26",
       "Source": "Repository",
       "Repository": "CRAN",
       "Requirements": [
         "utils"
       ],
-      "Hash": "3aec5928ca10897d7a0a1205aae64627"
+      "Hash": "2db62ff6044e2c49f466f0cc9a21c149"
     },
     "BiocParallel": {
       "Package": "BiocParallel",
@@ -387,7 +407,8 @@
     "MesKit": {
       "Package": "MesKit",
       "Version": "1.8.0",
-      "Source": "Bioconductor",
+      "Source": "Repository",
+      "Repository": "BioCsoft",
       "Requirements": [
         "AnnotationDbi",
         "Biostrings",
@@ -476,7 +497,7 @@
     },
     "RCurl": {
       "Package": "RCurl",
-      "Version": "1.98-1.17",
+      "Version": "1.98-1.14",
       "Source": "Repository",
       "Repository": "CRAN",
       "Requirements": [
@@ -484,7 +505,7 @@
         "bitops",
         "methods"
       ],
-      "Hash": "cdea3a855cc0e4bea3805ddfb6b231f7"
+      "Hash": "47f648d288079d0c696804ad4e55197e"
     },
     "RSQLite": {
       "Package": "RSQLite",
@@ -640,10 +661,10 @@
     "XenofilteR": {
       "Package": "XenofilteR",
       "Version": "1.6",
-      "Source": "Git",
-      "RemoteType": "git2r",
-      "RemoteUrl": "https://github.com/NKI-GCF/XenofilteR",
-      "RemoteSha": "cf6165a22d64462d544e11a789299bbff904f1ca",
+      "Source": "git",
+      "RemoteType": "git",
+      "RemoteUrl": "git@github.com:NKI-GCF/XenofilteR.git",
+      "RemoteRef": "",
       "Requirements": [
         "BiocParallel",
         "GenomicAlignments",
@@ -654,7 +675,7 @@
         "S4Vectors",
         "futile.logger"
       ],
-      "Hash": "97c3a60dab70b01f82715b257d3b4404"
+      "Hash": "423c63ae0b85e403ea063e747de2f76b"
     },
     "abind": {
       "Package": "abind",
@@ -743,10 +764,10 @@
     },
     "bitops": {
       "Package": "bitops",
-      "Version": "1.0-9",
+      "Version": "1.0-7",
       "Source": "Repository",
       "Repository": "CRAN",
-      "Hash": "d972ef991d58c19e6efa71b21f5e144b"
+      "Hash": "b7d8d8ee39869c18d8846a184dd8a1af"
     },
     "blob": {
       "Package": "blob",
@@ -1042,17 +1063,17 @@
     },
     "cpp11": {
       "Package": "cpp11",
-      "Version": "0.5.2",
+      "Version": "0.4.7",
       "Source": "Repository",
-      "Repository": "CRAN",
+      "Repository": "RSPM",
       "Requirements": [
         "R"
       ],
-      "Hash": "2720e3fd3dad08f34b19b56b3d6f073d"
+      "Hash": "5a295d7d963cc5035284dcdbaf334f4e"
     },
     "crayon": {
       "Package": "crayon",
-      "Version": "1.5.3",
+      "Version": "1.5.2",
       "Source": "Repository",
       "Repository": "CRAN",
       "Requirements": [
@@ -1060,7 +1081,7 @@
         "methods",
         "utils"
       ],
-      "Hash": "859d96e65ef198fd43e82b9628d593ef"
+      "Hash": "e8a1e41acf02548751f45c718d55aa6a"
     },
     "crosstalk": {
       "Package": "crosstalk",
@@ -1087,14 +1108,14 @@
     },
     "data.table": {
       "Package": "data.table",
-      "Version": "1.17.0",
+      "Version": "1.17.8",
       "Source": "Repository",
       "Repository": "CRAN",
       "Requirements": [
         "R",
         "methods"
       ],
-      "Hash": "d06cd1a942bb17b607df7d57048d6840"
+      "Hash": "1d991cd6160fa7b1fdbd3689034cbd15"
     },
     "dbplyr": {
       "Package": "dbplyr",
@@ -1785,29 +1806,6 @@
       ],
       "Hash": "99df65cfef20e525ed38c3d2577f7190"
     },
-    "igraph": {
-      "Package": "igraph",
-      "Version": "2.0.3",
-      "Source": "Repository",
-      "Repository": "CRAN",
-      "Requirements": [
-        "Matrix",
-        "R",
-        "cli",
-        "cpp11",
-        "grDevices",
-        "graphics",
-        "lifecycle",
-        "magrittr",
-        "methods",
-        "pkgconfig",
-        "rlang",
-        "stats",
-        "utils",
-        "vctrs"
-      ],
-      "Hash": "c3b7d801d722e26e4cd888e042bf9af5"
-    },
     "isoband": {
       "Package": "isoband",
       "Version": "0.2.7",
@@ -2031,13 +2029,13 @@
     },
     "matrixStats": {
       "Package": "matrixStats",
-      "Version": "1.5.0",
+      "Version": "1.2.0",
       "Source": "Repository",
       "Repository": "CRAN",
       "Requirements": [
         "R"
       ],
-      "Hash": "9fd316b52ac8c24fef4c67fdd646e965"
+      "Hash": "33a3ca9e732b57244d14f5d732ffc9eb"
     },
     "mclust": {
       "Package": "mclust",
