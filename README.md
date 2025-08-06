@@ -12,6 +12,7 @@ The analysis was preformed on whole exome sequencing data from Tumour and Patien
 
 
 ## Analysis workflow overview
+
  The workflow depicted below shows the steps followed in the analysis of the whole exome sequencing data and the differences required due to the sample of origin.
 ![image](./documentation/diagrams/WES_analysis_final_workflow.drawio.png "Analysis workflow")
 
@@ -19,15 +20,15 @@ The overall analysis workflow after the sequencing data was generated was divide
 
 1. **Coverage depth QC analysis**: This section includes the scripts used for the analysis of the coverage depths across the pulled regions and the filtering of samples based on coverage depth. See [README](./documentation/Coverage_depth_check.md) file in the `documentation` folder for more details on how to reproduce the analysis.
 
-2. **Data Pre-processing**: This section includes the alignment to the required reference genome GRCh38 for Human and [NOD_ShiLtJ_V1_PDX](./reference/NOD_ShiLtJ_V1_PDX_ref/README.md) customised mouse reference, and filter of mouse reads from the Human mapped BAM files using **XenofilteR** for PDX samples. Alignment against the Human reference genome was performed in the same way for both datasets. Instructions on how the custom mouse reference and analyses at these stage were performed can be found in the [README here](./documentation/Alignment_and_Filtering_of_mouse_reads_wXenofilteR.md). 
+2. **Data Pre-processing**: This section includes the alignment to the required reference genome GRCh38 for Human and [NOD_ShiLtJ_V1_PDX](./reference/NOD_ShiLtJ_V1_PDX_ref/README.md) customised mouse reference, and filter of mouse reads from the Human mapped BAM files using **XenofilteR** for PDX samples. Alignment against the Human reference genome was performed in the same way for both samples types. Instructions on how the custom mouse reference and analyses at these stage were performed can be found in the [README here](./documentation/Alignment_and_Filtering_of_mouse_reads_wXenofilteR.md). 
 
 3. **Variant calling and annotation**: This section includes the SNV, MNV and INDEL variant calling, filtering, and variant effect prediction of the variants using negative control lines as normal samples. Resulting variants were collated and VCFs were transformed into a Mutation Annotation Format(MAF) file. Instructions on how the analyses at these stage were performed can be found in the [README here](./documentation/Off-pipe_calling_of_Xenofiltered_WES_data.md)
 
 4. **Variant calling and annotation**: This section includes the scripts used for variant calling from whole exome sequencing data. It includes the generation of VCF files, the filtering of variants based on various criteria and finally the generation of summary MAF files and plots. See [README](./documentation/Somatic_Variant_calling.md) file in the `documentation` folder for more details on how to reproduce the analysis.
 
-## Results 
- 
-All the variants that passed standard filtering criteria. The results  and plots used in the paper are located within the `analysis/somatic_variant_plots` directory. 
+## Results
+
+All the variants that passed standard filtering criteria. The results, qc plots and input files used for plotting the figures in the paper used by other repositories are located within the `analysis/somatic_variant_plots` directory.
 
 To reproduce the results files and plots, please follow the instructions in the [README here](./documentation/Somatic_variant_plotting.md).
 
@@ -55,4 +56,3 @@ Analyses were performed using a combination of R, Perl and shell scripts.
 ## Contact
 
 - Martin Del Castillo Velasco-Herrera (mdc1@sanger.ac.uk)
-- Jacqueline Boccacino (jb62@sanger.ac.uk)
