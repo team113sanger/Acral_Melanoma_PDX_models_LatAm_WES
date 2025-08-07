@@ -40,8 +40,6 @@ resources/germline
 resources/GIAB
 resources/gistic
 resources/music2
-resources/pindel/*
-!resources/pindel/WXS_Rules.lst
 resources/Signal
 resources/ucsc
 resources/dndscv
