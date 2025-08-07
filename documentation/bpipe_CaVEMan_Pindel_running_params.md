@@ -138,7 +138,7 @@ TUMOUR_PROTOCOL => WXS
 TUM_STAGE => /lustre/scratch124/casm/team78pipelines/canpipe/live/data/stage/2729_3018339
 refBase => reference/
 ```
-### Bpipe running parameters for CaVEMan  VEP
+### Bpipe running parameters for CaVEMan and smartphase VEP
 ```bash
 ALGORITHM => VEP_Smartphase
 COMMANDLINE => cd /lustre/scratch124/casm/team78pipelines/canpipe/live/data/analysis/2729_3018339/VEP_Smartphase; bpipe -r cgp_vep_smartphase.run
@@ -180,93 +180,96 @@ refBase => reference/
 ```
 ## Bpipe running parameters for Pindel
 
-### Bpipe running parameters for somatic calling with Pindel
+### Bpipe running parameters for somatic calling with Pindel and Flagging
 ```bash
 ALGORITHM => Pindel
-BAD_LOCI => /lustre/canpipe/live/ref/human/GRCh38_full_analysis_set_plus_decoy_hla/shared/HiDepth_mrg1000_no_exon_coreChrs_v3.bed.gz
-COMMANDLINE => cd /lustre/canpipe/live/data/analysis/2744_3043054/Pindel; bpipe -r cgp_pindel.run
+BAD_LOCI => /lustre/scratch124/casm/team78pipelines/canpipe/live/ref/human/GRCh38_full_analysis_set_plus_decoy_hla/shared/HiDepth_mrg1000_no_exon_coreChrs_v3.bed.gz
+COMMANDLINE => cd /lustre/scratch124/casm/team78pipelines/canpipe/live/data/analysis/2729_3018339/Pindel; bpipe -r cgp_pindel.run
 DB_TYPE => live
 ENSEMBL_VER => 103
 EXCLUDE_CONTIGS => chrUn%,HLA%,%_alt,%_random,chrM,chrEBV
-EXCLUDE_CONTIGS_FILE => /lustre/canpipe/live/ref/human/GRCh38_full_analysis_set_plus_decoy_hla/pindel/ignore_contigs_pindel.txt
+EXCLUDE_CONTIGS_FILE => /lustre/scratch124/casm/team78pipelines/canpipe/live/ref/human/GRCh38_full_analysis_set_plus_decoy_hla/pindel/ignore_contigs_pindel.txt
 FIELD_TYPE => 3
-FIELD_VAL => 3043054
+FIELD_VAL => 3018339
 FILE_TYPE => bam
-FILTER => /lustre/canpipe/live/ref/human/GRCh38_full_analysis_set_plus_decoy_hla/pindel/WXS_Rules.lst
+FILTER => /lustre/scratch124/casm/team78pipelines/canpipe/live/ref/human/GRCh38_full_analysis_set_plus_decoy_hla/pindel/WXS_Rules.lst
 FLOWNAME => ANALYSIS Pindel
-GENDER => XY
-GENES => /lustre/canpipe/live/ref/human/GRCh38_full_analysis_set_plus_decoy_hla/vagrent/e${ENSEMBL_VER}/codingexon_regions.indel.bed.gz
+GENDER => XX
+GENES => /lustre/scratch124/casm/team78pipelines/canpipe/live/ref/human/GRCh38_full_analysis_set_plus_decoy_hla/vagrent/e${ENSEMBL_VER}/codingexon_regions.indel.bed.gz
 GENE_BUILD => 103
-HIGH_DEPTH_REGIONS => /lustre/canpipe/live/ref/human/GRCh38_full_analysis_set_plus_decoy_hla/shared/HiDepth_mrg1000_no_exon_coreChrs_v3.bed.gz
-ID_ANALYSIS_PROC => 7595541
-ID_INT_PROJECT => 2744
-ID_INT_PROJECT_NORMAL => 2744
-INI_PATH => /software/CASM/modules/installs/canPipe/2.18.5/perl/config/canPipe.cfg.ini
-JOBID => 660576
-LOG4PERL => /software/CASM/modules/installs/canPipe/2.18.5/perl/config/log4perl_resultloader.conf
-NORMAL_BAM => /lustre/canpipe/live/data/stage/2744_3043055/3043055.bam
-NORMAL_ID => 3043055
-NORMAL_NAME => PD54368b
+HIGH_DEPTH_REGIONS => /lustre/scratch124/casm/team78pipelines/canpipe/live/ref/human/GRCh38_full_analysis_set_plus_decoy_hla/shared/HiDepth_mrg1000_no_exon_coreChrs_v3.bed.gz
+ID_ANALYSIS_PROC => 10224518
+ID_INT_PROJECT => 2729
+ID_INT_PROJECT_NORMAL => 2729
+ID_REFSET_GROUP => 698a3102-8681-48f3-b3d6-fd405bb3aacf
+INI_PATH => /software/CASM/modules/installs/canPipe/2.27.4/perl/config/canPipe.cfg.ini
+JOBID => 6512897
+LOG4PERL => /software/CASM/modules/installs/canPipe/2.27.4/perl/config/log4perl_resultloader.conf
+NORMAL_BAM => /lustre/scratch124/casm/team78pipelines/canpipe/live/data/stage/2729_3018342/3018342.bam
+NORMAL_ID => 3018342
+NORMAL_NAME => PD53330b
 NORMAL_PROTOCOL => WXS
 NORM_SEQ_TYPE => WXS
-NORM_STAGE => /lustre/canpipe/live/data/stage/2744_3043055
-OUTDIR => /lustre/canpipe/live/data/analysis/2744_3043054/Pindel
-REFERENCE => /lustre/canpipe/live/ref/human/GRCh38_full_analysis_set_plus_decoy_hla/genome.fa
-REF_ROOT => /lustre/canpipe/live/ref/
-SAMPLE_NAME => PD54368a
-SCRATCH_ROOT => /lustre/canpipe/live/
+NORM_STAGE => /lustre/scratch124/casm/team78pipelines/canpipe/live/data/stage/2729_3018342
+OUTDIR => /lustre/scratch124/casm/team78pipelines/canpipe/live/data/analysis/2729_3018339/Pindel
+REFERENCE => /lustre/scratch124/casm/team78pipelines/canpipe/live/ref/human/GRCh38_full_analysis_set_plus_decoy_hla/genome.fa
+REF_ROOT => /lustre/scratch124/casm/team78pipelines/canpipe/live/ref/
+SAMPLE_NAME => PD53330c
+SCRATCH_ROOT => /lustre/scratch124/casm/team78pipelines/canpipe/live/
 SEQ_TYPE => WXS
-SIF_CGPPINDEL => /software/CASM/singularity/cgppindel/cgppindel_v3.5.0.sif
+SIF_CGPPINDEL => /software/CASM/singularity/cgppindel/cgppindel_3.10.0.sif
 SIF_PCAP_CORE => /software/CASM/singularity/pcap-core/pcap-core_5.6.1.sif
 SIF_VAFCORRECT => /software/CASM/singularity/vafcorrect/vafcorrect_5.7.0.sif
-SIMREP => /lustre/canpipe/live/ref/human/GRCh38_full_analysis_set_plus_decoy_hla/pindel/simpleRepeats.bed.gz
-SOFT_FILTER => /lustre/canpipe/live/ref/human/GRCh38_full_analysis_set_plus_decoy_hla/pindel/softRulesFragment.lst
+SIMREP => /lustre/scratch124/casm/team78pipelines/canpipe/live/ref/human/GRCh38_full_analysis_set_plus_decoy_hla/pindel/simpleRepeats.bed.gz
+SOFT_FILTER => /lustre/scratch124/casm/team78pipelines/canpipe/live/ref/human/GRCh38_full_analysis_set_plus_decoy_hla/pindel/softRulesFragment.lst
 SPECIES => Human
 SPECIES_ASSEMBLY => GRCh38_full_analysis_set_plus_decoy_hla
-TUMOUR_BAM => /lustre/canpipe/live/data/stage/2744_3043054/3043054.bam
-TUMOUR_ID => 3043054
-TUMOUR_NAME => PD54368a
+TUMOUR_BAM => /lustre/scratch124/casm/team78pipelines/canpipe/live/data/stage/2729_3018339/3018339.bam
+TUMOUR_ID => 3018339
+TUMOUR_NAME => PD53330c
 TUMOUR_PROTOCOL => WXS
-TUM_STAGE => /lustre/canpipe/live/data/stage/2744_3043054
-UNM_NORMAL_VCF => /lustre/canpipe/live/ref/human/GRCh38_full_analysis_set_plus_decoy_hla/pindel/pindel_np.v5.gff3.gz
+TUM_STAGE => /lustre/scratch124/casm/team78pipelines/canpipe/live/data/stage/2729_3018339
+UNM_NORMAL_VCF => /lustre/scratch124/casm/team78pipelines/canpipe/live/ref/human/GRCh38_full_analysis_set_plus_decoy_hla/pindel/pindel_np.v5.gff3.gz
+refBase => reference/
 ```
+
 ### Bpipe running parameters for Pindel VEP annotation
 ```bash
 ALGORITHM => VEP_Pindel
-COMMANDLINE => cd /lustre/canpipe/live/data/analysis/2744_3043054/VEP_Pindel; bpipe -r cgp_vep_pindel.run
+COMMANDLINE => cd /lustre/scratch124/casm/team78pipelines/canpipe/live/data/analysis/2729_3018339/VEP_Pindel; bpipe -r cgp_vep_pindel.run
 DB_TYPE => live
 ENSEMBL_VER => 103
 FIELD_TYPE => 3
-FIELD_VAL => 3043054
+FIELD_VAL => 3018339
 FILE_TYPE => bam
 FLOWNAME => ANALYSIS VEP_Pindel
-GENDER => XY
+GENDER => XX
 GENE_BUILD => 103
-ID_ANALYSIS_PROC => 11798898
-ID_INT_PROJECT => 2744
+ID_ANALYSIS_PROC => 10288092
+ID_INT_PROJECT => 2729
 ID_INT_PROJECT_NORMAL => NA
-ID_REFSET_GROUP => 698a3102-8681-48f3-b3d6-fd405bb3aacf
-INI_PATH => /software/CASM/modules/installs/canPipe/2.53.5/perl/config/canPipe.cfg.ini
-JOBID => 753949
-LOG4PERL => /software/CASM/modules/installs/canPipe/2.53.5/perl/config/log4perl_resultloader.conf
+ID_REFSET_GROUP => eaa8c0d1-afdd-4a0a-991a-336dcf7b6da6
+INI_PATH => /software/CASM/modules/installs/canPipe/2.29.2/perl/config/canPipe.cfg.ini
+JOBID => 6851612
+LOG4PERL => /software/CASM/modules/installs/canPipe/2.29.2/perl/config/log4perl_resultloader.conf
 NORMAL_BAM => NA/NA.bam
 NORMAL_ID => NA
 NORMAL_NAME => NA
 NORMAL_PROTOCOL => WXS
 NORM_SEQ_TYPE => NA
-OUTDIR => /lustre/canpipe/live/data/analysis/2744_3043054/VEP_Pindel
-REF_ROOT => /lustre/canpipe/live/ref/
-SAMPLE_NAME => PD54368a
-SCRATCH_ROOT => /lustre/canpipe/live/
+OUTDIR => /lustre/scratch124/casm/team78pipelines/canpipe/live/data/analysis/2729_3018339/VEP_Pindel
+REF_ROOT => /lustre/scratch124/casm/team78pipelines/canpipe/live/ref/
+SAMPLE_NAME => PD53330c
+SCRATCH_ROOT => /lustre/scratch124/casm/team78pipelines/canpipe/live/
 SEQ_TYPE => WXS
 SIF_ENSEMBL_VEP => /software/CASM/singularity/ensembl-vep/ensembl-vep_103.sif
 SIF_PCAP_CORE => /software/CASM/singularity/pcap-core/pcap-core_5.6.1.sif
 SPECIES => Human
 SPECIES_ASSEMBLY => GRCh38_full_analysis_set_plus_decoy_hla
-TUMOUR_BAM => /lustre/canpipe/live/data/stage/2744_3043054/3043054.bam
-TUMOUR_ID => 3043054
-TUMOUR_NAME => PD54368a
+TUMOUR_BAM => /lustre/scratch124/casm/team78pipelines/canpipe/live/data/stage/2729_3018339/3018339.bam
+TUMOUR_ID => 3018339
+TUMOUR_NAME => PD53330c
 TUMOUR_PROTOCOL => WXS
-TUM_STAGE => /lustre/canpipe/live/data/stage/2744_3043054
+TUM_STAGE => /lustre/scratch124/casm/team78pipelines/canpipe/live/data/stage/2729_3018339
 refBase => reference/
 ```
