@@ -13,7 +13,6 @@ Samples with a coverage depth of **>20X across at least 80% of the baits** used 
 The scripts used for this analysis are located in the `scripts/coverage_qc` directory. The analysis was performed using a combination of R, Perl, and shell scripts. The following software versions were used:
 
 - Perl scripts were run using Perl version `v5.38.0`[**here**](https://www.perl.org/)
-- `LifOver` [**here**](https://genome.ucsc.edu/cgi-bin/hgLiftOver)
 - `samtools` version `1.14` [**here**](https://www.htslib.org/)
 - `R` version `4.3.3` [**here**](https://www.r-project.org/)
 - `bwa-mem` version `0.7.17` [**here**](https://github.com/lh3/bwa)

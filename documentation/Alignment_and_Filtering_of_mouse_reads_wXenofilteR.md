@@ -2,7 +2,7 @@
 
 ## Overview
 
-This document describes the steps taken to align and filter out mouse reads from Human BAM files from Xenografted samples. Mapping parameters used to align reads against the Human GRCh38 reference genome and the mouse reference used [NOD_ShiLtJ_V1_PDX](../reference/NOD_ShiLtJ_V1_PDX_ref/README.md) were the same.
+This document describes the steps taken to align and filter out mouse reads from Human BAM files from the Patient Derived Xenograft (PDX) samples. Mapping parameters used to align reads against the Human GRCh38 reference genome and the mouse reference used [NOD_ShiLtJ_V1_PDX](../reference/NOD_ShiLtJ_V1_PDX_ref/README.md) were the same.
 
 All the scripts and code mentioned below can be found in the `scripts` directory.
 
@@ -12,14 +12,14 @@ The WES sequencing data was aligned to the GRCh38 Human reference genome using `
 
 ## Filtering of mouse reads with Xenofilter
 
-This process was used to remove mouse reads from the Human BAM files with the whole exome sequencing data generated for the OMM2.5 xenografts.
+This process was used to remove mouse reads from the Human BAM files with the whole exome sequencing data generated for the PDX samples.
 
 ### Required Environment variables and software
 
 The following environment variables are required to be set before running the scripts:
 - **PROJECTDIR**: The path to the project directory where this repo got cloned into
-- **STUDY**: The study ID,  7688 for this analysis
-- **PROJECTID**: The project ID, 3365s for this analysis
+- **STUDY**: The study ID,  6633 for this analysis
+- **PROJECTID**: The project ID, 2729s for this analysis
 
 The following software is required to be installed and visible in the path before running the scripts:
 - **R**: R `4.2.2`
@@ -29,9 +29,9 @@ The following software is required to be installed and visible in the path befor
 
 - Load the following variables and software
 ```bash
-PROJECTDIR=/lustre/7688_3365_Gen_Effects_CDS2_loss_Uveal_melanoma_WES
-STUDY=7688
-PROJECTID=3365
+PROJECTDIR=/lustre/6633_2729_Gen_Effects_CDS2_loss_Uveal_melanoma_WES
+STUDY=6633
+PROJECTID=2729
 
 # Example of a source me file containing the required environment variables and software to load
 # iRODs is used internally to access the sequencing data but this should be replaced for the human unfiltered BAM files 
@@ -41,7 +41,7 @@ source ${PROJECTDIR:?unset}/scripts/pdx_processing/source_me.sh
 If you're interested in reproducing the R environment, for a the code used in R 4.2.2 run the following commands within `R v4.2.2`, change the path on `projectdir` to the path where the repository was cloned into:
 
 ```R
-projectdir<-"/lustre/7688_3365_Gen_Effects_CDS2_loss_Uveal_melanoma_WES"
+projectdir<-"/lustre/6633_2729_Gen_Effects_CDS2_loss_Uveal_melanoma_WES"
 pdx_processing_dir<- file.path(projectdir,"scripts/pdx_processing")
 
 setwd(pdx_processing_dir)
@@ -61,9 +61,9 @@ we ran the following:
 **IMPORTANT**: All the manifest generated can be found within the `metadata/manifests` directory.
 
 ```bash
-PROJECTDIR=/lustre/7688_3365_Gen_Effects_CDS2_loss_Uveal_melanoma_WES
-STUDY=7688
-PROJECTID=3365
+PROJECTDIR=/lustre/6633_2729_Gen_Effects_CDS2_loss_Uveal_melanoma_WES
+STUDY=6633
+PROJECTID=2729
 
 #load iRODS module 
 module load IRODS/1.0
@@ -72,14 +72,15 @@ iinit
 
 #To call the script to build the manifests with project ID Name
 mkdir -p ${PROJECTDIR:?unset}/metadata/manifests
-/software/team113/dermatlas/R/R-4.2.2/bin/Rscript ${PROJECTDIR:?unset}/scripts/pdx_processing/Build_manifest_from_irods_cram_information.R --seqscape_proj_id ${STUDY} --outdir ${PROJECTDIR:?unset}/metadata/manifests
+
+Rscript ${PROJECTDIR:?unset}/scripts/pdx_processing/Build_manifest_from_irods_cram_information.R --seqscape_proj_id ${STUDY} --outdir ${PROJECTDIR:?unset}/metadata/manifests
 ```
 
 - After generating the manifest, we split the information to only contain the Xenografted samples (CDS2_Tumour) 
 
 **OUTPUTS**:
-- **7688_cram_manifest_INFO_from_iRODS_all.txt** : Contains the information of all the samples across both SW837 and OMM2.5 targeting experiments.
-- **7688_cram_manifest_INFO_from_iRODS.txt** : Contains the information of the samples on the OMM2.5 targeting experiments.
+- **6633_cram_manifest_INFO_from_iRODS_all.txt** : Contains the information of all the samples across both SW837 and OMM2.5 targeting experiments.
+- **6633_cram_manifest_INFO_from_iRODS.txt** : Contains the information of the samples on the OMM2.5 targeting experiments.
 
 ```bash 
 # Reformat the manifest and filter 
@@ -91,11 +92,11 @@ grep -E 'CDS2_Tumour|sample' ${PROJECTDIR:?unset}/metadata/manifests/${STUDY}_cr
 - To generate the list of jobs to transform the CRAM files to fastq files the files we ran
 
 Output: 
-- `scripts/7688_cramtofastq_from_iRODs_jobs.sh` : Contains the list of jobs to transform the CRAM to fastq files
+- `scripts/6633_cramtofastq_from_iRODs_jobs.sh` : Contains the list of jobs to transform the CRAM to fastq files
 
 ```bash
-PROJECTDIR=/lustre/7688_3365_Gen_Effects_CDS2_loss_Uveal_melanoma_WES
-STUDY=7688
+PROJECTDIR=/lustre/6633_2729_Gen_Effects_CDS2_loss_Uveal_melanoma_WES
+STUDY=6633
 cd ${PROJECTDIR:?unset}/scripts/pdx_processing/
 
 # Load environment with requiring 
@@ -109,8 +110,8 @@ Rscript ${PROJECTDIR:?unset}/scripts/pdx_processing/cramtofastq_from_iRODs_based
 - Then we proceed to execute the jobs import the BAM files and transform them into fastqs using samtools
 
 ```bash
-PROJECTDIR=/lustre/7688_3365_Gen_Effects_CDS2_loss_Uveal_melanoma_WES
-STUDY=7688
+PROJECTDIR=/lustre/6633_2729_Gen_Effects_CDS2_loss_Uveal_melanoma_WES
+STUDY=6633
 cd ${PROJECTDIR:?unset}
 # Load environment with requring 
 source ${PROJECTDIR:?unset}/scripts/pdx_processing/source_me.sh
@@ -128,11 +129,11 @@ To be able to generate the mouse referenced use the steps mentioned in the [**NO
 
 To generate the jobs to map the fastq files against the mouse reference genome, we used the `PDX_bwa_mem_mapping_jobs_from_master_manif.R` script:
 
-- **INPUT**: Use the file : `metadata/manifests/7688_cram_manifest_INFO_from_iRODS_wbam_counts_qc.txt`
+- **INPUT**: Use the file : `metadata/manifests/6633_cram_manifest_INFO_from_iRODS_wbam_counts_qc.txt`
 
 ```bash
-PROJECTDIR=/lustre/7688_3365_Gen_Effects_CDS2_loss_Uveal_melanoma_WES
-STUDY=7688
+PROJECTDIR=/lustre/6633_2729_Gen_Effects_CDS2_loss_Uveal_melanoma_WES
+STUDY=6633
 cd ${PROJECTDIR:?unset}/scripts/pdx_processing
 
 # Load environment with requiring 
@@ -148,8 +149,8 @@ This will generate two outputs:
 Submit the remapping jobs with the mouse reference using **bwa-mem**
 
 ```bash
-PROJECTDIR=/lustre/7688_3365_Gen_Effects_CDS2_loss_Uveal_melanoma_WES
-STUDY=7688
+PROJECTDIR=/lustre/6633_2729_Gen_Effects_CDS2_loss_Uveal_melanoma_WES
+STUDY=6633
 cd ${PROJECTDIR:?unset}/scripts/pdx_processing
 
 # Load environment with requring 
@@ -161,8 +162,8 @@ source ${PROJECTDIR:?unset}/scripts/pdx_processing/source_me.sh
 Submit the merging per sample
 
 ```bash
-PROJECTDIR=/lustre/7688_3365_Gen_Effects_CDS2_loss_Uveal_melanoma_WES
-STUDY=7688
+PROJECTDIR=/lustre/6633_2729_Gen_Effects_CDS2_loss_Uveal_melanoma_WES
+STUDY=6633
 cd ${PROJECTDIR:?unset}/scripts/pdx_processing
 
 # Load environment with requring 
@@ -180,11 +181,11 @@ However, given the amount of sequencing data generated for the grafted samples, 
 
 We generate the manifest:
 
-**INPUT**: `metadata/manifests/7688_cram_manifest_INFO_from_iRODS_wbam_counts_qc_psamp_mouse.txt`
+**INPUT**: `metadata/manifests/6633_cram_manifest_INFO_from_iRODS_wbam_counts_qc_psamp_mouse.txt`
 
 ```bash
-PROJECTDIR=/lustre/7688_3365_Gen_Effects_CDS2_loss_Uveal_melanoma_WES
-STUDY=7688
+PROJECTDIR=/lustre/6633_2729_Gen_Effects_CDS2_loss_Uveal_melanoma_WES
+STUDY=6633
 
 cd ${PROJECTDIR}/scripts/pdx_processing
 
@@ -195,7 +196,7 @@ source ${PROJECTDIR}/scripts/pdx_processing/source_me.sh
 Rscript ${PROJECTDIR}/scripts/pdx_processing/run_Xenofilter_from_WES_master_manif.R --manifest ${STUDY}_cram_manifest_INFO_from_iRODS_wbam_counts_qc_psamp_mouse.txt --projectdir ${PROJECTDIR} --outdir ${PROJECTDIR}/bams/WES_xfilt
 ```
 **OUTPUTS**:
- `metadata/manifests/7688_cram_manifest_INFO_from_iRODS_wbam_counts_qc_psamp_mouse_xfb.txt`
+ `metadata/manifests/6633_cram_manifest_INFO_from_iRODS_wbam_counts_qc_psamp_mouse_xfb.txt`
 
 
 #### Split input BAM files, split by read names from Human BAM files and run XenofilteR for mouse read filtering
@@ -204,11 +205,11 @@ To split the reads we used the script: **split_bam_files_and_get_xenofilter_jobs
 
 The script takes the a manifest with BAM file information and generates the jobs to take the unfiltered human BAM files, sort by read name, obtain a plain text file with the read names for all the reads present in the file, then it will split this file in the number of files required that have a maximum of `NREADS_SPLIT` per file. **This approach was followed as the samples were sequenced across a sinlge land and only a single readgroup was present.** Subsequently it will split the Human and Mouse BAM files by read names and then generate the jobs to run XenofilteR to filter out the mouse reads for the matching Human & Mouse BAM files.
 
-**INPUT**: `metadata/manifests/7688_cram_manifest_INFO_from_iRODS_wbam_counts_qc_psamp_mouse_xfb.txt`
+**INPUT**: `metadata/manifests/6633_cram_manifest_INFO_from_iRODS_wbam_counts_qc_psamp_mouse_xfb.txt`
 
 ```bash
-PROJECTDIR=/lustre/7688_3365_Gen_Effects_CDS2_loss_Uveal_melanoma_WES
-STUDY=7688
+PROJECTDIR=/lustre/6633_2729_Gen_Effects_CDS2_loss_Uveal_melanoma_WES
+STUDY=6633
 
 cd ${PROJECTDIR:?unset}
 
@@ -230,18 +231,18 @@ Rscript ${PROJECTDIR:?unset}/scripts/pdx_processing/split_bam_files_and_get_xeno
 
 **OUTPUTS**:
 The scripts will take the unfiltered human BAM files, sort by read name, split by read name  following output files:
-- [`7688_cram_manifest_INFO_from_iRODS_wbam_counts_qc_psamp_mouse_xfb_part.txt`](../metadata/manifests/7688_cram_manifest_INFO_from_iRODS_wbam_counts_qc_psamp_mouse_xfb_part.txt): Manifest that contains the metadata and file name information of the split files for all the samples.
+- [`6633_cram_manifest_INFO_from_iRODS_wbam_counts_qc_psamp_mouse_xfb_part.txt`](../metadata/manifests/6633_cram_manifest_INFO_from_iRODS_wbam_counts_qc_psamp_mouse_xfb_part.txt): Manifest that contains the metadata and file name information of the split files for all the samples.
 
 Runner files:
-- **7688_bamsplittin_by_read_names_jobs.sh** : Contains the list of jobs to split the BAM files by read names using `samtools` 
-- **7688_Xenofilter_by_read_names_parts_jobs.sh** : Contains the list of jobs used to run XenofilteR for the split Human and Mouse BAM files using the script [`scripts/pdx_processing/bam_Xenofilter_rg.R`](../scripts/pdx_processing/bam_Xenofilter_rg.R)
-- **7688_Xenofilter_merged_filtered_parts_jobs.sh**: Contains the list of jobs to merge the filtered BAM files per sample and index them using `samtools`
+- **6633_bamsplittin_by_read_names_jobs.sh** : Contains the list of jobs to split the BAM files by read names using `samtools` 
+- **6633_Xenofilter_by_read_names_parts_jobs.sh** : Contains the list of jobs used to run XenofilteR for the split Human and Mouse BAM files using the script [`scripts/pdx_processing/bam_Xenofilter_rg.R`](../scripts/pdx_processing/bam_Xenofilter_rg.R)
+- **6633_Xenofilter_merged_filtered_parts_jobs.sh**: Contains the list of jobs to merge the filtered BAM files per sample and index them using `samtools`
 
 To submit the BAM file splitting by read names:
 
 ```bash
-PROJECTDIR=/lustre/7688_3365_Gen_Effects_CDS2_loss_Uveal_melanoma_WES
-STUDY=7688
+PROJECTDIR=/lustre/6633_2729_Gen_Effects_CDS2_loss_Uveal_melanoma_WES
+STUDY=6633
 
 cd ${PROJECTDIR:?unset}
 
@@ -252,11 +253,11 @@ bash ${PROJECTDIR:?unset}/scripts/pdx_processing/${STUDY}_bamsplittin_by_read_na
 
 ```
 
-Submit Xenofilter filtering of split bamfiles using `7688_Xenofilter_by_read_names_parts_jobs.sh`
+Submit Xenofilter filtering of split bamfiles using `6633_Xenofilter_by_read_names_parts_jobs.sh`
 
 ```bash
-PROJECTDIR=/lustre/7688_3365_Gen_Effects_CDS2_loss_Uveal_melanoma_WES
-STUDY=7688
+PROJECTDIR=/lustre/6633_2729_Gen_Effects_CDS2_loss_Uveal_melanoma_WES
+STUDY=6633
 
 cd ${PROJECTDIR:?unset}
 
@@ -269,8 +270,8 @@ bash ${PROJECTDIR:?unset}/scripts/pdx_processing/${STUDY}_Xenofilter_by_read_nam
 Submit filtering of BAM files with `XenofilteR`
 
 ```bash
-PROJECTDIR=/lustre/7688_3365_Gen_Effects_CDS2_loss_Uveal_melanoma_WES
-STUDY=7688
+PROJECTDIR=/lustre/6633_2729_Gen_Effects_CDS2_loss_Uveal_melanoma_WES
+STUDY=6633
 
 cd ${PROJECTDIR:?unset}
 
@@ -284,11 +285,11 @@ bash ${PROJECTDIR:?unset}/scripts/pdx_processing/${STUDY}_Xenofilter_merged_filt
 
 Finally, once all jobs are complete we collate information on the proportion of filtered reads per file per sample and plot it using the script `collate_xfilter_stats_from_manif_and_plots.R `
 
-INPUT: `metadata/manifests/7688_cram_manifest_INFO_from_iRODS_wbam_counts_qc_psamp_mouse_xfb_part.txt`
+INPUT: `metadata/manifests/6633_cram_manifest_INFO_from_iRODS_wbam_counts_qc_psamp_mouse_xfb_part.txt`
 
 ```bash
-PROJECTDIR=/lustre/7688_3365_Gen_Effects_CDS2_loss_Uveal_melanoma_WES
-STUDY=7688
+PROJECTDIR=/lustre/6633_2729_Gen_Effects_CDS2_loss_Uveal_melanoma_WES
+STUDY=6633
 
 cd ${PROJECTDIR:?unset}
 
@@ -303,8 +304,8 @@ Rscript ${PROJECTDIR:?unset}/scripts/pdx_processing/collate_xfilter_stats_from_m
 ```
 
 **OUTPUTS**:
-- [`7688_cohort_per_part.xfiltstats`](../analysis/bam_xfilterstats/7688_cohort_per_part.xfiltstats): Contains the information of the proportion of filtered reads per file per sample.
-- [`7688_cohort_per_sample.xfiltstats`](../analysis/bam_xfilterstats/7688_cohort_per_sample.xfiltstats): Contains the information of total of filtered reads per sample.
-- [`7688_per_sample_pdx_xfiltstats_bpl.pdf`](../analysis/bam_xfilterstats/7688_per_sample_pdx_xfiltstats_bpl.pdf): Bar plot with the percentage of reads filtered per sample.
-- [`7688_per_sample_pdx_xfiltstats_vpl.pdf`](../analysis/bam_xfilterstats/7688_per_sample_pdx_xfiltstats_vpl.pdf): Bar plot with the percentage of reads filtered per sample.
+- [`6633_cohort_per_part.xfiltstats`](../analysis/bam_xfilterstats/6633_cohort_per_part.xfiltstats): Contains the information of the proportion of filtered reads per file per sample.
+- [`6633_cohort_per_sample.xfiltstats`](../analysis/bam_xfilterstats/6633_cohort_per_sample.xfiltstats): Contains the information of total of filtered reads per sample.
+- [`6633_per_sample_pdx_xfiltstats_bpl.pdf`](../analysis/bam_xfilterstats/6633_per_sample_pdx_xfiltstats_bpl.pdf): Bar plot with the percentage of reads filtered per sample.
+- [`6633_per_sample_pdx_xfiltstats_vpl.pdf`](../analysis/bam_xfilterstats/6633_per_sample_pdx_xfiltstats_vpl.pdf): Bar plot with the percentage of reads filtered per sample.
 
