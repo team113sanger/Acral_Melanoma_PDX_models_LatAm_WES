@@ -29,7 +29,7 @@ The following software is required to be installed and visible in the path befor
 
 - Load the following variables and software
 ```bash
-PROJECTDIR=/lustre/6633_2729_Gen_Effects_CDS2_loss_Uveal_melanoma_WES
+PROJECTDIR=/lustre/6633_PDX_models_Latin_America_WES
 STUDY=6633
 PROJECTID=2729
 
@@ -61,7 +61,7 @@ we ran the following:
 **IMPORTANT**: All the manifest generated can be found within the `metadata/manifests` directory.
 
 ```bash
-PROJECTDIR=/lustre/6633_2729_Gen_Effects_CDS2_loss_Uveal_melanoma_WES
+PROJECTDIR=/lustre/6633_PDX_models_Latin_America_WES
 STUDY=6633
 PROJECTID=2729
 
@@ -95,7 +95,7 @@ Output:
 - `scripts/6633_cramtofastq_from_iRODs_jobs.sh` : Contains the list of jobs to transform the CRAM to fastq files
 
 ```bash
-PROJECTDIR=/lustre/6633_2729_Gen_Effects_CDS2_loss_Uveal_melanoma_WES
+PROJECTDIR=/lustre/6633_PDX_models_Latin_America_WES
 STUDY=6633
 cd ${PROJECTDIR:?unset}/scripts/pdx_processing/
 
@@ -110,7 +110,7 @@ Rscript ${PROJECTDIR:?unset}/scripts/pdx_processing/cramtofastq_from_iRODs_based
 - Then we proceed to execute the jobs import the BAM files and transform them into fastqs using samtools
 
 ```bash
-PROJECTDIR=/lustre/6633_2729_Gen_Effects_CDS2_loss_Uveal_melanoma_WES
+PROJECTDIR=/lustre/6633_PDX_models_Latin_America_WES
 STUDY=6633
 cd ${PROJECTDIR:?unset}
 # Load environment with requring 
@@ -132,7 +132,7 @@ To generate the jobs to map the fastq files against the mouse reference genome, 
 - **INPUT**: Use the file : `metadata/manifests/6633_cram_manifest_INFO_from_iRODS_wbam_counts_qc.txt`
 
 ```bash
-PROJECTDIR=/lustre/6633_2729_Gen_Effects_CDS2_loss_Uveal_melanoma_WES
+PROJECTDIR=/lustre/6633_PDX_models_Latin_America_WES
 STUDY=6633
 cd ${PROJECTDIR:?unset}/scripts/pdx_processing
 
@@ -149,7 +149,7 @@ This will generate two outputs:
 Submit the remapping jobs with the mouse reference using **bwa-mem**
 
 ```bash
-PROJECTDIR=/lustre/6633_2729_Gen_Effects_CDS2_loss_Uveal_melanoma_WES
+PROJECTDIR=/lustre/6633_PDX_models_Latin_America_WES
 STUDY=6633
 cd ${PROJECTDIR:?unset}/scripts/pdx_processing
 
@@ -162,7 +162,7 @@ source ${PROJECTDIR:?unset}/scripts/pdx_processing/source_me.sh
 Submit the merging per sample
 
 ```bash
-PROJECTDIR=/lustre/6633_2729_Gen_Effects_CDS2_loss_Uveal_melanoma_WES
+PROJECTDIR=/lustre/6633_PDX_models_Latin_America_WES
 STUDY=6633
 cd ${PROJECTDIR:?unset}/scripts/pdx_processing
 
@@ -184,7 +184,7 @@ We generate the manifest:
 **INPUT**: `metadata/manifests/6633_cram_manifest_INFO_from_iRODS_wbam_counts_qc_psamp_mouse.txt`
 
 ```bash
-PROJECTDIR=/lustre/6633_2729_Gen_Effects_CDS2_loss_Uveal_melanoma_WES
+PROJECTDIR=/lustre/6633_PDX_models_Latin_America_WES
 STUDY=6633
 
 cd ${PROJECTDIR}/scripts/pdx_processing
@@ -208,7 +208,7 @@ The script takes the a manifest with BAM file information and generates the jobs
 **INPUT**: `metadata/manifests/6633_cram_manifest_INFO_from_iRODS_wbam_counts_qc_psamp_mouse_xfb.txt`
 
 ```bash
-PROJECTDIR=/lustre/6633_2729_Gen_Effects_CDS2_loss_Uveal_melanoma_WES
+PROJECTDIR=/lustre/6633_PDX_models_Latin_America_WES
 STUDY=6633
 
 cd ${PROJECTDIR:?unset}
@@ -241,7 +241,7 @@ Runner files:
 To submit the BAM file splitting by read names:
 
 ```bash
-PROJECTDIR=/lustre/6633_2729_Gen_Effects_CDS2_loss_Uveal_melanoma_WES
+PROJECTDIR=/lustre/6633_PDX_models_Latin_America_WES
 STUDY=6633
 
 cd ${PROJECTDIR:?unset}
@@ -256,7 +256,7 @@ bash ${PROJECTDIR:?unset}/scripts/pdx_processing/${STUDY}_bamsplittin_by_read_na
 Submit Xenofilter filtering of split bamfiles using `6633_Xenofilter_by_read_names_parts_jobs.sh`
 
 ```bash
-PROJECTDIR=/lustre/6633_2729_Gen_Effects_CDS2_loss_Uveal_melanoma_WES
+PROJECTDIR=/lustre/6633_PDX_models_Latin_America_WES
 STUDY=6633
 
 cd ${PROJECTDIR:?unset}
@@ -270,7 +270,7 @@ bash ${PROJECTDIR:?unset}/scripts/pdx_processing/${STUDY}_Xenofilter_by_read_nam
 Submit filtering of BAM files with `XenofilteR`
 
 ```bash
-PROJECTDIR=/lustre/6633_2729_Gen_Effects_CDS2_loss_Uveal_melanoma_WES
+PROJECTDIR=/lustre/6633_PDX_models_Latin_America_WES
 STUDY=6633
 
 cd ${PROJECTDIR:?unset}
@@ -288,7 +288,7 @@ Finally, once all jobs are complete we collate information on the proportion of 
 INPUT: `metadata/manifests/6633_cram_manifest_INFO_from_iRODS_wbam_counts_qc_psamp_mouse_xfb_part.txt`
 
 ```bash
-PROJECTDIR=/lustre/6633_2729_Gen_Effects_CDS2_loss_Uveal_melanoma_WES
+PROJECTDIR=/lustre/6633_PDX_models_Latin_America_WES
 STUDY=6633
 
 cd ${PROJECTDIR:?unset}

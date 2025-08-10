@@ -13,6 +13,7 @@ Samples with a coverage depth of **>20X across at least 80% of the baits** used 
 The scripts used for this analysis are located in the `scripts/coverage_qc` directory. The analysis was performed using a combination of R, Perl, and shell scripts. The following software versions were used:
 
 - Perl scripts were run using Perl version `v5.38.0`[**here**](https://www.perl.org/)
+- `LifOver` [**here**](https://genome.ucsc.edu/cgi-bin/hgLiftOver)
 - `samtools` version `1.14` [**here**](https://www.htslib.org/)
 - `R` version `4.3.3` [**here**](https://www.r-project.org/)
 - `bwa-mem` version `0.7.17` [**here**](https://github.com/lh3/bwa)
@@ -20,7 +21,7 @@ The scripts used for this analysis are located in the `scripts/coverage_qc` dire
 
 ### Required datasets
 
-- The bait set used for the exome capture was the Agilent SureSelect Human All Exon V6+UTR, the file was obtained from Agilent (file S07604624_hs_hg19.zip). Coordinates for GRCh38 were obtained by performing a liftover from hg19 to GRCh38 coordinates using [`LifOver`](https://genome.ucsc.edu/cgi-bin/hgLiftOver). See file [`resources/baits/SureSelect_Human_All_Exon_V6_plusUTR_GRCh38_liftover.bed`](resources/baits/SureSelect_Human_All_Exon_V6_plusUTR_GRCh38_liftover.bed) 
+- The bait set used for the exome capture was the Agilent SureSelect v5. Coordinates for GRCh38 were obtained by performing a liftover from hg19 to GRCh38 coordinates using [`LifOver`](https://genome.ucsc.edu/cgi-bin/hgLiftOver). The file used for depth analysis is [`resources/baits/GRCh38_WES5_canonical.bed`](resources/baits/GRCh38_WES5_canonical.bed). See the [**README**](resources/baits/README.md) for more information.
 
 ## Data alignment and processing
 
