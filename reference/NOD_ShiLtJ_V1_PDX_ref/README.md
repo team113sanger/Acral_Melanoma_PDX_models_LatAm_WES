@@ -1,6 +1,6 @@
 # Instructions to generate the NOD_V1_PDX reference files
 
-To be able to filter mouse reads on the xenografted samples, we generated a custom FASTA file referred as **NOD_ShiLtJ_V1_PDX**. This file was created using the NOD_ShiLtJ_V1 reference and GRCm39 Y Chromosome sequence. In addition, we collated a custom GTF file containing the gene annotations for the NOD_ShiLtJ_V1 reference and GRCm39 Y Chromosome, from ENSEMBL release 107. 
+To be able to filter mouse reads on the xenograft samples, we generated a custom FASTA file referred as **NOD_ShiLtJ_V1_PDX**. This file was created using the NOD_ShiLtJ_V1 reference and GRCm39 Y Chromosome sequence. In addition, we collated a custom GTF file containing the gene annotations for the NOD_ShiLtJ_V1 reference and GRCm39 Y Chromosome, from ENSEMBL release 107. 
 
 In this folder, you will find:
 

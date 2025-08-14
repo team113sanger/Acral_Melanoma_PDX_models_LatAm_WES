@@ -27,7 +27,7 @@ bedtools slop -b 100 -g GRCh38_full_analysis_set_plus_decoy_hla/genome.fa.fai GR
 
 ## Generate file with regions merged
 
-The above file has 7MB of overlap, for analysis, use a BED file with non-overlapping regions  a bedtools merge step is needed:
+The above file has 7MB of overlap, for analysis, use a BED file with non-overlapping regions a bedtools merge step is needed:
 
 ```bash 
 
@@ -35,4 +35,10 @@ bedtools slop -b 100 -g /nfs/cancer_ref02/human/GRCh38_full_analysis_set_plus_de
 
 ```
 
+To share the files they were compressed and available on the `resources/baits` directory.
 
+```bash
+gzip GRCh38_WES5_canonical_pad100.merged.bed
+gzip GRCh38_WES5_canonical.bed
+
+```

@@ -8,7 +8,7 @@ All the scripts and code mentioned below can be found in the `scripts` directory
 
 ## Alignment to the Human GRCh38 reference genome 
 
-The WES sequencing data was aligned to the GRCh38 Human reference genome using `bwa-mem`. PCR duplicates were marked using `samtools markdup` function. The same process was applied for all the samples from both targeting experiments in this project. This process was preformed through an internal pipeline.
+The WES sequencing data was aligned to the GRCh38 Human reference genome using `bwa mem`. PCR duplicates were marked using `samtools markdup` function. The same process was applied for all the samples from both targeting experiments in this project. This process was preformed through an internal pipeline.
 
 ## Filtering of mouse reads with Xenofilter
 
@@ -19,12 +19,12 @@ This process was used to remove mouse reads from the Human BAM files with the wh
 The following environment variables are required to be set before running the scripts:
 - **PROJECTDIR**: The path to the project directory where this repo got cloned into
 - **STUDY**: The study ID,  6633 for this analysis
-- **PROJECTID**: The project ID, 2729s for this analysis
+- **PROJECTID**: The project ID, 2729 for this analysis
 
 The following software is required to be installed and visible in the path before running the scripts:
 - **R**: R `4.2.2`
 - **samtools**: samtools `v1.14`
-- **bwa-mem**: bew-mem `v0.7.17`
+- **bwa mem**: bwa mem `v0.7.17`
 - **XenofilteR**: XenofilteR `v1.6`
 
 - Load the following variables and software
