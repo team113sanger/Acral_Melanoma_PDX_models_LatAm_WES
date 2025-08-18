@@ -1,4 +1,4 @@
-#!/software/R-4.1.0/bin/Rscript 
+#!/usr/bin/env Rscript
 # generate_xenofilter_for_fsamp_lanes.R
 #Script to generate the jobs to filter the failed 3 samples due to read numbers and samtools issue 
 

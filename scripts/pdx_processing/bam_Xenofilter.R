@@ -1,4 +1,4 @@
-#!/software/R-4.1.0/bin/Rscript 
+#!/usr/bin/env Rscript
 #################################################################
 # bam_Xenofilter.R
 # This script takes a sample_name, human mapped bamfile, mouse mapped bamfile, output directory, number of CPUS

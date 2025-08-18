@@ -1,4 +1,4 @@
-#!/software/R-4.1.0/bin/Rscript 
+#!/usr/bin/env Rscript
 #################################################################
 # run_Xenofilter_from_WES_master_manif.R
 # This script takes an MAster manifest generated from 6591_master_manifest_creation_RNAseq.R to create series of files with a series of command job submission to import, sort, transform to fastq, map with STAR
