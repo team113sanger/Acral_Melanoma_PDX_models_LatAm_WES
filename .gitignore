@@ -61,7 +61,8 @@ reference/NOD_ShiLtJ_V1_PDX_ref/*
 
 
 #Ignore base_dir
-base_dir
+base_dir/*
+!base_dir/ingestion_base/studies/qc
 required_datasets
 test_xenofilter
 
