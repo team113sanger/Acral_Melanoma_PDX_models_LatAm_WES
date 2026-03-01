@@ -42,6 +42,7 @@ and updating the README.md file. -->
 PROJECTDIR=/lustre/scratch125/casm/teams/team113/projects/6633_2729_3248_PDX_models_from_Latin_America_WES
 BASE_DIR=${PROJECTDIR}/base_dir/ingestion_base
 
+cd ${PROJECTDIR}
 source ${BASE_DIR}/source_me.sh
 
 module load dermatlas-ingestion/0.0.7 
@@ -49,7 +50,7 @@ module load dataImportExport/1.58.2
 
 STUDY=6633
 PROJECT=2729
-#STAGE_DIR="/lustre/scratch125/casm/staging/team113"
+#STAGE_DIR="/lustre/scratch125/casm/staging/team113/pdx"
 ```
 
 ### Create a dir to stage into + a place to store the logs   

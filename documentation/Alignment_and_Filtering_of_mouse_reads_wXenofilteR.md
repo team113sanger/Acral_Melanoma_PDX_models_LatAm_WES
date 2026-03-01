@@ -61,7 +61,7 @@ we ran the following:
 **IMPORTANT**: All the manifest generated can be found within the `metadata/manifests` directory.
 
 ```bash
-PROJECTDIR=/lustre/6633_PDX_models_Latin_America_WES
+PROJECTDIR=/lustre/scratch125/casm/teams/team113/projects/6633_2729_3248_PDX_models_from_Latin_America_WES
 STUDY=6633
 PROJECTID=2729
 
@@ -79,15 +79,7 @@ Rscript ${PROJECTDIR:?unset}/scripts/pdx_processing/Build_manifest_from_irods_cr
 - After generating the manifest, we split the information to only contain the Xenografted samples (CDS2_Tumour) 
 
 **OUTPUTS**:
-- **6633_cram_manifest_INFO_from_iRODS_all.txt** : Contains the information of all the samples across both SW837 and OMM2.5 targeting experiments.
-- **6633_cram_manifest_INFO_from_iRODS.txt** : Contains the information of the samples on the OMM2.5 targeting experiments.
-
-```bash 
-# Reformat the manifest and filter 
-#Then keep only the  CDS2_Tumour samples and the header 
-mv ${PROJECTDIR:?unset}/metadata/manifests/${STUDY}_cram_manifest_INFO_from_iRODS.txt ${PROJECTDIR:?unset}/metadata/manifests/${STUDY}_cram_manifest_INFO_from_iRODS_all.txt
-grep -E 'CDS2_Tumour|sample' ${PROJECTDIR:?unset}/metadata/manifests/${STUDY}_cram_manifest_INFO_from_iRODS_all.txt >${PROJECTDIR:?unset}/metadata/manifests/${STUDY}_cram_manifest_INFO_from_iRODS.txt
-```
+- **6633_cram_manifest_INFO_from_iRODS.txt** : Contains the information of the samples.
 
 - To generate the list of jobs to transform the CRAM files to fastq files the files we ran
 
