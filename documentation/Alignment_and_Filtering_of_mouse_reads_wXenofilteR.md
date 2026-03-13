@@ -73,6 +73,8 @@ iinit
 #To call the script to build the manifests with project ID Name
 mkdir -p ${PROJECTDIR:?unset}/metadata/manifests
 
+source ${PROJECTDIR:?unset}/scripts/pdx_processing/source_me.sh
+
 Rscript ${PROJECTDIR:?unset}/scripts/pdx_processing/Build_manifest_from_irods_cram_information.R --seqscape_proj_id ${STUDY} --outdir ${PROJECTDIR:?unset}/metadata/manifests
 ```
 

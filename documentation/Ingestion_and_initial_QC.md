@@ -50,6 +50,7 @@ module load dataImportExport/1.58.2
 
 STUDY=6633
 PROJECT=2729
+#STAGE_DIR="/lustre/scratch125/casm/staging/team113"
 #STAGE_DIR="/lustre/scratch125/casm/staging/team113/pdx"
 ```
 
