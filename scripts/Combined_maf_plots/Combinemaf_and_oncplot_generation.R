@@ -8,19 +8,22 @@ library(renv)
 library(here)
 library(RColorBrewer)
 library(writexl)
-#library(data.table)
+# Import only fread from data.table to avoid conflicts with dplyr
+library(data.table, include.only = "fread")
 library(maftools)
 
 
 # 0 Set the directroies to work ----
 wdir<-here()
-wdir<-file.path(wdir, "analysis","somatic_variants","release_v4","Combined_2729_3248")
+resource_dir<-file.path(wdir, "resources")
+metadata_dir<-file.path(wdir,"analysis","somatic_variants","release_v5", "metadata")
+wdir<-file.path(wdir, "analysis","somatic_variants","release_v5","Combined_2729_3248")
 pdx_dir<-file.path(wdir, "PDX")
 tum_dir<-file.path(wdir, "Tumour")
 # Read the COSMIC cancer gene census file
-#cosmic_genesv97<-read.csv(file =file.path(wdir, "COSMIC","cancer_gene_census.v97.genes.tsv" ), header = T, sep = "\t", stringsAsFactors = F )
+cosmic_genesv97<-read.csv(file =file.path(resource_dir, "COSMIC","cancer_gene_census.v97.genes.tsv" ), header = T, sep = "\t", stringsAsFactors = F )
 # Write the list of genes that are in cosmic 
-cosmic_genesv97<-read.csv(file =file.path(wdir, "COSMIC","AM_cancer_gene_census.v97.genes_overlap.tsv" ), header = T, sep = "\t", stringsAsFactors = F )
+#cosmic_genesv97<-read.csv(file =file.path(resource_dir, "COSMIC","AM_cancer_gene_census.v97.genes_overlap.tsv" ), header = T, sep = "\t", stringsAsFactors = F )
 
 
 # 1 Merge and plot the data for Combined all_samples  matched & unmatched ----
@@ -64,17 +67,20 @@ writexl::write_xlsx(comb_maf, paste0(comb_maf_fname, ".xlsx"),col_names = T, for
 
 # 2 Read the Combined all_samples matched & unmatched maf file for oncoplots ----
 #Try reading the maf
-comb_maf<-read.maf(maf=paste0(comb_maf_fname, ".maf"), clinicalData = file.path(wdir, "6633_METADATA_table.tsv") )
+comb_maf<-read.maf(maf=paste0(comb_maf_fname, ".maf"), clinicalData = file.path(metadata_dir, "6633_METADATA_table_2729_3248_batch1.tsv") )
 
-#Set the colours for the Tumour or PDX
-pcol<-c("#295884", "#FCCDE5")
+#Set the colours for the Tumour or PDX or Cell_line
+#[1] "#E41A1C" "#377EB8" "#4DAF4A" "#984EA3" "#FF7F00" "#FFFF33" "#A65628"
+#[8] "#F781BF"
+pcol<-c("#295884", "#FCCDE5", "#FF7F00")
 #pcol<-c("#295884", "#D20C60")
 names(pcol)<- unique(comb_maf@clinical.data$sample_type)
 #Set the colours for the  PDX  PAssage
 passagecol<- c("#CCEBC5", "#FFED6F", "#8DD3C7","#BEBADA","#A6761D")  
 names(passagecol)<- unique(comb_maf@clinical.data$PDX_passage )
 #Set the colour for tumour of origin 
-thiscol<- c("#BC80BD", "#B3DE69",  "#D20C60", "#1B9E77") 
+#thiscol<- c("#BC80BD", "#B3DE69",  "#D20C60", "#1B9E77") 
+thiscol<- c("#b863ba", "#1B9E77",  "#D20C60") 
 names(thiscol)<- unique(comb_maf@clinical.data$tissue_histology )
 
 clin_col<-list(sample_type=pcol,
@@ -237,17 +243,20 @@ writexl::write_xlsx(comb_maf, paste0(comb_maf_fname, ".xlsx"),col_names = T, for
 
 # 4 Read the Combined all_samples matched & unmatched maf file for oncoplots ----
 #Try reading the maf
-comb_maf<-read.maf(maf=paste0(comb_maf_fname, ".maf"), clinicalData = file.path(wdir, "6633_METADATA_table.tsv") )
+comb_maf<-read.maf(maf=paste0(comb_maf_fname, ".maf"), clinicalData = file.path(metadata_dir, "6633_METADATA_table_2729_3248_batch1.tsv") )
 
-#Set the colours for the Tumour or PDX
-pcol<-c("#295884", "#FCCDE5")
+#Set the colours for the Tumour or PDX or Cell_line
+#[1] "#E41A1C" "#377EB8" "#4DAF4A" "#984EA3" "#FF7F00" "#FFFF33" "#A65628"
+#[8] "#F781BF"
+pcol<-c("#295884", "#FCCDE5", "#FF7F00")
 #pcol<-c("#295884", "#D20C60")
 names(pcol)<- unique(comb_maf@clinical.data$sample_type)
 #Set the colours for the  PDX  PAssage
 passagecol<- c("#CCEBC5", "#FFED6F", "#8DD3C7","#BEBADA","#A6761D")  
 names(passagecol)<- unique(comb_maf@clinical.data$PDX_passage )
 #Set the colour for tumour of origin 
-thiscol<- c("#BC80BD", "#B3DE69",  "#D20C60", "#1B9E77") 
+#thiscol<- c("#BC80BD", "#B3DE69",  "#D20C60", "#1B9E77") 
+thiscol<- c("#b863ba", "#1B9E77",  "#D20C60") 
 names(thiscol)<- unique(comb_maf@clinical.data$tissue_histology )
 
 clin_col<-list(sample_type=pcol,
@@ -323,7 +332,7 @@ oncoplot(comb_maf,
          genesToIgnore =  maftools:::flags()[1:20], # To ignore specific genes e.g. top 20 FLAG genes 
          #        sampleOrder = c("PD52540c", "PD52540a", "PD52540d"), # This is to ensure the order as the tissue section 
          annotationFontSize = 1.6,
-         legendFontSize = 1.6, 
+         legendFontSize =3, 
          barcode_mar = 5,
          gene_mar=6,
          clinicalFeatures = c('sample_type','PDX_passage', 'tissue_histology'), #Clinical data being labelled
@@ -340,20 +349,20 @@ dev.off()
 topn<-40
 observed_mut_canc_genes<-cosmic_genesv97$Gene.Symbol[cosmic_genesv97$Gene.Symbol %in% comb_maf@gene.summary$Hugo_Symbol]
 fig_fnamepdf<-file.path(comball_dir, paste0("Combined_6633_2729_3248_mutated_gene_Keep_SNVsand_VAF_filt_INDELS_mutsort_ALL_top_", topn, "_COSMICv97cgenes_", suffix,".pdf"))
-pdf(file =fig_fnamepdf ,width = 18, height = 16)
+pdf(file =fig_fnamepdf ,width = 18, height = 14)
 oncoplot(comb_maf,
          top = topn,
          altered=F,
          showTitle = T,  #Show title or not
          genes = observed_mut_canc_genes[1:topn], # This is to look only the genes out of the topN most frequently mutated genes that are known cancer genes Cancer gene sensus COSMICv97
          showTumorSampleBarcodes = T, # show sample names or not
-         SampleNamefontSize = 1, # sample name font size
+         SampleNamefontSize = 0.8, # sample name font size
          additionalFeatureCex = 0.9,
-         genesToIgnore =  maftools:::flags()[1:20], # To ignore specific genes e.g. top 20 FLAG genes 
+         #genesToIgnore =  maftools:::flags()[1:20], # To ignore specific genes e.g. top 20 FLAG genes 
          #        sampleOrder = c("PD52540c", "PD52540a", "PD52540d"), # This is to ensure the order as the tissue section 
-         annotationFontSize = 1,
-         legendFontSize = 1.6, 
-         barcode_mar = 6.5,
+         annotationFontSize = 2.5,
+         legendFontSize = 2.5, 
+         barcode_mar = 4,
          gene_mar=6,
          clinicalFeatures = c('sample_type','PDX_passage', 'tissue_histology'), #Clinical data being labelled
          sortByMutation = T,
