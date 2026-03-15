@@ -186,8 +186,8 @@ oncoplot(comb_maf,
          additionalFeatureCex = 0.9,
          genesToIgnore =  maftools:::flags()[1:20], # To ignore specific genes e.g. top 20 FLAG genes 
          #        sampleOrder = c("PD52540c", "PD52540a", "PD52540d"), # This is to ensure the order as the tissue section 
-         annotationFontSize = 1,
-         legendFontSize = 1.6, 
+         annotationFontSize = 2.5,
+         legendFontSize = 2.5, 
          barcode_mar = 6.5,
          gene_mar=6,
          clinicalFeatures = c('sample_type','PDX_passage', 'tissue_histology'), #Clinical data being labelled
@@ -349,20 +349,20 @@ dev.off()
 topn<-40
 observed_mut_canc_genes<-cosmic_genesv97$Gene.Symbol[cosmic_genesv97$Gene.Symbol %in% comb_maf@gene.summary$Hugo_Symbol]
 fig_fnamepdf<-file.path(comball_dir, paste0("Combined_6633_2729_3248_mutated_gene_Keep_SNVsand_VAF_filt_INDELS_mutsort_ALL_top_", topn, "_COSMICv97cgenes_", suffix,".pdf"))
-pdf(file =fig_fnamepdf ,width = 18, height = 14)
+pdf(file =fig_fnamepdf ,width = 18, height = 16)
 oncoplot(comb_maf,
          top = topn,
          altered=F,
          showTitle = T,  #Show title or not
          genes = observed_mut_canc_genes[1:topn], # This is to look only the genes out of the topN most frequently mutated genes that are known cancer genes Cancer gene sensus COSMICv97
          showTumorSampleBarcodes = T, # show sample names or not
-         SampleNamefontSize = 0.8, # sample name font size
+         SampleNamefontSize = 1, # sample name font size
          additionalFeatureCex = 0.9,
          #genesToIgnore =  maftools:::flags()[1:20], # To ignore specific genes e.g. top 20 FLAG genes 
          #        sampleOrder = c("PD52540c", "PD52540a", "PD52540d"), # This is to ensure the order as the tissue section 
          annotationFontSize = 2.5,
          legendFontSize = 2.5, 
-         barcode_mar = 4,
+         barcode_mar = 6.5,
          gene_mar=6,
          clinicalFeatures = c('sample_type','PDX_passage', 'tissue_histology'), #Clinical data being labelled
          sortByMutation = T,
