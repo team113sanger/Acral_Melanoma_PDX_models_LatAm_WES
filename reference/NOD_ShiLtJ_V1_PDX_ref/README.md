@@ -15,7 +15,7 @@ To regenerate the reference fasta file execute the RMarkdown file contained with
 ### First ensure the required R packages are installed
 
 ```R
-projectdir<-"/lustre/6633_PDX_models_Latin_America_WES"
+projectdir<-"/lustre/scratch125/casm/teams/team113/projects/6633_2729_3248_PDX_models_from_Latin_America_WES"
 nod_ref_dir<- file.path(projectdir,"reference/NOD_ShiLtJ_V1_PDX_ref")
 
 setwd(nod_ref_dir)
@@ -31,8 +31,8 @@ renv::restore(lockfile=file.path(nod_ref_dir, "renv.lock")) # To rebuild an envi
 # Run R :
 R
 #Directory where git clone was performed
-projectdir<-"/lustre/6633_PDX_models_Latin_America_WES"
-
+projectdir<-"/lustre/scratch125/casm/teams/team113/projects/6633_2729_3248_PDX_models_from_Latin_America_WES"
+    
 library(rmarkdown)
 rmarkdown::render(input=file.path(
     projectdir, "reference/NOD_ShiLtJ_V1_PDX_ref/PDX_from_LatAm_mouse_reference_generation_NOD_ShiLtJ_v1.Rmd"
@@ -46,10 +46,12 @@ This should be run in a machine with 4 threads and 16GB of RAM and requires to h
 - `bwa-mem` version `0.7.17` [**here**](https://github.com/lh3/bwa)
 
 ```bash
-PROJECTDIR=/lustre/6633_PDX_models_Latin_America_WES
+PROJECTDIR=/lustre/scratch125/casm/teams/team113/projects/6633_2729_3248_PDX_models_from_Latin_America_WES
 STUDY=6633
 
 cd ${PROJECTDIR}/reference/NOD_ShiLtJ_V1_PDX_ref
+
+source source_me.sh
 
 bwa index ${PROJECTDIR:?unset}/reference/NOD_ShiLtJ_V1_PDX_ref/genome.fa 
 

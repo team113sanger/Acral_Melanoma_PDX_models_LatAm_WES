@@ -21,7 +21,7 @@ fontsize: 14pt
 ---
 <!-- Created and written by  Martin Del Castillo Velasco-Herrera - mdc1@sanger.ac.uk -->
 
-```{r setup, include=TRUE}
+```{r setup, include=TRUE, message=FALSE, warning=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 
 #PREPARE the environment 
@@ -45,13 +45,21 @@ pkgs<-c( "data.table",
          )
 suppressMessages( install.packages(setdiff(pkgs, rownames(installed.packages())), update =FALSE, dependencies = TRUE, repos="https://www.stats.bris.ac.uk/R/"))
                                    
-library(Biostrings)
-library(tidyr)
-library(dplyr)
-library(knitr)
-library(R.utils)
-library(patchwork)
-library(here)
+suppressMessages(library(Biostrings))
+suppressMessages(library(tidyr))
+suppressMessages(library(dplyr))
+suppressMessages(library(knitr))
+suppressMessages(library(R.utils))
+suppressMessages(library(patchwork))
+suppressMessages(library(here))
+suppressMessages(library(data.table))
+suppressMessages(library(shiny))
+suppressMessages(library(DT))
+suppressMessages(library(htmlwidgets))
+suppressMessages(library(tidyverse))
+suppressMessages(library(kableExtra))
+suppressMessages(library(gridExtra))
+
 
 #Download the sequencing report 
 nodshiltv1_seq_report<- read.table(file="ftp://ftp.ebi.ac.uk/pub/databases/ena/assembly/GCA_001/GCA_001624/GCA_001624675.1_sequence_report.txt", header=TRUE, sep="\t")
@@ -89,7 +97,7 @@ It is important to note that the assembly is comprised by **`r dim(nodshiltv1_se
 
 <span style="color:red"> **Important NOTE:** This assembly does not include the sequence of chromosome Y </span>
 
-```{r, nod_shilt_v3_report, echo=TRUE }
+```{r, nod_shilt_v3_report, echo=TRUE, message=FALSE, warning=FALSE }
 nodshiltv1_seq_report<- read.table("ftp://ftp.ebi.ac.uk/pub/databases/ena/assembly/GCA_001/GCA_001624/GCA_001624675.1_sequence_report.txt", header=TRUE, sep="\t")
 
 ##irst fill the missing replicon names cells 
@@ -116,7 +124,7 @@ DT::datatable(nodshiltv1_seq_report,
 
 To obtain the main assembled chromosomes and the additional scaffolds I ran the following commands on the **_shell/bash_** command line . 
 
-``` {bash, FASTA_downloading, echo=TRUE, eval=params$generate, class.source = "fold-show" }
+``` {bash, FASTA_downloading, echo=TRUE, results=FALSE, eval=params$generate, class.source = "fold-show", message=FALSE, warning=FALSE }
 #Define the working variables in bash command line 
 #Set the folder where you want to create the reference directory
 echo $REFDIR
@@ -139,7 +147,7 @@ rm NOD_ShiLtJ_V1p1.fa NOD_ShiLtJ_V1nonch.fa
 
 ## Modify the sequence headers for compatibility with Xenofilter
 
-After obtaining the reference FASTA file it is important to change the current FASTA sequence name format to one compatible for ** Xenofilter**. 
+After obtaining the reference FASTA file it is important to change the current FASTA sequence name format to one compatible for **Xenofilter**. 
 
 **The sequence headers of the current reference FASTA file look like this:**
 ```{r down_head_reheader, echo=TRUE}
@@ -217,7 +225,7 @@ chry_grcm39
 final_ref_genome<- unlist(DNAStringSetList(nod_ref[1:20], chry_grcm39,nod_ref[21:length(names(nod_ref))] ) )
 final_ref_genome_dir<-file.path(refdir,gsub(".fa","_PDX_ref", refname, fixed = T))
 #Create the directory for the final genome 
-dir.create(final_ref_genome_dir, recursive = T)
+suppressWarnings(dir.create(final_ref_genome_dir, recursive = T))
 #Write the FASTA file 
 writeXStringSet(final_ref_genome, 
                 filepath = file.path(final_ref_genome_dir,"genome.fa"),
@@ -266,9 +274,8 @@ system( paste0("rm ", file.path(refdir, "chrY.fna") ))
 
 The mouse reference genome created for PDX filtering is located at:
 
-+ **FASTA file full path:** `r paste0(gsub(".fa","_PDX_ref", refname, fixed = T), "genome.fa")`
-+ **Annotation GTF file full path:** `r print(file.path(final_ref_genome_dir, pdx_annot_name))`
++ **FASTA file full path:** `r paste0(file.path(final_ref_genome_dir, "genome.fa"))`
++ **Annotation GTF file full path:** `r paste0(file.path(final_ref_genome_dir, pdx_annot_name))`
 + **Total sequence in (bp) it contains:** `r sum(width(final_ref_genome))`
 + **Total number of scaffolds from NOD_ShiLtJ_V1:** `r dim(nodshiltv1_seq_report)[1]`
 + **Total number of scaffolds from GRCm39:** 1 (chrY)
-
