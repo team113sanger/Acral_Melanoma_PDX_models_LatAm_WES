@@ -274,8 +274,8 @@ system( paste0("rm ", file.path(refdir, "chrY.fna") ))
 
 The mouse reference genome created for PDX filtering is located at:
 
-+ **FASTA file full path:** `r paste0(file.path(final_ref_genome_dir, "genome.fa"))`
-+ **Annotation GTF file full path:** `r paste0(file.path(final_ref_genome_dir, pdx_annot_name))`
++ **FASTA file full path:** `r paste0("genome.fa")`
++ **Annotation GTF file full path:** `r paste0(pdx_annot_name)`
 + **Total sequence in (bp) it contains:** `r sum(width(final_ref_genome))`
 + **Total number of scaffolds from NOD_ShiLtJ_V1:** `r dim(nodshiltv1_seq_report)[1]`
 + **Total number of scaffolds from GRCm39:** 1 (chrY)
