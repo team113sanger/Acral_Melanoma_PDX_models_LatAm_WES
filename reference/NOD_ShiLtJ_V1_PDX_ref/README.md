@@ -48,11 +48,15 @@ This should be run in a machine with 4 threads and 16GB of RAM and requires to h
 ```bash
 PROJECTDIR=/lustre/scratch125/casm/teams/team113/projects/6633_2729_3248_PDX_models_from_Latin_America_WES
 STUDY=6633
-
-cd ${PROJECTDIR}/reference/NOD_ShiLtJ_V1_PDX_ref
+REFDIR=${PROJECTDIR}/reference/NOD_ShiLtJ_V1_PDX_ref
+cd ${REFDIR}
 
 source source_me.sh
 
-bwa index ${PROJECTDIR:?unset}/reference/NOD_ShiLtJ_V1_PDX_ref/genome.fa 
+mkdir -p ${REFDIR}/bwa_mem
+#Move the genome.fa file to the bwa_mem folder
+mv ${REFDIR}/genome.fa ${REFDIR}/bwa_mem/genome.fa
+
+bwa index ${REFDIR}/bwa_mem/genome.fa 
 
 ```
