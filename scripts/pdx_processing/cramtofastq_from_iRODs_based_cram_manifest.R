@@ -145,7 +145,7 @@ manif$fastq1<-fq1
 manif$fastq2<-fq2
 manif$sample_fqrunid<-smp_runid
 #Create the sh file 
-write.table(c("#!/bin/sh", cmds), file=file.path(projectdir,"scripts", paste0(studyid,"_cramtofastq_from_iRODs_jobs.sh")), quote = F, col.names = F, row.names = F, sep = "\n")
+write.table(c("#!/bin/sh", cmds), file=file.path(projectdir,"scripts","pdx_processing", paste0(studyid,"_cramtofastq_from_iRODs_jobs.sh")), quote = F, col.names = F, row.names = F, sep = "\n")
 
 
 #############################################################################################
