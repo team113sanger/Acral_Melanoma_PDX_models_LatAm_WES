@@ -29,7 +29,7 @@ The following software is required to be installed and visible in the path befor
 
 - Load the following variables and software
 ```bash
-PROJECTDIR=/lustre/6633_PDX_models_Latin_America_WES
+PROJECTDIR=/lustre/scratch125/casm/teams/team113/projects/6633_2729_3248_PDX_models_from_Latin_America_WES
 STUDY=6633
 PROJECTID=2729
 
@@ -41,7 +41,7 @@ source ${PROJECTDIR:?unset}/scripts/pdx_processing/source_me.sh
 If you're interested in reproducing the R environment, for a the code used in R 4.2.2 run the following commands within `R v4.2.2`, change the path on `projectdir` to the path where the repository was cloned into:
 
 ```R
-projectdir<-"/lustre/6633_2729_Gen_Effects_CDS2_loss_Uveal_melanoma_WES"
+projectdir<-"/lustre/scratch125/casm/teams/team113/projects/6633_2729_3248_PDX_models_from_Latin_America_WES"
 pdx_processing_dir<- file.path(projectdir,"scripts/pdx_processing")
 
 setwd(pdx_processing_dir)
@@ -64,6 +64,9 @@ we ran the following:
 PROJECTDIR=/lustre/scratch125/casm/teams/team113/projects/6633_2729_3248_PDX_models_from_Latin_America_WES
 STUDY=6633
 PROJECTID=2729
+SCRIPTS_DIR=${PROJECTDIR:?unset}/scripts
+PDXSCRIPTS_DIR=${SCRIPTS_DIR:?unset}/pdx_processing
+
 
 #load iRODS module 
 module load IRODS/1.0
