@@ -81,28 +81,50 @@ source ${PROJECTDIR:?unset}/scripts/pdx_processing/source_me.sh
 Rscript ${PROJECTDIR:?unset}/scripts/pdx_processing/Build_manifest_from_irods_cram_information.R --seqscape_proj_id ${STUDY} --outdir ${PROJECTDIR:?unset}/metadata/manifests
 ```
 
-- After generating the manifest, we split the information to only contain the Xenografted samples (CDS2_Tumour) 
-
 **OUTPUTS**:
 - **6633_cram_manifest_INFO_from_iRODS.txt** : Contains the information of the samples.
 
+- After generating the manifest, we split the information to only contain the Patient Derived Xenografted (PDX) samples
+
+```bash 
+PROJECTDIR=/lustre/scratch125/casm/teams/team113/projects/6633_2729_3248_PDX_models_from_Latin_America_WES
+STUDY=6633
+PROJECTID=2729
+SCRIPTS_DIR=${PROJECTDIR:?unset}/scripts
+PDXSCRIPTS_DIR=${SCRIPTS_DIR:?unset}/pdx_processing
+
+# Reformat the manifest and filter 
+mv ${PROJECTDIR:?unset}/metadata/manifests/${STUDY}_cram_manifest_INFO_from_iRODS.txt ${PROJECTDIR:?unset}/metadata/manifests/${STUDY}_cram_manifest_INFO_from_iRODS_all.txt
+# Filter only the information for the PDX samples but keep the header of the file
+head -n 1 ${PROJECTDIR:?unset}/metadata/manifests/${STUDY}_cram_manifest_INFO_from_iRODS_all.txt >${PROJECTDIR:?unset}/metadata/manifests/${STUDY}_cram_manifest_INFO_from_iRODS_PDXs.txt
+grep -f ${PROJECTDIR:?unset}/metadata/${STUDY}_${PROJECTID}_unfilt_PDX_sample_names.tsv ${PROJECTDIR:?unset}/metadata/manifests/${STUDY}_cram_manifest_INFO_from_iRODS_all.txt >>${PROJECTDIR:?unset}/metadata/manifests/${STUDY}_cram_manifest_INFO_from_iRODS_PDXs.txt
+
+```
+**OUTPUTS**:
+- **6633_2729_cram_manifest_INFO_from_iRODS_all.txt** : Contains the information of all the samples for both tumours and PDX samples.
+- **6633_2729_cram_manifest_INFO_from_iRODS_PDXs.txt** : Contains the information of the PDX samples only.
+
 - To generate the list of jobs to transform the CRAM files to fastq files the files we ran
 
+```bash
+PROJECTDIR=/lustre/scratch125/casm/teams/team113/projects/6633_2729_3248_PDX_models_from_Latin_America_WES
+STUDY=6633
+PROJECTID=2729
+SCRIPTS_DIR=${PROJECTDIR:?unset}/scripts
+PDXSCRIPTS_DIR=${SCRIPTS_DIR:?unset}/pdx_processing
+
+cd ${PDXSCRIPTS_DIR:?unset}
+
+# Load environment with requiring 
+source ${PDXSCRIPTS_DIR:?unset}/source_me.sh
+
+#This script takes the cram manifest and generates the SH file with the jobs to import and transform to fastq all of the cram files from iRODs
+Rscript ${PDXSCRIPTS_DIR:?unset}/cramtofastq_from_iRODs_based_cram_manifest.R --manifest ${STUDY}_cram_manifest_INFO_from_iRODS_PDXs.txt --projectdir ${PROJECTDIR:?unset} --studyID ${STUDY} --mem 16000
+
+```
 Output: 
 - `scripts/6633_cramtofastq_from_iRODs_jobs.sh` : Contains the list of jobs to transform the CRAM to fastq files
 
-```bash
-PROJECTDIR=/lustre/6633_PDX_models_Latin_America_WES
-STUDY=6633
-cd ${PROJECTDIR:?unset}/scripts/pdx_processing/
-
-# Load environment with requiring 
-source ${PROJECTDIR:?unset}/scripts/pdx_processing/source_me.sh
-
-#This script takes the cram manifest and generates the SH file with the jobs to import and transform to fastq all of the cram files from iRODs
-Rscript ${PROJECTDIR:?unset}/scripts/pdx_processing/cramtofastq_from_iRODs_based_cram_manifest.R --manifest ${STUDY}_cram_manifest_INFO_from_iRODS.txt --projectdir ${PROJECTDIR:?unset} --studyID ${STUDY} --mem 16000
-
-```
 
 - Then we proceed to execute the jobs import the BAM files and transform them into fastqs using samtools
 
