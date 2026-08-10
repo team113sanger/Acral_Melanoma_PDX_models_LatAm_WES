@@ -123,20 +123,24 @@ Rscript ${PDXSCRIPTS_DIR:?unset}/cramtofastq_from_iRODs_based_cram_manifest.R --
 
 ```
 Output: 
-- `scripts/6633_cramtofastq_from_iRODs_jobs.sh` : Contains the list of jobs to transform the CRAM to fastq files
-
+- `scripts/pdx_processing/6633_cramtofastq_from_iRODs_jobs.sh` : Contains the list of jobs to transform the CRAM to fastq files
 
 - Then we proceed to execute the jobs import the BAM files and transform them into fastqs using samtools
 
 ```bash
-PROJECTDIR=/lustre/6633_PDX_models_Latin_America_WES
+PROJECTDIR=/lustre/scratch125/casm/teams/team113/projects/6633_2729_3248_PDX_models_from_Latin_America_WES
 STUDY=6633
+PROJECTID=2729
+SCRIPTS_DIR=${PROJECTDIR:?unset}/scripts
+PDXSCRIPTS_DIR=${SCRIPTS_DIR:?unset}/pdx_processing
+
 cd ${PROJECTDIR:?unset}
 # Load environment with requring 
 source ${PROJECTDIR:?unset}/scripts/pdx_processing/source_me.sh
 # Login into iRODs
 #iinit 
-sh ${PROJECTDIR:?unset}/scripts/${STUDY}_cramtofastq_from_iRODs_jobs.sh
+sh ${PDXSCRIPTS_DIR:?unset}/${STUDY}_cramtofastq_from_iRODs_jobs.sh
+
 ```
 
 #### Generate the mouse genome reference files and bwa index
@@ -151,15 +155,37 @@ To generate the jobs to map the fastq files against the mouse reference genome, 
 - **INPUT**: Use the file : `metadata/manifests/6633_cram_manifest_INFO_from_iRODS_wbam_counts_qc.txt`
 
 ```bash
-PROJECTDIR=/lustre/6633_PDX_models_Latin_America_WES
+PROJECTDIR=/lustre/scratch125/casm/teams/team113/projects/6633_2729_3248_PDX_models_from_Latin_America_WES
 STUDY=6633
-cd ${PROJECTDIR:?unset}/scripts/pdx_processing
+PROJECTID=2729
+SCRIPTS_DIR=${PROJECTDIR:?unset}/scripts
+PDXSCRIPTS_DIR=${SCRIPTS_DIR:?unset}/pdx_processing
+
+NOD_PDXV1_REFDIR=${PROJECTDIR:?unset}/reference/NOD_ShiLtJ_V1_PDX_ref
 
 # Load environment with requiring 
 source ${PROJECTDIR:?unset}/scripts/pdx_processing/source_me.sh
 
+# SET the directory with the UNFILTERED BAM files by symlinking bam and bai files to the data bams unfiltered directory
+WES_UNFILT_BAMDIR=${PROJECTDIR:?unset}/data/bams/WES_UNFILT
+STAGEDIR=/lustre/scratch125/casm/staging/team113/${PROJECTID}
+
+mkdir -p ${PROJECTDIR:?unset}/data/bams/WES_UNFILT
+for sample in $( cat ${PROJECTDIR:?unset}/metadata/${STUDY}_${PROJECTID}_unfilt_PDX_sample_names.tsv); do
+	mkdir -p ${WES_UNFILT_BAMDIR:?unset}/${sample}
+	ln -s /lustre/scratch125/casm/staging/team113/${PROJECTID}/${sample}/mapped_sample/${sample}.sample.dupmarked.bam ${WES_UNFILT_BAMDIR:?unset}/${sample}/
+	ln -s /lustre/scratch125/casm/staging/team113/${PROJECTID}/${sample}/mapped_sample/${sample}.sample.dupmarked.bai ${WES_UNFILT_BAMDIR:?unset}/${sample}/
+	ln -s /lustre/scratch125/casm/staging/team113/${PROJECTID}/${sample}/mapped_sample/${sample}.sample.dupmarked.bas ${WES_UNFILT_BAMDIR:?unset}/${sample}/
+done
+
+# Add column to the tab delimited file at the end entitled Proc_as_PDX to the manifest with the PDX samples and Y on every row,
+#Add PDX to the header as a last column in the manifest ${STUDY}_cram_manifest_INFO_from_iRODS_wbam_counts_qc.txt  keepeing UTF-8 encoding
+awk -F'\t' 'BEGIN{OFS="\t"} NR==1{$(NF+1)="Proc_as_PDX"} NR>1{$(NF+1)="Y"} 1' ${PROJECTDIR:?unset}/metadata/manifests/${STUDY}_cram_manifest_INFO_from_iRODS_PDXs_wbam_counts_qc.txt > ${PROJECTDIR:?unset}/metadata/manifests/${STUDY}_cram_manifest_INFO_from_iRODS_PDXs_wbam_counts_qc_PDX_annot.txt 
+
+
 #This scrip
-Rscript ${PROJECTDIR:?unset}/scripts/pdx_processing/PDX_bwa_mem_mapping_jobs_from_master_manif.R --manifest ${STUDY}_cram_manifest_INFO_from_iRODS_wbam_counts_qc.txt --projectdir ${PROJECTDIR:?unset} --referencedir ${PROJECTDIR:?unset}/reference/NOD_ShiLtJ_V1_PDX_ref
+Rscript ${PROJECTDIR:?unset}/scripts/pdx_processing/PDX_bwa_mem_mapping_jobs_from_master_manif.R --manifest ${STUDY}_cram_manifest_INFO_from_iRODS_PDXs_wbam_counts_qc_PDX_annot.txt --projectdir ${PROJECTDIR:?unset} --referencedir ${PROJECTDIR:?unset}/reference/NOD_ShiLtJ_V1_PDX_ref/bwa_mem
+
 ```
 This will generate two outputs:
  1. `bwamem_mapping_perlanrun_to_NOD_PDXV1_tum_only_jobs.sh`: which contains with the list of jobs to perform the mapping against the mouse reference genome with **bwa-mem**.
@@ -168,14 +194,27 @@ This will generate two outputs:
 Submit the remapping jobs with the mouse reference using **bwa-mem**
 
 ```bash
-PROJECTDIR=/lustre/6633_PDX_models_Latin_America_WES
+PROJECTDIR=/lustre/scratch125/casm/teams/team113/projects/6633_2729_3248_PDX_models_from_Latin_America_WES
 STUDY=6633
+PROJECTID=2729
+SCRIPTS_DIR=${PROJECTDIR:?unset}/scripts
+PDXSCRIPTS_DIR=${SCRIPTS_DIR:?unset}/pdx_processing
+
+NOD_PDXV1_REFDIR=${PROJECTDIR:?unset}/reference/NOD_ShiLtJ_V1_PDX_ref
+
+# Load environment with requiring 
 cd ${PROJECTDIR:?unset}/scripts/pdx_processing
 
 # Load environment with requring 
 source ${PROJECTDIR:?unset}/scripts/pdx_processing/source_me.sh
 
-/bin/sh bwamem_mapping_perlanrun_to_NOD_PDXV1_tum_only_jobs.sh
+sh bwamem_mapping_perlanrun_to_NOD_PDXV1_tum_only_jobs.sh
+
+
+bsub -q long -M 36000 -R'select[mem>36000] rusage[mem=36000] span[hosts=1]' -n 12 -o /lustre/scratch125/casm/teams/team113/projects/6633_2729_3248_PDX_models_from_Latin_America_WES/logs/bwamem_logs/bwamem_mapping_log_NOD_PDXV1_1.o -e /lustre/scratch125/casm/teams/team113/projects/6633_2729_3248_PDX_models_from_Latin_America_WES/logs/bwamem_logs/bwamem_mapping_log_NOD_PDXV1_1.e 
+'bwa mem -t 12 -Y -K 100000000 -R "@RG\tID:41760_1#2\tLB:23446185\tSM:PD53330a\tPL:ILLUMINA" /lustre/scratch125/casm/teams/team113/projects/6633_2729_3248_PDX_models_from_Latin_America_WES/reference/NOD_ShiLtJ_V1_PDX_ref/bwa_mem/genome.fa /lustre/scratch125/casm/teams/team113/projects/6633_2729_3248_PDX_models_from_Latin_America_WES/data/fastqs/PD53330a/PD53330a_41760_1#2_R1.fastq.gz /lustre/scratch125/casm/teams/team113/projects/6633_2729_3248_PDX_models_from_Latin_America_WES/data/fastqs/PD53330a/PD53330a_41760_1#2_R2.fastq.gz | samtools sort -m 1G -@ 10 -o /lustre/scratch125/casm/teams/team113/projects/6633_2729_3248_PDX_models_from_Latin_America_WES/data/bams/NOD_mapping/NOD_PDXV1/PD53330a/PD53330a_NOD_PDXV141760_1#2.aln.sort.out.bam - ; samtools index /lustre/scratch125/casm/teams/team113/projects/6633_2729_3248_PDX_models_from_Latin_America_WES/data/bams/NOD_mapping/NOD_PDXV1/PD53330a/PD53330a_NOD_PDXV141760_1#2.aln.sort.out.bam '
+
+
 ```
 
 Submit the merging per sample

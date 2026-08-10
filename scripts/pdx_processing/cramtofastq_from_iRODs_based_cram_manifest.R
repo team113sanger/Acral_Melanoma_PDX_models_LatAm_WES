@@ -118,14 +118,15 @@ for (i in 1:dim(manif)[1]){
   serrf<-NULL
   tsrunid<-NULL
   temp<-manif[i,]
-  tsrunid<- paste0(temp$sample,"_",temp$id_run,"_",temp$lane,"#",temp$tag_index)
+  tsrunid<- paste0(temp$sample_supplier_name,"_",temp$id_run,"_",temp$lane,"#",temp$tag_index)
   cmd<-NULL
   # give name to errorfiles
   sdoutf<-file.path(fqlogfolder, paste("cramtofq_",i,".o", sep = ""))
   serrf<-file.path(fqlogfolder, paste("cramtofq_",i,".e", sep = ""))
   #For the fastqs
-  fastq1<-file.path(fqfolder, paste(tsrunid, "_R1.fastq.gz", sep=""))
-  fastq2<-file.path(fqfolder, paste(tsrunid, "_R2.fastq.gz", sep=""))
+  dir.create(file.path(fqfolder, temp$sample_supplier_name), recursive = TRUE)
+  fastq1<-file.path(fqfolder, temp$sample_supplier_name, paste(tsrunid, "_R1.fastq.gz", sep=""))
+  fastq2<-file.path(fqfolder,temp$sample_supplier_name,  paste(tsrunid, "_R2.fastq.gz", sep=""))
   #Section that creates the farm command to submit the job the job submission 
   # should look like this
   #bsub -q normal -M 8000 -R'select[mem>8000] rusage[mem=8000] span[hosts=1]' -n 4 -o /lustre/scratch119/casm/team113da/users/mdc1/6352_project_tests/logs/cramtofastqs/cramtofq_21.o -e /lustre/scratch119/casm/team113da/users/mdc1/6352_project_tests/logs/cramtofastqs/cramtofq_21.e 'iget /seq/illumina/runs/38/38900/lane1/plex21/38900_1#21.cram - | /software/CASM/modules/installs/samtools/samtools-1.13/bin/samtools collate -u --threads 4 -O - |/software/CASM/modules/installs/samtools/samtools-1.13/bin/samtools fastq --threads 4 -1 /lustre/scratch119/casm/team113da/users/mdc1/6352_project_tests/fastqs/6352STDY10233950_R1.fastq.gz -2 /lustre/scratch119/casm/team113da/users/mdc1/6352_project_tests/fastqs/6352STDY10233950_R2.fastq.gz '
@@ -153,7 +154,7 @@ write.table(c("#!/bin/sh", cmds), file=file.path(projectdir,"scripts","pdx_proce
 
 #############################################################################################
 # 4. Plot the number of reads sequence d   ------------------
-manif$donor_id<- substr(manif$sample_donor_id, start = 1,stop = 6)
+manif$donor_id<- substr(manif$sample_donor_id, start = 1,stop = 7)
 cols<-colorRampPalette(rev(brewer.pal(n=12,name = "Paired" )))(length(unique(manif$donor_id)))
 nreads<-ggplot(data = manif, aes(x=sample_supplier_name, y=total_reads))+
   geom_bar(aes(fill=donor_id), stat = "identity")+
