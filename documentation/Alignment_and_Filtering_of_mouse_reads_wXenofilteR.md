@@ -184,7 +184,7 @@ awk -F'\t' 'BEGIN{OFS="\t"} NR==1{$(NF+1)="Proc_as_PDX"} NR>1{$(NF+1)="Y"} 1' ${
 
 
 #This scrip
-Rscript ${PROJECTDIR:?unset}/scripts/pdx_processing/PDX_bwa_mem_mapping_jobs_from_master_manif.R --manifest ${PROJECTDIR:?unset}/metadata/manifests/${STUDY}_cram_manifest_INFO_from_iRODS_PDXs_wbam_counts_qc_PDX_annot.txt --projectdir ${PROJECTDIR:?unset} --referencedir ${PROJECTDIR:?unset}/reference/NOD_ShiLtJ_V1_PDX_ref/bwa_mem
+Rscript ${PROJECTDIR:?unset}/scripts/pdx_processing/PDX_bwa_mem_mapping_jobs_from_master_manif.R --manifest ${STUDY}_cram_manifest_INFO_from_iRODS_PDXs_wbam_counts_qc_PDX_annot.txt --projectdir ${PROJECTDIR:?unset} --referencedir ${PROJECTDIR:?unset}/reference/NOD_ShiLtJ_V1_PDX_ref/bwa_mem
 
 ```
 This will generate two outputs:
