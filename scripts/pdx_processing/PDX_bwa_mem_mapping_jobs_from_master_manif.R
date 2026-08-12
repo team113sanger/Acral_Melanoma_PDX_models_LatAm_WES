@@ -240,7 +240,7 @@ write.table(c("#!/bin/sh", cmds_nodv1), file=file.path(scriptsdir, paste("samtoo
 manif$bam_run_lane_tid_path_nodv1[!tumour_pos]<-NA
 manif$bam_psample_path_nodv1[!tumour_pos]<-NA
 #Add location of the initial unfiltered bam file
-manif$unfilt_psample_bam_path<-file.path(projectdir,"bams","WES_UNFILT", manif$sample,
+manif$unfilt_psample_bam_path<-file.path(projectdir,"data", "bams","WES_UNFILT", manif$sample,
  paste0(manif$sample, ".sample.dupmarked.bam" ))
 
 #Name of the outfile manif

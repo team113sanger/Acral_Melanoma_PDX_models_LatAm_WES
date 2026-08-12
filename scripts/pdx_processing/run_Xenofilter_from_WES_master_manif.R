@@ -22,9 +22,6 @@
 #       /RSeQC_logs
 # 
 # 
-# Addition to filter by sample type 
-#Created: 08/2022 
-#Author: Martin Del Castillo Velasco-Herrera - mdc1@sanger.ac.uk
 ###################################################################
 progname<-"run_Xenofilter_from_WES_master_manif.R"
 
@@ -57,7 +54,6 @@ arguments<- parse_args(parser, positional_arguments = 0) # no files after the op
 # otherwise if options not found on command line then set defaults,
 opt<-arguments$options
 
-
 #Verify that the outidr was set
 if(is.na(opt$projectdir)){
   projectdir<-paste(getwd(),"/",sep="")
@@ -75,7 +71,8 @@ if(!dir.exists(outdir)){ # Create the outdir if it doesn't exist
 }
 
 #Verify that the input manifest exitst was set 
-manif_name<-file.path(projectdir,"manifests",opt$manifest)
+manifdir<-file.path(projectdir, "metadata", "manifests")
+manif_name<-file.path(manifdir,opt$manifest)
 if(!file.exists(manif_name)){
   stop(paste("The manifest file:", manif_name, "doesn't exits. Check file or see the help for requirements", sep=""))
 }
@@ -91,49 +88,40 @@ write(paste("#########################################\n", progname, date(),"The
 
 #Set of folders for the outputs
 logfolder<-paste(projectdir, "/logs", sep="")
-manifdir<-file.path(projectdir, "manifests")
-#create the folder for the mapping results 
-bamdir<-file.path(projectdir,"BAMS", "WES")
+scriptsdir<-file.path(projectdir, "scripts", "pdx_processing")
 xfilt_logdir<-file.path(logfolder, "xfilt_logdir")
 
 #Make the folders
 dir.create(xfilt_logdir, recursive = TRUE)
 
 #PAHTS to the programs required
-run_xenofilter<-"/lustre/scratch124/casm/team113/projects/6633_PDX_models_Latin_America_WES/scripts/bam_Xenofilter.R"
+#run_xenofilter<-"/lustre/scratch124/casm/team113/projects/6633_PDX_models_Latin_America_WES/scripts/bam_Xenofilter.R"
+run_xenofilter<-file.path(scriptsdir, "bam_Xenofilter.R")
+
 
 #############################################################################################
 # 1. Read the file  manifest file  ------------------
 manif<-read.csv(manif_name, header=TRUE, stringsAsFactors=FALSE, sep="\t")
-manif$sample <- manif$sample_supplier_name
-#Add the original name and full path of the canapps unfiltered bam
-manif$unfilt_psample_bam_path<- file.path(bamdir, paste0(manif$sample, ".sample.dupmarked.bam")) 
 
 #############################################################################################
 # 2. Create the sh file that will submit the filter of the BAM files with the NOD/ShiLtJ_V1 for Tumours only------------------
 # bsub -q normal -M 64000 -R"select[mem>64000] rusage[mem=64000] span[hosts=1]" -n 2 '
 
 #Identify the tumour samples since this will be the only ones to process for further analyses
-# tumour_pos<- manif$Proc.as.Tum=="Y"
-# tumour_sample_names<- unique(manif$sample[tumour_pos])
-tumour_pos<- manif$sample_type=="PDX"
+tumour_pos<- manif$Proc_as_PDX=="Y"
 tumour_sample_names<- unique(manif$sample[tumour_pos])
-
-
 
 #Create the two directories that will be created to store the mouse mapped files. 
 refname_nod1<-"NOD_PDXV1"
-refname_nod3<-"NOD_PDXV3"
+
 #Create the expected name for the ouputs 
 dir.create(file.path(outdir,refname_nod1), recursive = T)
-dir.create(file.path(outdir,refname_nod3), recursive = T)
+
 #Then generate the name of the ouput filtered file 
 manif$xfilt_bam_psample_path_nodv1<- file.path(outdir,refname_nod1, manif$sample,"Filtered_bams", paste0(manif$sample, ".sample.dupmarked.mXfilt_Filtered.bam")) 
-manif$xfilt_bam_psample_path_nodv3<- file.path(outdir,refname_nod3, manif$sample,"Filtered_bams", paste0(manif$sample, ".sample.dupmarked.mXfilt_Filtered.bam")) 
 
 # Create the two directories that will be created to store the mouse mapped files. 
 cmds_nodv1<-NULL
-cmds_nodv3<-NULL
 for(i in 1:length(tumour_sample_names)){
   print(paste0("Processing sample ", tumour_sample_names[i], " NodV1" ))
   tempsamp<-NULL
@@ -152,7 +140,7 @@ for(i in 1:length(tumour_sample_names)){
   tmbam<- temp$bam_psample_path_nodv1[1]
   #Command for Nodv3 per sample file and index Min 64GBs RAM
   cmd<-as.character(paste("bsub -q normal -M 120000 -R",shQuote("select[mem>120000] rusage[mem=120000] span[hosts=1]") , " -n 2 -o ", sdoutf," -e ",serrf,
-                          " ' module load R/4.1.0  ; Rscript ", run_xenofilter, " --sample_name ", tempsamp,
+                          " 'Rscript ", run_xenofilter, " --sample_name ", tempsamp,
                               " --human_bam ", thbam,
                               " --mouse_bam ", tmbam,
                               " --outdir ", file.path(outdir,refname_nod1),
@@ -161,33 +149,14 @@ for(i in 1:length(tumour_sample_names)){
                           sep=""))  
   #Append the command to the list of NODv1 merging
   cmds_nodv1<- c(cmds_nodv1, cmd)
-  cmd<-NULL
-  #Command for Nodv3 per sample file and index
-  print(paste0("Processing sample ", tumour_sample_names[i], " NodV3" ))
-  #Assing job output names 
-  sdoutf<-file.path(xfilt_logdir, paste("xenofilter_log_nodv3_", i,".o", sep = ""))
-  serrf<-file.path(xfilt_logdir, paste("xenofilter_log_nodv3_", i,".e", sep = ""))
-  tmbam<- temp$bam_psample_path_nodv3[1]
-  #Command for Nodv3 per sample file and index Min 64GBs RAM
-  cmd<-as.character(paste("bsub -q normal -M 120000 -R",shQuote("select[mem>120000] rusage[mem=120000] span[hosts=1]") , " -n 2 -o ", sdoutf," -e ",serrf,
-                          " ' module load R/4.1.0  ; Rscript ", run_xenofilter, " --sample_name ", tempsamp,
-                          " --human_bam ", thbam,
-                          " --mouse_bam ", tmbam,
-                          " --outdir ", file.path(outdir,refname_nod3),
-                          " --ncpu ", "1",
-                          " '",
-                          sep=""))  
-  #Append the command to the list of NODv3 merging
-  cmds_nodv3<- c(cmds_nodv3, cmd)
 }
 
 #Generate the .sh files with the submissions 
-write.table(c("#!/bin/sh", cmds_nodv1), file=file.path(projectdir,"scripts", paste("xenofilter_nodv1_tum_only_jobs.sh", sep="")), quote = F, col.names = F, row.names = F, sep = "\n")
-write.table(c("#!/bin/sh", cmds_nodv3), file=file.path(projectdir,"scripts", paste("xenofilter_nodv3_tum_only_jobs.sh", sep="")), quote = F, col.names = F, row.names = F, sep = "\n")
+write.table(c("#!/bin/sh", cmds_nodv1), file=file.path(scriptsdir, paste("xenofilter_nodv1_tum_only_jobs.sh", sep="")), quote = F, col.names = F, row.names = F, sep = "\n")
 
 #############################################################################################
 # 3. update manifest 
 #Name of the outfile manif
-out_manif_name<-file.path(projectdir,"manifests",gsub(pattern = ".txt", "_xfb.txt", opt$manifest))
+out_manif_name<-file.path(manifdir,gsub(pattern = ".txt", "_xfb.txt", opt$manifest))
 write.table(manif, file=out_manif_name, quote = F, col.names = T, row.names = F, sep = "\t")
 

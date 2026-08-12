@@ -210,23 +210,24 @@ source ${PROJECTDIR:?unset}/scripts/pdx_processing/source_me.sh
 
 sh bwamem_mapping_perlanrun_to_NOD_PDXV1_tum_only_jobs.sh
 
-# Job ID 55494
-bsub -q long -M 36000 -R'select[mem>36000] rusage[mem=36000] span[hosts=1]' -n 12 -o /lustre/scratch125/casm/teams/team113/projects/6633_2729_3248_PDX_models_from_Latin_America_WES/logs/bwamem_logs/bwamem_mapping_log_NOD_PDXV1_1.o -e /lustre/scratch125/casm/teams/team113/projects/6633_2729_3248_PDX_models_from_Latin_America_WES/logs/bwamem_logs/bwamem_mapping_log_NOD_PDXV1_1.e 'bwa mem -t 12 -Y -K 100000000 -R "@RG\tID:41760_1#2\tLB:23446185\tSM:PD53330a\tPL:ILLUMINA" /lustre/scratch125/casm/teams/team113/projects/6633_2729_3248_PDX_models_from_Latin_America_WES/reference/NOD_ShiLtJ_V1_PDX_ref/bwa_mem/genome.fa /lustre/scratch125/casm/teams/team113/projects/6633_2729_3248_PDX_models_from_Latin_America_WES/data/fastqs/PD53330a/PD53330a_41760_1#2_R1.fastq.gz /lustre/scratch125/casm/teams/team113/projects/6633_2729_3248_PDX_models_from_Latin_America_WES/data/fastqs/PD53330a/PD53330a_41760_1#2_R2.fastq.gz | samtools sort -m 1G -@ 10 -o /lustre/scratch125/casm/teams/team113/projects/6633_2729_3248_PDX_models_from_Latin_America_WES/data/bams/NOD_mapping/NOD_PDXV1/PD53330a/PD53330a_NOD_PDXV141760_1#2.aln.sort.out.bam - ; samtools index /lustre/scratch125/casm/teams/team113/projects/6633_2729_3248_PDX_models_from_Latin_America_WES/data/bams/NOD_mapping/NOD_PDXV1/PD53330a/PD53330a_NOD_PDXV141760_1#2.aln.sort.out.bam '
-
-
 ```
 
 Submit the merging per sample
 
 ```bash
-PROJECTDIR=/lustre/6633_PDX_models_Latin_America_WES
+PROJECTDIR=/lustre/scratch125/casm/teams/team113/projects/6633_2729_3248_PDX_models_from_Latin_America_WES
 STUDY=6633
-cd ${PROJECTDIR:?unset}/scripts/pdx_processing
+PROJECTID=2729
+SCRIPTS_DIR=${PROJECTDIR:?unset}/scripts
+PDXSCRIPTS_DIR=${SCRIPTS_DIR:?unset}/pdx_processing
+
+# Load environment with requiring 
+cd ${PDXSCRIPTS_DIR:?unset}
 
 # Load environment with requring 
-source ${PROJECTDIR:?unset}/scripts/pdx_processing/source_me.sh
+source ${PDXSCRIPTS_DIR:?unset}/source_me.sh
 
-/bin/sh samtools_psample_merge_nodv1_tum_only_jobs.sh
+sh samtools_psample_merge_nodv1_tum_only_jobs.sh
 ```
 
 ### Filter the mouse reads from the Xenofilter jobs for the samples
@@ -238,22 +239,27 @@ However, given the amount of sequencing data generated for the grafted samples, 
 
 We generate the manifest:
 
-**INPUT**: `metadata/manifests/6633_cram_manifest_INFO_from_iRODS_wbam_counts_qc_psamp_mouse.txt`
+**INPUT**: `metadata/manifests/6633_cram_manifest_INFO_from_iRODS_PDXs_wbam_counts_qc_PDX_annot_psamp_mouse.txt`
 
 ```bash
-PROJECTDIR=/lustre/6633_PDX_models_Latin_America_WES
+PROJECTDIR=/lustre/scratch125/casm/teams/team113/projects/6633_2729_3248_PDX_models_from_Latin_America_WES
 STUDY=6633
+PROJECTID=2729
+SCRIPTS_DIR=${PROJECTDIR:?unset}/scripts
+PDXSCRIPTS_DIR=${SCRIPTS_DIR:?unset}/pdx_processing
+NOD_PDXV1_REFDIR=${PROJECTDIR:?unset}/reference/NOD_ShiLtJ_V1_PDX_ref
 
-cd ${PROJECTDIR}/scripts/pdx_processing
+# Load environment with requiring 
+cd ${PROJECTDIR:?unset}/scripts/pdx_processing
 
 # Load environment with requring 
 source ${PROJECTDIR}/scripts/pdx_processing/source_me.sh
 
 # Set the job to create the .sh XenofilteR job submissions 
-Rscript ${PROJECTDIR}/scripts/pdx_processing/run_Xenofilter_from_WES_master_manif.R --manifest ${STUDY}_cram_manifest_INFO_from_iRODS_wbam_counts_qc_psamp_mouse.txt --projectdir ${PROJECTDIR} --outdir ${PROJECTDIR}/bams/WES_xfilt
+Rscript ${PROJECTDIR}/scripts/pdx_processing/run_Xenofilter_from_WES_master_manif.R --manifest ${STUDY}_cram_manifest_INFO_from_iRODS_PDXs_wbam_counts_qc_PDX_annot_psamp_mouse.txt --projectdir ${PROJECTDIR} --outdir ${PROJECTDIR}/data/bams/WES_xfilt
 ```
 **OUTPUTS**:
- `metadata/manifests/6633_cram_manifest_INFO_from_iRODS_wbam_counts_qc_psamp_mouse_xfb.txt`
+ `metadata/manifests/6633_cram_manifest_INFO_from_iRODS_PDXs_wbam_counts_qc_PDX_annot_psamp_mouse_xfb.txt`
 
 
 #### Split input BAM files, split by read names from Human BAM files and run XenofilteR for mouse read filtering
@@ -262,11 +268,15 @@ To split the reads we used the script: **split_bam_files_and_get_xenofilter_jobs
 
 The script takes the a manifest with BAM file information and generates the jobs to take the unfiltered human BAM files, sort by read name, obtain a plain text file with the read names for all the reads present in the file, then it will split this file in the number of files required that have a maximum of `NREADS_SPLIT` per file. **This approach was followed as the samples were sequenced across a sinlge land and only a single readgroup was present.** Subsequently it will split the Human and Mouse BAM files by read names and then generate the jobs to run XenofilteR to filter out the mouse reads for the matching Human & Mouse BAM files.
 
-**INPUT**: `metadata/manifests/6633_cram_manifest_INFO_from_iRODS_wbam_counts_qc_psamp_mouse_xfb.txt`
+**INPUT**: `metadata/manifests/6633_cram_manifest_INFO_from_iRODS_PDXs_wbam_counts_qc_PDX_annot_psamp_mouse_xfb.txt`
 
 ```bash
-PROJECTDIR=/lustre/6633_PDX_models_Latin_America_WES
+PROJECTDIR=/lustre/scratch125/casm/teams/team113/projects/6633_2729_3248_PDX_models_from_Latin_America_WES
 STUDY=6633
+PROJECTID=2729
+SCRIPTS_DIR=${PROJECTDIR:?unset}/scripts
+PDXSCRIPTS_DIR=${SCRIPTS_DIR:?unset}/pdx_processing
+NOD_PDXV1_REFDIR=${PROJECTDIR:?unset}/reference/NOD_ShiLtJ_V1_PDX_ref
 
 cd ${PROJECTDIR:?unset}
 
@@ -274,15 +284,15 @@ cd ${PROJECTDIR:?unset}
 source ${PROJECTDIR:?unset}/scripts/pdx_processing/source_me.sh
 
 # Variables:
-NCORES=4
+NCORES=8
 NREADS_SPLIT=50000000
 
 Rscript ${PROJECTDIR:?unset}/scripts/pdx_processing/split_bam_files_and_get_xenofilter_jobs.R --study_id ${STUDY:?unset} \
---manifest ${PROJECTDIR:?unset}/metadata/manifests/${STUDY}_cram_manifest_INFO_from_iRODS_wbam_counts_qc_psamp_mouse_xfb.txt \
+--manifest ${PROJECTDIR:?unset}/metadata/manifests/${STUDY}_cram_manifest_INFO_from_iRODS_PDXs_wbam_counts_qc_PDX_annot_psamp_mouse_xfb.txt \
 --projectdir ${PROJECTDIR:?unset} \
 --xfilter_outdir ${PROJECTDIR:?unset}/bams/WES_xfilt/NOD_PDXV1 \
 --split_nreads ${NREADS_SPLIT:?unset} \
---nthreads ${NCORES} \
+--nthreads ${NCORES} 
 
 ```
 
