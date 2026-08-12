@@ -173,9 +173,9 @@ STAGEDIR=/lustre/scratch125/casm/staging/team113/${PROJECTID}
 mkdir -p ${PROJECTDIR:?unset}/data/bams/WES_UNFILT
 for sample in $( cat ${PROJECTDIR:?unset}/metadata/${STUDY}_${PROJECTID}_unfilt_PDX_sample_names.tsv); do
 	mkdir -p ${WES_UNFILT_BAMDIR:?unset}/${sample}
-	ln -s /lustre/scratch125/casm/staging/team113/${PROJECTID}/${sample}/mapped_sample/${sample}.sample.dupmarked.bam ${WES_UNFILT_BAMDIR:?unset}/${sample}/
-	ln -s /lustre/scratch125/casm/staging/team113/${PROJECTID}/${sample}/mapped_sample/${sample}.sample.dupmarked.bai ${WES_UNFILT_BAMDIR:?unset}/${sample}/
-	ln -s /lustre/scratch125/casm/staging/team113/${PROJECTID}/${sample}/mapped_sample/${sample}.sample.dupmarked.bas ${WES_UNFILT_BAMDIR:?unset}/${sample}/
+	ln -s ${STAGEDIR}/${sample}/mapped_sample/${sample}.sample.dupmarked.bam ${WES_UNFILT_BAMDIR:?unset}/${sample}/
+	ln -s ${STAGEDIR}/${sample}/mapped_sample/${sample}.sample.dupmarked.bai ${WES_UNFILT_BAMDIR:?unset}/${sample}/
+	ln -s ${STAGEDIR}/${sample}/mapped_sample/${sample}.sample.dupmarked.bas ${WES_UNFILT_BAMDIR:?unset}/${sample}/
 done
 
 # Add column to the tab delimited file at the end entitled Proc_as_PDX to the manifest with the PDX samples and Y on every row,
@@ -184,7 +184,7 @@ awk -F'\t' 'BEGIN{OFS="\t"} NR==1{$(NF+1)="Proc_as_PDX"} NR>1{$(NF+1)="Y"} 1' ${
 
 
 #This scrip
-Rscript ${PROJECTDIR:?unset}/scripts/pdx_processing/PDX_bwa_mem_mapping_jobs_from_master_manif.R --manifest ${STUDY}_cram_manifest_INFO_from_iRODS_PDXs_wbam_counts_qc_PDX_annot.txt --projectdir ${PROJECTDIR:?unset} --referencedir ${PROJECTDIR:?unset}/reference/NOD_ShiLtJ_V1_PDX_ref/bwa_mem
+Rscript ${PROJECTDIR:?unset}/scripts/pdx_processing/PDX_bwa_mem_mapping_jobs_from_master_manif.R --manifest ${PROJECTDIR:?unset}/metadata/manifests/${STUDY}_cram_manifest_INFO_from_iRODS_PDXs_wbam_counts_qc_PDX_annot.txt --projectdir ${PROJECTDIR:?unset} --referencedir ${PROJECTDIR:?unset}/reference/NOD_ShiLtJ_V1_PDX_ref/bwa_mem
 
 ```
 This will generate two outputs:
@@ -210,9 +210,8 @@ source ${PROJECTDIR:?unset}/scripts/pdx_processing/source_me.sh
 
 sh bwamem_mapping_perlanrun_to_NOD_PDXV1_tum_only_jobs.sh
 
-
-bsub -q long -M 36000 -R'select[mem>36000] rusage[mem=36000] span[hosts=1]' -n 12 -o /lustre/scratch125/casm/teams/team113/projects/6633_2729_3248_PDX_models_from_Latin_America_WES/logs/bwamem_logs/bwamem_mapping_log_NOD_PDXV1_1.o -e /lustre/scratch125/casm/teams/team113/projects/6633_2729_3248_PDX_models_from_Latin_America_WES/logs/bwamem_logs/bwamem_mapping_log_NOD_PDXV1_1.e 
-'bwa mem -t 12 -Y -K 100000000 -R "@RG\tID:41760_1#2\tLB:23446185\tSM:PD53330a\tPL:ILLUMINA" /lustre/scratch125/casm/teams/team113/projects/6633_2729_3248_PDX_models_from_Latin_America_WES/reference/NOD_ShiLtJ_V1_PDX_ref/bwa_mem/genome.fa /lustre/scratch125/casm/teams/team113/projects/6633_2729_3248_PDX_models_from_Latin_America_WES/data/fastqs/PD53330a/PD53330a_41760_1#2_R1.fastq.gz /lustre/scratch125/casm/teams/team113/projects/6633_2729_3248_PDX_models_from_Latin_America_WES/data/fastqs/PD53330a/PD53330a_41760_1#2_R2.fastq.gz | samtools sort -m 1G -@ 10 -o /lustre/scratch125/casm/teams/team113/projects/6633_2729_3248_PDX_models_from_Latin_America_WES/data/bams/NOD_mapping/NOD_PDXV1/PD53330a/PD53330a_NOD_PDXV141760_1#2.aln.sort.out.bam - ; samtools index /lustre/scratch125/casm/teams/team113/projects/6633_2729_3248_PDX_models_from_Latin_America_WES/data/bams/NOD_mapping/NOD_PDXV1/PD53330a/PD53330a_NOD_PDXV141760_1#2.aln.sort.out.bam '
+# Job ID 55494
+bsub -q long -M 36000 -R'select[mem>36000] rusage[mem=36000] span[hosts=1]' -n 12 -o /lustre/scratch125/casm/teams/team113/projects/6633_2729_3248_PDX_models_from_Latin_America_WES/logs/bwamem_logs/bwamem_mapping_log_NOD_PDXV1_1.o -e /lustre/scratch125/casm/teams/team113/projects/6633_2729_3248_PDX_models_from_Latin_America_WES/logs/bwamem_logs/bwamem_mapping_log_NOD_PDXV1_1.e 'bwa mem -t 12 -Y -K 100000000 -R "@RG\tID:41760_1#2\tLB:23446185\tSM:PD53330a\tPL:ILLUMINA" /lustre/scratch125/casm/teams/team113/projects/6633_2729_3248_PDX_models_from_Latin_America_WES/reference/NOD_ShiLtJ_V1_PDX_ref/bwa_mem/genome.fa /lustre/scratch125/casm/teams/team113/projects/6633_2729_3248_PDX_models_from_Latin_America_WES/data/fastqs/PD53330a/PD53330a_41760_1#2_R1.fastq.gz /lustre/scratch125/casm/teams/team113/projects/6633_2729_3248_PDX_models_from_Latin_America_WES/data/fastqs/PD53330a/PD53330a_41760_1#2_R2.fastq.gz | samtools sort -m 1G -@ 10 -o /lustre/scratch125/casm/teams/team113/projects/6633_2729_3248_PDX_models_from_Latin_America_WES/data/bams/NOD_mapping/NOD_PDXV1/PD53330a/PD53330a_NOD_PDXV141760_1#2.aln.sort.out.bam - ; samtools index /lustre/scratch125/casm/teams/team113/projects/6633_2729_3248_PDX_models_from_Latin_America_WES/data/bams/NOD_mapping/NOD_PDXV1/PD53330a/PD53330a_NOD_PDXV141760_1#2.aln.sort.out.bam '
 
 
 ```
