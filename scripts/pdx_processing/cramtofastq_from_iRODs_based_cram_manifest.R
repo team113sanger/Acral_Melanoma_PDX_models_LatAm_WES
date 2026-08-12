@@ -44,7 +44,6 @@ arguments<- parse_args(parser, positional_arguments = 0) # no files after the op
 # otherwise if options not found on command line then set defaults,
 opt<-arguments$options
 
-
 #Verify that the outidr was set
 if(is.na(opt$projectdir)){
   projectdir<-paste(getwd(),"/",sep="")
@@ -118,6 +117,16 @@ for (i in 1:dim(manif)[1]){
   serrf<-NULL
   tsrunid<-NULL
   temp<-manif[i,]
+  #Check if temp lane is NA, if so then read the cram irods location and extract the lane number from it
+  if(is.na(temp$lane)){
+    # USe the cram_irods_location to extract the lane number from the basename 51789_6-7-8#33.cram, so remove evything
+    # and get the characters in between the "_" and the "#" characters
+    warning(paste("The lane number for sample:", temp$sample_supplier_name, "is NA, so it will be extracted from the cram_irods_location", sep=" "))
+    temp$lane<-gsub(".*_","",basename(temp$cram_irods_location))
+    temp$lane<-gsub("#.*","",temp$lane)
+    manif$lane[i]<-temp$lane
+    warning(paste("The lane number for sample:", temp$sample_supplier_name, "is now set to:", temp$lane, sep=" "))
+  } 
   tsrunid<- paste0(temp$sample_supplier_name,"_",temp$id_run,"_",temp$lane,"#",temp$tag_index)
   cmd<-NULL
   # give name to errorfiles
