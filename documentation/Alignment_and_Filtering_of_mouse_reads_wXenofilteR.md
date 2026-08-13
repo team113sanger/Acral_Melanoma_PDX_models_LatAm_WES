@@ -275,24 +275,32 @@ PROJECTDIR=/lustre/scratch125/casm/teams/team113/projects/6633_2729_3248_PDX_mod
 STUDY=6633
 PROJECTID=2729
 SCRIPTS_DIR=${PROJECTDIR:?unset}/scripts
+LOGDIR=${PROJECTDIR:?unset}/logs
 PDXSCRIPTS_DIR=${SCRIPTS_DIR:?unset}/pdx_processing
 NOD_PDXV1_REFDIR=${PROJECTDIR:?unset}/reference/NOD_ShiLtJ_V1_PDX_ref
 
-cd ${PROJECTDIR:?unset}
+cd ${PROJECTDIR:?unset}/tmp
+
 
 # Load environment with requiring 
 source ${PROJECTDIR:?unset}/scripts/pdx_processing/source_me.sh
 
 # Variables:
 NCORES=8
+NSPLIT_CORES=22
 NREADS_SPLIT=50000000
 
-Rscript ${PROJECTDIR:?unset}/scripts/pdx_processing/split_bam_files_and_get_xenofilter_jobs.R --study_id ${STUDY:?unset} \
---manifest ${PROJECTDIR:?unset}/metadata/manifests/${STUDY}_cram_manifest_INFO_from_iRODS_PDXs_wbam_counts_qc_PDX_annot_psamp_mouse_xfb.txt \
+bsub -q basement -n 24 -M64000 -R"select[mem>64000] rusage[mem=64000] span[hosts=1]" -J ${STUDY}_split_bam_files_and_get_xenofilter_jobs_WES -o ${LOGDIR:?unset}/${STUDY}_split_bam_files_and_get_xenofilter_jobs_WES_b2_b3.o -e ${LOGDIR:?unset}/${STUDY}_split_bam_files_and_get_xenofilter_jobs_WES_b2_b3.e \
+"Rscript ${PROJECTDIR:?unset}/scripts/pdx_processing/split_bam_files_and_get_xenofilter_jobs.R --study_id ${STUDY:?unset} \
+--manifest ${PROJECTDIR:?unset}/metadata/manifests/${STUDY}_cram_manifest_INFO_from_iRODS_PDXs_wbam_counts_qc_PDX_annot_psamp_mouse_xfb_b2_3.txt \
 --projectdir ${PROJECTDIR:?unset} \
 --xfilter_outdir ${PROJECTDIR:?unset}/bams/WES_xfilt/NOD_PDXV1 \
 --split_nreads ${NREADS_SPLIT:?unset} \
+--nsplit_cores ${NSPLIT_CORES:?unset} \
 --nthreads ${NCORES} 
+"
+
+/lustre/scratch125/casm/teams/team113/projects/6633_2729_3248_PDX_models_from_Latin_America_WES/metadata/6633_2729_unfilt_PDX_sample_names_batch2_3.txt
 
 ```
 
