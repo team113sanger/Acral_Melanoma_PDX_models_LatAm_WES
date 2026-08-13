@@ -22,6 +22,7 @@ option_list<- list(
   make_option(c("--projectdir"), action="store_true", type="character", default=NA,  help="This is the fullpath to project directory "), 
   make_option(c("--xfilter_outdir" ), action="store_true", type="character", default=NA, help="This is the location where the final files will be created"),
   make_option(c("--split_nreads" ), action="store_true", type="integer", default=50000000, help="This is the totatl number of reads per splitted file 5e+07(DEFAULT)"),
+  make_option(c("--nsplit_cores" ), action="store_true", type="integer", default=4, help="This is number of cores for readnames and BAM splitting tasks"),
   make_option(c("--nthreads" ), action="store_true", type="integer", default=4, help="This is number of cores for multithreading tasks")
   
 )
@@ -38,6 +39,7 @@ projectdir<-opt$projectdir
 xfilter_outdir<-opt$xfilter_outdir
 split_nreads<-opt$split_nreads
 ncores<-opt$nthreads
+nsplit_cores<-opt$nsplit_cores
 
 
 #Write some output starting message
@@ -46,6 +48,8 @@ write(paste("#########################################\n", progname, date(), "\n
             "The projectdir provided :",  projectdir, "\n",
             "The xfitler outdir provided:", xfilter_outdir, "\n",
             "The number of  reads to split :",  split_nreads, "\n",
+            "The number of cores to use for multithreading tasks :",  ncores, "\n",
+            "The number of cores to use for splitting the BAM files :",  nsplit_cores, "\n",
             sep=" "), stdout())
 
 #Verify that the outidr was set
@@ -123,7 +127,7 @@ for(i in 1:dim(manif)[1]) {
   ########### Obtain the read names on the sample bam file
   write( paste0(date(), " Getting the read names for : ", temp_sampname, "\n") , stdout()) 
   #cmd<- paste0("samtools sort --tmpdir ", tmpdir, " -@ ", ncores," -n ", temp_hbam ," | samtools view - | awk '{print $1}' >", temp_rnamfile)
-  cmd<- paste0("samtools sort -@ ", ncores," -n ", temp_hbam ," | samtools view - | awk '{print $1}' >", temp_rnamfile)
+  cmd<- paste0("samtools sort -@ ", nsplit_cores," -n ", temp_hbam ," | samtools view - | awk '{print $1}' >", temp_rnamfile)
   write( cmd , stdout()) 
   system(cmd, wait = T)  
   
@@ -195,9 +199,8 @@ for(i in 1:dim(manif)[1]) {
     #             manif$bam_psample_path_nodv1[i], " >", tp_nodbampartname, " && samtools index ", tp_nodbampartname )
     cmd<- paste0("samtools view -h -b -@ ", ncores, " --qname-file " , tmp_rnam_partfile_list[j], " ",
                  manif$bam_psample_path_nodv1[i], " >", tp_nodbampartname, " && samtools index ", tp_nodbampartname )
-    
     write( paste0(date(), " Splittin the human bam file: ", basename(manif$bam_psample_path_nodv1[i]), " for sample: ",  temp_sampname," part :", number_part,  " \n") , stdout()) 
-    write(bash_cmd, stdout())
+    write(cmd, stdout())
     #Assing job output names 
     sdoutf<-file.path(rsplit_logdir, paste("nod_bam_split_",temp_sampname,"_part", number_part,".o", sep = ""))
     serrf<-file.path(rsplit_logdir, paste("nod_bam_split_",temp_sampname,"_part", number_part,".e", sep = ""))
@@ -295,6 +298,7 @@ for (i in 1:length(sample_list) ){
   temp_sampname<-sample_list[i]
   temp_smanif<- new_manif[new_manif$sample == temp_sampname, ]
   #Output name of the Xfilt file
+  
   dir.create(file.path(xfilter_outdir, paste0(temp_sampname),"Filtered_bams"), recursive=T)
   temp_merged_xfile<-file.path(xfilter_outdir, paste0(temp_sampname),"Filtered_bams", 
                                paste0(temp_sampname,".sample.dupmarked.mXfilt_Filtered.bam") )
