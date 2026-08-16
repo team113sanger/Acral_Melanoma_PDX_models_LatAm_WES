@@ -1,0 +1,2 @@
+sample	unfilt_bamfile	filtered_read_pairs	total_read_pairs	percent_filtered
+PD53343c	PD53343c.sample.dupmarked.bam	7258277	108220120	6.71
